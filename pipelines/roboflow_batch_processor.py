@@ -139,8 +139,15 @@ class RoboflowBatchProcessor:
     
     def _init_components(self) -> None:
         """Initialize all pipeline components."""
-        # Tracking
-        self.tracker = ForkliftTracker()
+        # Tracking - optimized for forklift tracking
+        # Higher lost_track_buffer to maintain IDs when forklift temporarily occluded
+        # Lower matching threshold to be more strict about IoU matching
+        self.tracker = ForkliftTracker(
+            track_activation_threshold=0.3,   # Min confidence to start a track
+            lost_track_buffer=60,             # Keep track alive for ~2 seconds at 30fps
+            minimum_matching_threshold=0.5,   # Lower = stricter IoU matching
+            frame_rate=self.fps               # Use actual processing FPS
+        )
         
         # Spatial analysis
         self.spatial_analyzer = SpatialAnalyzer(self.rules_config)
@@ -437,11 +444,22 @@ class RoboflowBatchProcessor:
             width = pred.get("width", 0)
             height = pred.get("height", 0)
             
-            # Filter out invalid or unreasonably large detections
-            # Typical forklift size: 100-400px width/height
-            # Typical pallet size: 50-300px width/height
-            max_size = 500 if class_name == "forklift" else 400
-            min_size = 30 if class_name == "forklift" else 20
+            # Filter out invalid or unreasonably sized detections
+            # Forklift: typically 80-500px in warehouse CCTV footage
+            # Pallet: typically 40-400px
+            if class_name == "forklift":
+                max_size = 600
+                min_size = 60  # Forklifts should be reasonably sized
+                min_confidence = 0.50  # Higher confidence for forklifts
+                # Also check aspect ratio - forklifts shouldn't be too elongated
+                aspect_ratio = max(width, height) / max(min(width, height), 1)
+                if aspect_ratio > 4.0:  # Skip very elongated boxes (likely false positives)
+                    logger.debug(f"Skipping elongated forklift detection: {width}x{height}")
+                    return None
+            else:  # pallet
+                max_size = 400
+                min_size = 30
+                min_confidence = 0.35
             
             if width > max_size or height > max_size:
                 logger.debug(f"Skipping oversized detection: {class_name} {width}x{height}")
@@ -453,7 +471,6 @@ class RoboflowBatchProcessor:
             
             # Filter low confidence
             confidence = pred.get("confidence", 0)
-            min_confidence = 0.4 if class_name == "forklift" else 0.3
             if confidence < min_confidence:
                 return None
             
@@ -493,12 +510,13 @@ class RoboflowBatchProcessor:
             detections = frame_detections[frame_id]
             processed_frames += 1
             
-            # Track objects
-            tracks = self.tracker.update(detections, frame_id)
-            
-            # Separate forklift and pallet detections
-            forklift_tracks = [t for t in tracks if t.class_name == "forklift"]
+            # IMPORTANT: Only track forklifts, not pallets!
+            # Filter detections to only include forklifts for tracking
+            forklift_detections = [d for d in detections if d.class_name == "forklift"]
             pallet_detections = [d for d in detections if d.class_name == "pallet"]
+            
+            # Track only forklift objects
+            forklift_tracks = self.tracker.update(forklift_detections, frame_id)
             
             # Spatial analysis (detect pallet carrying)
             spatial_results = self.spatial_analyzer.analyze_frame(
