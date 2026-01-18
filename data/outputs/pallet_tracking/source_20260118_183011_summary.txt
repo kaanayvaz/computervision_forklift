@@ -1,0 +1,16 @@
+============================================================
+PALLET TRACKING RESULTS
+============================================================
+
+Video: source
+Job ID: 705a5aa3-d0fa-4f6a-ab3b-f9bac26b3a2b
+FPS: 5
+Confidence: 0.25
+Project: pallet-unicd-k2rg0
+Version: 1
+
+Total Frames Processed: 3
+Total Pallet Detections: 0
+Average Detections/Frame: 0.00
+
+============================================================

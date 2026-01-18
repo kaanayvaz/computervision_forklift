@@ -1,0 +1,24 @@
+{
+  "metadata": {
+    "video_name": "source",
+    "generated_at": "2026-01-18T15:58:09.942003",
+    "version": "1.0.0"
+  },
+  "summary": {
+    "total_duration_seconds": 38.96,
+    "total_duration_minutes": 0.6493333333333333,
+    "forklift_count": 5,
+    "activity_count": 0,
+    "utilization_percentage": 0.0,
+    "total_active_time_seconds": 38.96,
+    "total_idle_time_seconds": 0,
+    "cost_of_waste_usd": 0.0
+  },
+  "idle_breakdown": {
+    "idle_waiting": 0.0,
+    "extended_idle": 0.0,
+    "significant_idle": 0.0
+  },
+  "activities_by_state": {},
+  "activities": []
+}

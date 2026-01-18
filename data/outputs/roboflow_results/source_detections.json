@@ -1,0 +1,5084 @@
+{
+  "video_path": "data\\sample_videos\\source.mp4",
+  "fps": 5,
+  "confidence": 0.25,
+  "forklift_detections": {
+    "frame_offset": [
+      0,
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60,
+      65,
+      70,
+      75,
+      80,
+      85,
+      90,
+      95,
+      100,
+      105,
+      110,
+      115,
+      120,
+      125,
+      130,
+      135,
+      140,
+      145,
+      150,
+      155,
+      160,
+      165,
+      170,
+      175,
+      180,
+      185,
+      190,
+      195,
+      200,
+      205,
+      210,
+      215,
+      220,
+      225,
+      230,
+      235,
+      240,
+      245,
+      250,
+      255,
+      260,
+      265,
+      270,
+      275,
+      280,
+      285,
+      290,
+      295,
+      300,
+      305,
+      310,
+      315,
+      320,
+      325,
+      330,
+      335,
+      340,
+      345,
+      350,
+      355,
+      360,
+      365,
+      370,
+      375,
+      380,
+      385,
+      390,
+      395,
+      400,
+      405,
+      410,
+      415,
+      420,
+      425,
+      430,
+      435,
+      440,
+      445,
+      450,
+      455,
+      460,
+      465,
+      470,
+      475,
+      480,
+      485,
+      490,
+      495,
+      500,
+      505,
+      510,
+      515,
+      520,
+      525,
+      530,
+      535,
+      540,
+      545,
+      550,
+      555,
+      560,
+      565,
+      570,
+      575,
+      580,
+      585,
+      590,
+      595,
+      600,
+      605,
+      610,
+      615,
+      620,
+      625,
+      630,
+      635,
+      640,
+      645,
+      650,
+      655,
+      660,
+      665,
+      670,
+      675,
+      680,
+      685,
+      690,
+      695,
+      700,
+      705,
+      710,
+      715,
+      720,
+      725,
+      730,
+      735,
+      740,
+      745,
+      750,
+      755,
+      760,
+      765,
+      770,
+      775,
+      780,
+      785,
+      790,
+      795,
+      800,
+      805,
+      810,
+      815,
+      820,
+      825,
+      830,
+      835,
+      840,
+      845,
+      850,
+      855,
+      860,
+      865,
+      870,
+      875,
+      880,
+      885,
+      890,
+      895,
+      900,
+      905,
+      910,
+      915,
+      920,
+      925,
+      930,
+      935,
+      940,
+      945,
+      950,
+      955,
+      960,
+      965,
+      970
+    ],
+    "time_offset": [
+      0.0,
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1.0,
+      1.2,
+      1.4,
+      1.6,
+      1.8,
+      2.0,
+      2.2,
+      2.4,
+      2.6,
+      2.8,
+      3.0,
+      3.2,
+      3.4,
+      3.6,
+      3.8,
+      4.0,
+      4.2,
+      4.4,
+      4.6,
+      4.8,
+      5.0,
+      5.2,
+      5.4,
+      5.6,
+      5.8,
+      6.0,
+      6.2,
+      6.4,
+      6.6,
+      6.8,
+      7.0,
+      7.2,
+      7.4,
+      7.6,
+      7.8,
+      8.0,
+      8.2,
+      8.4,
+      8.6,
+      8.8,
+      9.0,
+      9.2,
+      9.4,
+      9.6,
+      9.8,
+      10.0,
+      10.2,
+      10.4,
+      10.6,
+      10.8,
+      11.0,
+      11.2,
+      11.4,
+      11.6,
+      11.8,
+      12.0,
+      12.2,
+      12.4,
+      12.6,
+      12.8,
+      13.0,
+      13.2,
+      13.4,
+      13.6,
+      13.8,
+      14.0,
+      14.2,
+      14.4,
+      14.6,
+      14.8,
+      15.0,
+      15.2,
+      15.4,
+      15.6,
+      15.8,
+      16.0,
+      16.2,
+      16.4,
+      16.6,
+      16.8,
+      17.0,
+      17.2,
+      17.4,
+      17.6,
+      17.8,
+      18.0,
+      18.2,
+      18.4,
+      18.6,
+      18.8,
+      19.0,
+      19.2,
+      19.4,
+      19.6,
+      19.8,
+      20.0,
+      20.2,
+      20.4,
+      20.6,
+      20.8,
+      21.0,
+      21.2,
+      21.4,
+      21.6,
+      21.8,
+      22.0,
+      22.2,
+      22.4,
+      22.6,
+      22.8,
+      23.0,
+      23.2,
+      23.4,
+      23.6,
+      23.8,
+      24.0,
+      24.2,
+      24.4,
+      24.6,
+      24.8,
+      25.0,
+      25.2,
+      25.4,
+      25.6,
+      25.8,
+      26.0,
+      26.2,
+      26.4,
+      26.6,
+      26.8,
+      27.0,
+      27.2,
+      27.4,
+      27.6,
+      27.8,
+      28.0,
+      28.2,
+      28.4,
+      28.6,
+      28.8,
+      29.0,
+      29.2,
+      29.4,
+      29.6,
+      29.8,
+      30.0,
+      30.2,
+      30.4,
+      30.6,
+      30.8,
+      31.0,
+      31.2,
+      31.4,
+      31.6,
+      31.8,
+      32.0,
+      32.2,
+      32.4,
+      32.6,
+      32.8,
+      33.0,
+      33.2,
+      33.4,
+      33.6,
+      33.8,
+      34.0,
+      34.2,
+      34.4,
+      34.6,
+      34.8,
+      35.0,
+      35.2,
+      35.4,
+      35.6,
+      35.8,
+      36.0,
+      36.2,
+      36.4,
+      36.6,
+      36.8,
+      37.0,
+      37.2,
+      37.4,
+      37.6,
+      37.8,
+      38.0,
+      38.2,
+      38.4,
+      38.6,
+      38.8
+    ],
+    "forklift-0jmzj-uvcoy": [
+      {
+        "inference_id": "5045b3b3-8659-4dcc-b470-1ecd854400bc",
+        "time": 0.43726906180381775,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 787.5,
+            "y": 403.0,
+            "width": 273.0,
+            "height": 230.0,
+            "confidence": 0.8382503986358643,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "9829b9a9-ed60-4113-a0f3-af2d1c35f945"
+          }
+        ]
+      },
+      {
+        "inference_id": "5045b3b3-8659-4dcc-b470-1ecd854400bc",
+        "time": 0.43734324094839394,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 753.5,
+            "y": 395.5,
+            "width": 247.0,
+            "height": 229.0,
+            "confidence": 0.9151766300201416,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ede70400-3800-47ea-9f8c-3e15a82e74b9"
+          }
+        ]
+      },
+      {
+        "inference_id": "5045b3b3-8659-4dcc-b470-1ecd854400bc",
+        "time": 0.43735460890457034,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 723.0,
+            "y": 392.5,
+            "width": 224.0,
+            "height": 229.0,
+            "confidence": 0.8840389251708984,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "14ad17e7-a27a-4329-9389-4fc08eabd256"
+          }
+        ]
+      },
+      {
+        "inference_id": "5045b3b3-8659-4dcc-b470-1ecd854400bc",
+        "time": 0.4373626778833568,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 701.0,
+            "y": 393.5,
+            "width": 216.0,
+            "height": 227.0,
+            "confidence": 0.859446108341217,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "55744b16-ab78-4e36-b3a3-6a5cac28c708"
+          }
+        ]
+      },
+      {
+        "inference_id": "dd733e9f-dd01-4914-869b-b576e4cacf7d",
+        "time": 0.42771170008927584,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 676.5,
+            "y": 403.0,
+            "width": 227.0,
+            "height": 242.0,
+            "confidence": 0.8481408357620239,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "d1ee3159-fbd7-4ea5-af4c-9261d948bfdc"
+          }
+        ]
+      },
+      {
+        "inference_id": "dd733e9f-dd01-4914-869b-b576e4cacf7d",
+        "time": 0.4277605311945081,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 662.0,
+            "y": 380.5,
+            "width": 212.0,
+            "height": 205.0,
+            "confidence": 0.846761167049408,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "28f76fb4-2377-4adc-a83f-d150729fb8cc"
+          }
+        ]
+      },
+      {
+        "inference_id": "dd733e9f-dd01-4914-869b-b576e4cacf7d",
+        "time": 0.42777140415273607,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 641.5,
+            "y": 425.0,
+            "width": 207.0,
+            "height": 302.0,
+            "confidence": 0.8522247672080994,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "e653000a-f3d5-47aa-b4ec-1b86f55b8c79"
+          }
+        ]
+      },
+      {
+        "inference_id": "dd733e9f-dd01-4914-869b-b576e4cacf7d",
+        "time": 0.4277893581893295,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 631.5,
+            "y": 442.0,
+            "width": 213.0,
+            "height": 338.0,
+            "confidence": 0.820421576499939,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "9a08e0c9-7152-4cd6-a05e-a17c10f34c3c"
+          }
+        ]
+      },
+      {
+        "inference_id": "c68be50c-c6f0-4759-9275-75b7bb163fa8",
+        "time": 0.4273046348243952,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 615.0,
+            "y": 384.5,
+            "width": 178.0,
+            "height": 223.0,
+            "confidence": 0.7624765634536743,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "aed2c3e2-3b40-4510-b3e9-d2bff42af326"
+          }
+        ]
+      },
+      {
+        "inference_id": "c68be50c-c6f0-4759-9275-75b7bb163fa8",
+        "time": 0.42736098589375615,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 601.5,
+            "y": 396.5,
+            "width": 169.0,
+            "height": 245.0,
+            "confidence": 0.8193309307098389,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "8d2d8738-1688-435c-980d-4bd1ad4c81e5"
+          }
+        ]
+      },
+      {
+        "inference_id": "c68be50c-c6f0-4759-9275-75b7bb163fa8",
+        "time": 0.4273719999473542,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 592.5,
+            "y": 390.5,
+            "width": 149.0,
+            "height": 231.0,
+            "confidence": 0.9133216142654419,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "6387719f-1452-4e50-aa66-0e3930f9b74e"
+          }
+        ]
+      },
+      {
+        "inference_id": "c68be50c-c6f0-4759-9275-75b7bb163fa8",
+        "time": 0.4273801709059626,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 591.0,
+            "y": 385.0,
+            "width": 138.0,
+            "height": 224.0,
+            "confidence": 0.9101470708847046,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "7a6b0dda-17ee-4d48-8e85-100be43ac2e9"
+          }
+        ]
+      },
+      {
+        "inference_id": "73651b2d-7897-4143-b82b-23b75ced5286",
+        "time": 0.42494158004410565,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 594.0,
+            "y": 382.0,
+            "width": 114.0,
+            "height": 214.0,
+            "confidence": 0.8441572785377502,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "b26614b5-0440-4692-a259-1dcf7ca84841"
+          }
+        ]
+      },
+      {
+        "inference_id": "73651b2d-7897-4143-b82b-23b75ced5286",
+        "time": 0.42499429802410305,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 586.5,
+            "y": 372.5,
+            "width": 119.0,
+            "height": 191.0,
+            "confidence": 0.8470884561538696,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "a409d5a2-ac1e-4855-8fef-072f15fae0a4"
+          }
+        ]
+      },
+      {
+        "inference_id": "73651b2d-7897-4143-b82b-23b75ced5286",
+        "time": 0.42500492208637297,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 585.0,
+            "y": 383.5,
+            "width": 120.0,
+            "height": 195.0,
+            "confidence": 0.8680475354194641,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "03639567-dbfe-44fd-b664-5fa42836cc35"
+          }
+        ]
+      },
+      {
+        "inference_id": "73651b2d-7897-4143-b82b-23b75ced5286",
+        "time": 0.4250126320403069,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 583.0,
+            "y": 382.5,
+            "width": 136.0,
+            "height": 201.0,
+            "confidence": 0.8522244691848755,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "88ddea8b-b6bd-49d2-8cf6-3f0721af23a1"
+          }
+        ]
+      },
+      {
+        "inference_id": "4e329617-3a98-4c56-aac2-953742d906f6",
+        "time": 0.4315806580707431,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 588.5,
+            "y": 380.5,
+            "width": 143.0,
+            "height": 195.0,
+            "confidence": 0.8696970343589783,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "98279474-8858-4e03-8222-cf4a61390b59"
+          }
+        ]
+      },
+      {
+        "inference_id": "4e329617-3a98-4c56-aac2-953742d906f6",
+        "time": 0.43163511203601956,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 602.5,
+            "y": 371.0,
+            "width": 147.0,
+            "height": 202.0,
+            "confidence": 0.8685079216957092,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "30b37455-26aa-4d36-9eca-4916c85bc430"
+          }
+        ]
+      },
+      {
+        "inference_id": "4e329617-3a98-4c56-aac2-953742d906f6",
+        "time": 0.4316467768512666,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 614.0,
+            "y": 363.5,
+            "width": 150.0,
+            "height": 203.0,
+            "confidence": 0.8789671659469604,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "60087dc7-caa0-4b2a-ae85-d1352a580170"
+          }
+        ]
+      },
+      {
+        "inference_id": "4e329617-3a98-4c56-aac2-953742d906f6",
+        "time": 0.4316547738853842,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 632.0,
+            "y": 349.5,
+            "width": 150.0,
+            "height": 207.0,
+            "confidence": 0.8475098013877869,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "2bc6c887-81e4-408b-b1c4-1e9e289395dd"
+          }
+        ]
+      },
+      {
+        "inference_id": "2d4566b1-42e4-42eb-a7bd-4582a8eeaf41",
+        "time": 0.4372488218359649,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 655.5,
+            "y": 348.0,
+            "width": 169.0,
+            "height": 198.0,
+            "confidence": 0.808401346206665,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "01966f19-5a71-4087-af77-fa9f2b867d9a"
+          }
+        ]
+      },
+      {
+        "inference_id": "2d4566b1-42e4-42eb-a7bd-4582a8eeaf41",
+        "time": 0.43730628583580256,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 669.5,
+            "y": 349.0,
+            "width": 153.0,
+            "height": 188.0,
+            "confidence": 0.8497470617294312,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "7c9c5348-1268-451a-9657-1f2a8070f489"
+          }
+        ]
+      },
+      {
+        "inference_id": "2d4566b1-42e4-42eb-a7bd-4582a8eeaf41",
+        "time": 0.4373179799877107,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 677.5,
+            "y": 345.0,
+            "width": 149.0,
+            "height": 188.0,
+            "confidence": 0.8281848430633545,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "380cb659-00e7-465d-acdd-0099e2a0ac80"
+          }
+        ]
+      },
+      {
+        "inference_id": "2d4566b1-42e4-42eb-a7bd-4582a8eeaf41",
+        "time": 0.4373258128762245,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 688.5,
+            "y": 332.5,
+            "width": 157.0,
+            "height": 203.0,
+            "confidence": 0.7820802330970764,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "3da360cb-6981-4f95-a2a5-71c35fe921eb"
+          }
+        ]
+      },
+      {
+        "inference_id": "b747e889-ea44-46e6-b970-6cb09ed019d4",
+        "time": 0.43861768511123955,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 696.0,
+            "y": 335.5,
+            "width": 158.0,
+            "height": 187.0,
+            "confidence": 0.8522597551345825,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f1bfaaa0-2c1a-4940-a7f9-358d637cd2c4"
+          },
+          {
+            "x": 520.0,
+            "y": 978.0,
+            "width": 502.0,
+            "height": 204.0,
+            "confidence": 0.44302618503570557,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "2bbcc59f-ebb1-4e8c-9b34-f2a8c8f17327"
+          }
+        ]
+      },
+      {
+        "inference_id": "b747e889-ea44-46e6-b970-6cb09ed019d4",
+        "time": 0.43867006804794073,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 715.5,
+            "y": 334.5,
+            "width": 167.0,
+            "height": 187.0,
+            "confidence": 0.8816061615943909,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "4b132392-dab9-48d7-8bd7-b31ed3eda1b4"
+          }
+        ]
+      },
+      {
+        "inference_id": "b747e889-ea44-46e6-b970-6cb09ed019d4",
+        "time": 0.43868052400648594,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 732.5,
+            "y": 325.0,
+            "width": 161.0,
+            "height": 196.0,
+            "confidence": 0.8635647296905518,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "fd9f856d-5ed1-443a-a262-5189a83503df"
+          }
+        ]
+      },
+      {
+        "inference_id": "b747e889-ea44-46e6-b970-6cb09ed019d4",
+        "time": 0.438688388094306,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 747.5,
+            "y": 325.0,
+            "width": 147.0,
+            "height": 194.0,
+            "confidence": 0.8624427318572998,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "20a3ecfe-07a0-4f03-8daa-0bad924a290b"
+          }
+        ]
+      },
+      {
+        "inference_id": "2642286b-1406-4f0b-8fb4-86ae7f8e48d6",
+        "time": 0.428932033944875,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 753.0,
+            "y": 324.0,
+            "width": 142.0,
+            "height": 188.0,
+            "confidence": 0.8296580910682678,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "90a627dd-3dc7-4aad-8545-00ee9c30ecf6"
+          },
+          {
+            "x": 470.0,
+            "y": 1009.0,
+            "width": 596.0,
+            "height": 142.0,
+            "confidence": 0.6259366273880005,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f260ffae-c11e-43f8-be9d-428a24159a65"
+          }
+        ]
+      },
+      {
+        "inference_id": "2642286b-1406-4f0b-8fb4-86ae7f8e48d6",
+        "time": 0.4289839218836278,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 763.5,
+            "y": 323.0,
+            "width": 131.0,
+            "height": 178.0,
+            "confidence": 0.849708080291748,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "8b1aa202-678c-49d7-be17-03bd99ae003d"
+          }
+        ]
+      },
+      {
+        "inference_id": "2642286b-1406-4f0b-8fb4-86ae7f8e48d6",
+        "time": 0.4289942488539964,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 776.0,
+            "y": 324.0,
+            "width": 124.0,
+            "height": 176.0,
+            "confidence": 0.8238579630851746,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "7be8a251-caf9-47ef-b50f-2eb8600e033f"
+          }
+        ]
+      },
+      {
+        "inference_id": "2642286b-1406-4f0b-8fb4-86ae7f8e48d6",
+        "time": 0.42900842195376754,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": []
+      },
+      {
+        "inference_id": "46aaab55-cdf4-4038-8773-3827402ef395",
+        "time": 0.48236791603267193,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": []
+      },
+      {
+        "inference_id": "46aaab55-cdf4-4038-8773-3827402ef395",
+        "time": 0.4824172221124172,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": []
+      },
+      {
+        "inference_id": "46aaab55-cdf4-4038-8773-3827402ef395",
+        "time": 0.48242829204536974,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 793.5,
+            "y": 320.5,
+            "width": 105.0,
+            "height": 155.0,
+            "confidence": 0.7582200169563293,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "6e431e65-c081-49ed-9933-76ef67c7d4bc"
+          }
+        ]
+      },
+      {
+        "inference_id": "46aaab55-cdf4-4038-8773-3827402ef395",
+        "time": 0.48243634100072086,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 797.0,
+            "y": 335.0,
+            "width": 104.0,
+            "height": 174.0,
+            "confidence": 0.8231524229049683,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "09f17054-87b4-493b-96b3-45bc04f15e48"
+          },
+          {
+            "x": 496.5,
+            "y": 949.5,
+            "width": 501.0,
+            "height": 259.0,
+            "confidence": 0.516177237033844,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "16f61624-7791-47ef-9cb7-aaeb752cade2"
+          }
+        ]
+      },
+      {
+        "inference_id": "31999600-e2ca-4608-952f-98ff8e4fd9ba",
+        "time": 0.4497834190260619,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 794.5,
+            "y": 339.5,
+            "width": 101.0,
+            "height": 167.0,
+            "confidence": 0.8015367388725281,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "97a276c4-3898-4a7b-844c-ea33d34fff11"
+          }
+        ]
+      },
+      {
+        "inference_id": "31999600-e2ca-4608-952f-98ff8e4fd9ba",
+        "time": 0.44983964902348816,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 792.5,
+            "y": 341.0,
+            "width": 105.0,
+            "height": 164.0,
+            "confidence": 0.7969458103179932,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "55970046-c4a5-4209-809a-7af976faf50f"
+          }
+        ]
+      },
+      {
+        "inference_id": "31999600-e2ca-4608-952f-98ff8e4fd9ba",
+        "time": 0.4498513510916382,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 794.0,
+            "y": 346.0,
+            "width": 104.0,
+            "height": 166.0,
+            "confidence": 0.8286159634590149,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "9b6ab744-762a-4e61-951f-912ed9156e96"
+          }
+        ]
+      },
+      {
+        "inference_id": "31999600-e2ca-4608-952f-98ff8e4fd9ba",
+        "time": 0.4498600671067834,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 795.5,
+            "y": 350.0,
+            "width": 111.0,
+            "height": 166.0,
+            "confidence": 0.8427864909172058,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "75064e36-b0d6-46e0-8c31-c06b9dd6c6e6"
+          },
+          {
+            "x": 502.5,
+            "y": 971.5,
+            "width": 455.0,
+            "height": 213.0,
+            "confidence": 0.5376948118209839,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "b5b70afc-d74e-4e52-8b26-e1e964516676"
+          }
+        ]
+      },
+      {
+        "inference_id": "17e37129-70da-43f9-9b98-b750f5a3f9be",
+        "time": 0.4404429520945996,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 798.5,
+            "y": 354.0,
+            "width": 115.0,
+            "height": 170.0,
+            "confidence": 0.8548077344894409,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "34e1e5e8-f35b-405b-83d7-4ea7048c5378"
+          },
+          {
+            "x": 517.0,
+            "y": 975.5,
+            "width": 452.0,
+            "height": 207.0,
+            "confidence": 0.4803417921066284,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "d4c58535-3e3d-4c75-977c-ccf24414ce9d"
+          }
+        ]
+      },
+      {
+        "inference_id": "17e37129-70da-43f9-9b98-b750f5a3f9be",
+        "time": 0.44050188595429063,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 806.0,
+            "y": 355.0,
+            "width": 114.0,
+            "height": 168.0,
+            "confidence": 0.8460298776626587,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "b23253de-6dae-42e7-9ae6-e766fc9ebe69"
+          }
+        ]
+      },
+      {
+        "inference_id": "17e37129-70da-43f9-9b98-b750f5a3f9be",
+        "time": 0.4405129309743643,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 811.5,
+            "y": 362.5,
+            "width": 115.0,
+            "height": 165.0,
+            "confidence": 0.8488463759422302,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "88f85227-e983-4365-a4d5-1b76b80f2ded"
+          }
+        ]
+      },
+      {
+        "inference_id": "17e37129-70da-43f9-9b98-b750f5a3f9be",
+        "time": 0.44052089797332883,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 811.0,
+            "y": 360.5,
+            "width": 130.0,
+            "height": 177.0,
+            "confidence": 0.8446759581565857,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "42190505-385e-42a2-991a-14d3c4bf766c"
+          }
+        ]
+      },
+      {
+        "inference_id": "f1181465-8d81-47f8-ba2c-45c7b63cbe2d",
+        "time": 0.436384349828586,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 809.0,
+            "y": 357.0,
+            "width": 140.0,
+            "height": 174.0,
+            "confidence": 0.8455103039741516,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "59bf86d4-f2dd-4afd-bed9-f5336a4f3684"
+          },
+          {
+            "x": 503.0,
+            "y": 994.5,
+            "width": 500.0,
+            "height": 169.0,
+            "confidence": 0.5988515019416809,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "fc84123f-d4b4-440d-92d7-0dccdb0a350b"
+          }
+        ]
+      },
+      {
+        "inference_id": "f1181465-8d81-47f8-ba2c-45c7b63cbe2d",
+        "time": 0.43643804686143994,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 810.0,
+            "y": 356.5,
+            "width": 122.0,
+            "height": 171.0,
+            "confidence": 0.8308807015419006,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "7993e0d3-e11b-44ff-96c4-41b11740d1f7"
+          }
+        ]
+      },
+      {
+        "inference_id": "f1181465-8d81-47f8-ba2c-45c7b63cbe2d",
+        "time": 0.4364488439168781,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 807.5,
+            "y": 359.0,
+            "width": 125.0,
+            "height": 168.0,
+            "confidence": 0.8507373332977295,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "e30a6673-252c-4ab1-83da-5cd6ca97a100"
+          },
+          {
+            "x": 499.5,
+            "y": 998.5,
+            "width": 521.0,
+            "height": 161.0,
+            "confidence": 0.5737074613571167,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "032d0053-f8cd-4ae7-8f9d-64d44ab0dcda"
+          }
+        ]
+      },
+      {
+        "inference_id": "f1181465-8d81-47f8-ba2c-45c7b63cbe2d",
+        "time": 0.43645656993612647,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 806.5,
+            "y": 359.0,
+            "width": 129.0,
+            "height": 172.0,
+            "confidence": 0.8432990908622742,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f6b6c6f4-f354-4260-b8b4-a5f9e2a3b0db"
+          },
+          {
+            "x": 511.0,
+            "y": 1010.5,
+            "width": 474.0,
+            "height": 139.0,
+            "confidence": 0.7118821144104004,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "14a9cdd1-e1e6-48bc-ab5f-f6d8426a3119"
+          }
+        ]
+      },
+      {
+        "inference_id": "6b4fc409-100d-43c2-ac77-9abe9cfe0a6e",
+        "time": 0.4416842039208859,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 798.5,
+            "y": 358.5,
+            "width": 121.0,
+            "height": 175.0,
+            "confidence": 0.8399308919906616,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "10ecd55c-cb9c-46f7-ba6f-c4aa5d3aeaa5"
+          },
+          {
+            "x": 523.0,
+            "y": 1009.5,
+            "width": 474.0,
+            "height": 139.0,
+            "confidence": 0.5927425622940063,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "e1140fd0-ed1e-482c-85cd-6e075e5918e7"
+          }
+        ]
+      },
+      {
+        "inference_id": "6b4fc409-100d-43c2-ac77-9abe9cfe0a6e",
+        "time": 0.4417611269745976,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 796.0,
+            "y": 355.5,
+            "width": 122.0,
+            "height": 177.0,
+            "confidence": 0.8232821822166443,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ba4e808d-338f-430b-b04b-dd91cb5f38b8"
+          }
+        ]
+      },
+      {
+        "inference_id": "6b4fc409-100d-43c2-ac77-9abe9cfe0a6e",
+        "time": 0.4417734849266708,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 791.5,
+            "y": 351.0,
+            "width": 119.0,
+            "height": 176.0,
+            "confidence": 0.7671157121658325,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "e32b1bca-7c62-426c-b5b1-bc0ace27a4e7"
+          }
+        ]
+      },
+      {
+        "inference_id": "6b4fc409-100d-43c2-ac77-9abe9cfe0a6e",
+        "time": 0.44178187684156,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 791.5,
+            "y": 347.0,
+            "width": 115.0,
+            "height": 178.0,
+            "confidence": 0.8400269150733948,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "6e1799b0-ce75-449a-a4b6-f3c7a1af67e9"
+          }
+        ]
+      },
+      {
+        "inference_id": "ab9d577d-2eac-43f2-b6b9-7beec900e3b6",
+        "time": 0.44260413595475256,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 789.5,
+            "y": 345.5,
+            "width": 113.0,
+            "height": 177.0,
+            "confidence": 0.8498600125312805,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "7295f828-051a-4591-b571-e5c38bcb192f"
+          }
+        ]
+      },
+      {
+        "inference_id": "ab9d577d-2eac-43f2-b6b9-7beec900e3b6",
+        "time": 0.4426570190116763,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 787.5,
+            "y": 345.5,
+            "width": 113.0,
+            "height": 177.0,
+            "confidence": 0.5695385336875916,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "48881c3f-b52a-43ce-a1cb-6f70552a1c97"
+          }
+        ]
+      },
+      {
+        "inference_id": "ab9d577d-2eac-43f2-b6b9-7beec900e3b6",
+        "time": 0.4426676279399544,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 484.5,
+            "y": 1018.0,
+            "width": 485.0,
+            "height": 122.0,
+            "confidence": 0.41359788179397583,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "badb6e6e-4e66-4ea7-b929-8dc316ea320b"
+          }
+        ]
+      },
+      {
+        "inference_id": "ab9d577d-2eac-43f2-b6b9-7beec900e3b6",
+        "time": 0.4426753839943558,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 487.5,
+            "y": 1015.5,
+            "width": 487.0,
+            "height": 127.0,
+            "confidence": 0.6174826622009277,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "fbbe7ae7-5794-4b68-a72d-1e55417536a3"
+          }
+        ]
+      },
+      {
+        "inference_id": "288632bb-1cc6-4032-ad28-26db3eb27a75",
+        "time": 0.45606811018660665,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": []
+      },
+      {
+        "inference_id": "288632bb-1cc6-4032-ad28-26db3eb27a75",
+        "time": 0.4561209729872644,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 490.5,
+            "y": 1015.0,
+            "width": 491.0,
+            "height": 130.0,
+            "confidence": 0.6963821053504944,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "a2f2e708-f888-42e9-9e4c-01e878aa488f"
+          }
+        ]
+      },
+      {
+        "inference_id": "288632bb-1cc6-4032-ad28-26db3eb27a75",
+        "time": 0.45613184315152466,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 482.5,
+            "y": 1017.0,
+            "width": 491.0,
+            "height": 124.0,
+            "confidence": 0.5485720634460449,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "95db67fe-b1ac-4a0c-acb1-310f65f87ae1"
+          }
+        ]
+      },
+      {
+        "inference_id": "288632bb-1cc6-4032-ad28-26db3eb27a75",
+        "time": 0.45613978197798133,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 480.5,
+            "y": 1017.0,
+            "width": 493.0,
+            "height": 124.0,
+            "confidence": 0.40117841958999634,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "20183642-e5d3-4b95-885c-bc1397f00a53"
+          }
+        ]
+      },
+      {
+        "inference_id": "aebe0920-3121-4ae5-9a7c-f24de97e7183",
+        "time": 0.43308209208771586,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": []
+      },
+      {
+        "inference_id": "aebe0920-3121-4ae5-9a7c-f24de97e7183",
+        "time": 0.4331417160574347,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 491.0,
+            "y": 1013.5,
+            "width": 498.0,
+            "height": 131.0,
+            "confidence": 0.4063223600387573,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f33ed5a7-8daa-4c04-a0c6-2f079633e2b6"
+          }
+        ]
+      },
+      {
+        "inference_id": "aebe0920-3121-4ae5-9a7c-f24de97e7183",
+        "time": 0.43315244815312326,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": []
+      },
+      {
+        "inference_id": "aebe0920-3121-4ae5-9a7c-f24de97e7183",
+        "time": 0.4331603532191366,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": []
+      },
+      {
+        "inference_id": "37799310-eef9-4cca-bc60-f5927bdf3898",
+        "time": 0.44051251490600407,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 495.0,
+            "y": 1012.5,
+            "width": 480.0,
+            "height": 133.0,
+            "confidence": 0.6642339825630188,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "35995f06-c157-4f33-a812-ba587dd64109"
+          }
+        ]
+      },
+      {
+        "inference_id": "37799310-eef9-4cca-bc60-f5927bdf3898",
+        "time": 0.4405672149732709,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": []
+      },
+      {
+        "inference_id": "37799310-eef9-4cca-bc60-f5927bdf3898",
+        "time": 0.44057778478600085,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 492.0,
+            "y": 1012.5,
+            "width": 478.0,
+            "height": 133.0,
+            "confidence": 0.5913665890693665,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "456b1367-2bd7-44d7-89bf-50381ad0abb3"
+          }
+        ]
+      },
+      {
+        "inference_id": "37799310-eef9-4cca-bc60-f5927bdf3898",
+        "time": 0.44058594200760126,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 502.5,
+            "y": 1011.5,
+            "width": 477.0,
+            "height": 135.0,
+            "confidence": 0.5779440402984619,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ff258fb4-6b99-4c53-91fd-9790440db648"
+          }
+        ]
+      },
+      {
+        "inference_id": "cd88851a-ff94-4a59-ae7e-53863c760210",
+        "time": 0.45919939619489014,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1637.5,
+            "y": 236.5,
+            "width": 157.0,
+            "height": 123.0,
+            "confidence": 0.6719857454299927,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "10bd89ba-3147-41f8-b0b3-0da9274fe168"
+          },
+          {
+            "x": 505.0,
+            "y": 1010.5,
+            "width": 496.0,
+            "height": 137.0,
+            "confidence": 0.404399037361145,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ee6dfaca-fa49-4b35-b4b4-c8db6d7ebd7f"
+          }
+        ]
+      },
+      {
+        "inference_id": "cd88851a-ff94-4a59-ae7e-53863c760210",
+        "time": 0.4592497481498867,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 835.5,
+            "y": 641.5,
+            "width": 273.0,
+            "height": 207.0,
+            "confidence": 0.8485286831855774,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "41d0cc18-6680-4253-b8a9-a773862f83a8"
+          },
+          {
+            "x": 1632.0,
+            "y": 247.0,
+            "width": 160.0,
+            "height": 118.0,
+            "confidence": 0.47801053524017334,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "914ac62c-aedb-4678-af62-bc1504935a51"
+          }
+        ]
+      },
+      {
+        "inference_id": "cd88851a-ff94-4a59-ae7e-53863c760210",
+        "time": 0.45926031307317317,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 768.5,
+            "y": 651.0,
+            "width": 217.0,
+            "height": 210.0,
+            "confidence": 0.8841830492019653,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "26b69334-f3a6-4c10-9f4c-02a83f3f3715"
+          },
+          {
+            "x": 1638.0,
+            "y": 247.0,
+            "width": 166.0,
+            "height": 116.0,
+            "confidence": 0.6913003921508789,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f1bd72c5-06fb-4da3-87ae-2e0da14b2acf"
+          }
+        ]
+      },
+      {
+        "inference_id": "cd88851a-ff94-4a59-ae7e-53863c760210",
+        "time": 0.4592685310635716,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 714.5,
+            "y": 657.5,
+            "width": 227.0,
+            "height": 209.0,
+            "confidence": 0.9191966652870178,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c85da023-c912-4757-bc7d-4353d8fd6139"
+          }
+        ]
+      },
+      {
+        "inference_id": "c4b6e68a-845f-4ce4-b526-9905173f844f",
+        "time": 0.4592759709339589,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 643.0,
+            "y": 665.0,
+            "width": 230.0,
+            "height": 218.0,
+            "confidence": 0.9164660573005676,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ddf846e6-2878-4b83-814a-7c84efd6a434"
+          }
+        ]
+      },
+      {
+        "inference_id": "c4b6e68a-845f-4ce4-b526-9905173f844f",
+        "time": 0.4593355997931212,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 561.0,
+            "y": 674.5,
+            "width": 248.0,
+            "height": 211.0,
+            "confidence": 0.8805985450744629,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c04930a3-d5d3-425e-94fa-4e4bde8b22bc"
+          },
+          {
+            "x": 493.5,
+            "y": 1014.0,
+            "width": 491.0,
+            "height": 130.0,
+            "confidence": 0.5412164330482483,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "70b53f94-5985-4260-901c-a91c21046290"
+          }
+        ]
+      },
+      {
+        "inference_id": "c4b6e68a-845f-4ce4-b526-9905173f844f",
+        "time": 0.45934627391397953,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 492.0,
+            "y": 685.5,
+            "width": 218.0,
+            "height": 217.0,
+            "confidence": 0.8961310982704163,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ae2bbdb1-d131-46a1-8b83-abf80e9214a7"
+          },
+          {
+            "x": 495.5,
+            "y": 1013.0,
+            "width": 511.0,
+            "height": 132.0,
+            "confidence": 0.4582080841064453,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "acdd6007-f57c-4913-b285-ceedb4139c1b"
+          }
+        ]
+      },
+      {
+        "inference_id": "c4b6e68a-845f-4ce4-b526-9905173f844f",
+        "time": 0.4593542048241943,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 408.5,
+            "y": 696.0,
+            "width": 237.0,
+            "height": 224.0,
+            "confidence": 0.8897572159767151,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "bae5ad00-bd27-4c0f-b262-abac5324e4d5"
+          }
+        ]
+      },
+      {
+        "inference_id": "47146846-4b37-4b70-b869-ef42e1f7ac22",
+        "time": 0.4522727869916707,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 309.0,
+            "y": 709.0,
+            "width": 286.0,
+            "height": 216.0,
+            "confidence": 0.8918076753616333,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "004d1b5f-ce1a-4706-acc1-eb4a6f6d8b35"
+          }
+        ]
+      },
+      {
+        "inference_id": "47146846-4b37-4b70-b869-ef42e1f7ac22",
+        "time": 0.45235649798996747,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 250.5,
+            "y": 721.0,
+            "width": 237.0,
+            "height": 222.0,
+            "confidence": 0.9111340641975403,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f2319320-3917-44ba-bea5-084ff8bcbf93"
+          }
+        ]
+      },
+      {
+        "inference_id": "47146846-4b37-4b70-b869-ef42e1f7ac22",
+        "time": 0.45237156096845865,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 169.0,
+            "y": 728.0,
+            "width": 248.0,
+            "height": 220.0,
+            "confidence": 0.9072685837745667,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "55a6ecc8-3d31-4583-b5cb-2da6ea9fd64d"
+          }
+        ]
+      },
+      {
+        "inference_id": "47146846-4b37-4b70-b869-ef42e1f7ac22",
+        "time": 0.45237985998392105,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 106.5,
+            "y": 744.5,
+            "width": 211.0,
+            "height": 239.0,
+            "confidence": 0.8796145915985107,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "44985a40-23c4-4169-928a-ad72f11fd62b"
+          }
+        ]
+      },
+      {
+        "inference_id": "76ad1863-0a6a-4800-a78c-f71bb8036c73",
+        "time": 0.4562924790661782,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": []
+      },
+      {
+        "inference_id": "76ad1863-0a6a-4800-a78c-f71bb8036c73",
+        "time": 0.4563436359167099,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": []
+      },
+      {
+        "inference_id": "76ad1863-0a6a-4800-a78c-f71bb8036c73",
+        "time": 0.456354338908568,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 498.5,
+            "y": 1013.5,
+            "width": 479.0,
+            "height": 131.0,
+            "confidence": 0.4610612988471985,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "7bf38318-b29e-42d0-b11c-dd1e2a73028f"
+          }
+        ]
+      },
+      {
+        "inference_id": "76ad1863-0a6a-4800-a78c-f71bb8036c73",
+        "time": 0.4563624830916524,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 789.5,
+            "y": 363.0,
+            "width": 101.0,
+            "height": 166.0,
+            "confidence": 0.5275045037269592,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "e2d8e871-3606-41eb-9b49-7b733206d9b1"
+          },
+          {
+            "x": 497.5,
+            "y": 1012.0,
+            "width": 487.0,
+            "height": 134.0,
+            "confidence": 0.45479583740234375,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "e54758aa-50df-40ca-bd3b-990ab47676a7"
+          }
+        ]
+      },
+      {
+        "inference_id": "9e426ae5-ccce-4a25-bb26-fbda67ba9d37",
+        "time": 0.4613139748107642,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1455.0,
+            "y": 366.5,
+            "width": 168.0,
+            "height": 175.0,
+            "confidence": 0.46315956115722656,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "25599bd0-4dcc-4050-bdd8-a8b07123e4a1"
+          }
+        ]
+      },
+      {
+        "inference_id": "9e426ae5-ccce-4a25-bb26-fbda67ba9d37",
+        "time": 0.4613739149644971,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 790.5,
+            "y": 375.5,
+            "width": 129.0,
+            "height": 181.0,
+            "confidence": 0.8489114046096802,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "fd5437eb-fa09-4eb9-acd2-0dc4307a3030"
+          },
+          {
+            "x": 1445.0,
+            "y": 368.5,
+            "width": 148.0,
+            "height": 141.0,
+            "confidence": 0.6579545736312866,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "56f711c5-2475-4caa-bd3b-3d471e7fca27"
+          }
+        ]
+      },
+      {
+        "inference_id": "9e426ae5-ccce-4a25-bb26-fbda67ba9d37",
+        "time": 0.4613848279695958,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 791.0,
+            "y": 378.5,
+            "width": 120.0,
+            "height": 185.0,
+            "confidence": 0.7450664639472961,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f110c862-edc8-4988-83ec-1a33e6007b24"
+          }
+        ]
+      },
+      {
+        "inference_id": "9e426ae5-ccce-4a25-bb26-fbda67ba9d37",
+        "time": 0.4613926389720291,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 796.0,
+            "y": 378.0,
+            "width": 128.0,
+            "height": 190.0,
+            "confidence": 0.7953650951385498,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "563f33dc-bdc2-4f5d-8d16-df621aa66a62"
+          }
+        ]
+      },
+      {
+        "inference_id": "c9f2e92b-2abd-4688-a75c-0578d2cdb8ca",
+        "time": 0.45534305996261537,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 800.0,
+            "y": 389.0,
+            "width": 124.0,
+            "height": 178.0,
+            "confidence": 0.8238052725791931,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "71c0110a-be52-46b3-abf2-a00456da155f"
+          }
+        ]
+      },
+      {
+        "inference_id": "c9f2e92b-2abd-4688-a75c-0578d2cdb8ca",
+        "time": 0.455402028048411,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 793.0,
+            "y": 396.0,
+            "width": 148.0,
+            "height": 182.0,
+            "confidence": 0.8018575310707092,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "9f507eb7-a2fd-48c9-9fa4-4317dad0620b"
+          }
+        ]
+      },
+      {
+        "inference_id": "c9f2e92b-2abd-4688-a75c-0578d2cdb8ca",
+        "time": 0.4554140551481396,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 797.5,
+            "y": 399.5,
+            "width": 131.0,
+            "height": 187.0,
+            "confidence": 0.8346991539001465,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c6152e1c-81be-4c11-80cc-0bd0fa0b504d"
+          },
+          {
+            "x": 1382.5,
+            "y": 419.5,
+            "width": 121.0,
+            "height": 169.0,
+            "confidence": 0.5688846111297607,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "03c76936-9b2a-4dce-901a-4c7f5f4b47d5"
+          }
+        ]
+      },
+      {
+        "inference_id": "c9f2e92b-2abd-4688-a75c-0578d2cdb8ca",
+        "time": 0.45542203611694276,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 796.5,
+            "y": 408.0,
+            "width": 119.0,
+            "height": 180.0,
+            "confidence": 0.8398357033729553,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ea88c362-ead0-4164-ba57-7c4a6a3b86a6"
+          }
+        ]
+      },
+      {
+        "inference_id": "4d6405f1-97d4-4661-ba43-4009c411ff2a",
+        "time": 0.44868730404414237,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 796.0,
+            "y": 410.0,
+            "width": 120.0,
+            "height": 176.0,
+            "confidence": 0.8027950525283813,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "cb868da7-7066-4cbf-a4b3-aa3afa0e28c7"
+          },
+          {
+            "x": 495.0,
+            "y": 1012.0,
+            "width": 486.0,
+            "height": 134.0,
+            "confidence": 0.653455913066864,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "3170f4fc-ed71-4139-9b11-99ef5c138ef7"
+          }
+        ]
+      },
+      {
+        "inference_id": "4d6405f1-97d4-4661-ba43-4009c411ff2a",
+        "time": 0.4487363488879055,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 801.5,
+            "y": 415.5,
+            "width": 117.0,
+            "height": 177.0,
+            "confidence": 0.8390220403671265,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f6aae20e-9676-4db7-987f-e3093818bc92"
+          }
+        ]
+      },
+      {
+        "inference_id": "4d6405f1-97d4-4661-ba43-4009c411ff2a",
+        "time": 0.44874669308774173,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 808.5,
+            "y": 420.5,
+            "width": 113.0,
+            "height": 171.0,
+            "confidence": 0.8240268230438232,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "402bde97-0fbc-4a59-809f-2089d2dd8c3f"
+          }
+        ]
+      },
+      {
+        "inference_id": "4d6405f1-97d4-4661-ba43-4009c411ff2a",
+        "time": 0.44875446194782853,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 807.5,
+            "y": 428.5,
+            "width": 123.0,
+            "height": 165.0,
+            "confidence": 0.8265725374221802,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "7da6edde-8286-43e2-836d-7a8c9c124745"
+          },
+          {
+            "x": 502.5,
+            "y": 1013.0,
+            "width": 477.0,
+            "height": 132.0,
+            "confidence": 0.620457112789154,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "e9917049-8ef2-48da-b217-74618ad35ccb"
+          }
+        ]
+      },
+      {
+        "inference_id": "1ef04a15-1f81-4bf6-b376-ddb5ff4975a2",
+        "time": 0.47531451005488634,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 812.0,
+            "y": 435.0,
+            "width": 124.0,
+            "height": 164.0,
+            "confidence": 0.8577257990837097,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "a61b92b9-c61e-4a73-81dd-f68e4f20eae7"
+          },
+          {
+            "x": 503.5,
+            "y": 1013.0,
+            "width": 479.0,
+            "height": 132.0,
+            "confidence": 0.6400052905082703,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "762aedf7-28d1-4485-9250-c213fbaaee0f"
+          }
+        ]
+      },
+      {
+        "inference_id": "1ef04a15-1f81-4bf6-b376-ddb5ff4975a2",
+        "time": 0.47536702593788505,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 821.5,
+            "y": 439.5,
+            "width": 125.0,
+            "height": 163.0,
+            "confidence": 0.8614281415939331,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "67ab1a5b-00fa-492d-be1c-dbdf74309afb"
+          },
+          {
+            "x": 497.5,
+            "y": 1014.5,
+            "width": 493.0,
+            "height": 129.0,
+            "confidence": 0.5339409708976746,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "febf4346-c40a-449b-a4d0-ce342a23bcc3"
+          }
+        ]
+      },
+      {
+        "inference_id": "1ef04a15-1f81-4bf6-b376-ddb5ff4975a2",
+        "time": 0.47537769586779177,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 833.0,
+            "y": 445.5,
+            "width": 124.0,
+            "height": 169.0,
+            "confidence": 0.8637537360191345,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "e7d90274-2517-4629-8723-78229cd599fc"
+          }
+        ]
+      },
+      {
+        "inference_id": "1ef04a15-1f81-4bf6-b376-ddb5ff4975a2",
+        "time": 0.4753856649622321,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 852.5,
+            "y": 450.0,
+            "width": 133.0,
+            "height": 164.0,
+            "confidence": 0.8597866892814636,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "0b587d5e-b7ba-41b2-b3b9-ffd11eced887"
+          },
+          {
+            "x": 498.5,
+            "y": 1013.0,
+            "width": 489.0,
+            "height": 132.0,
+            "confidence": 0.4647687077522278,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "4c625005-a16d-485a-99ce-62674018a583"
+          }
+        ]
+      },
+      {
+        "inference_id": "2b6d2489-e259-4fc5-b3a8-c12390a375b4",
+        "time": 0.4695733629632741,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 866.0,
+            "y": 452.5,
+            "width": 150.0,
+            "height": 169.0,
+            "confidence": 0.8633804321289062,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "0bc46016-d4c9-4655-9cbe-1dbe876abd9c"
+          }
+        ]
+      },
+      {
+        "inference_id": "2b6d2489-e259-4fc5-b3a8-c12390a375b4",
+        "time": 0.4696241158526391,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 878.0,
+            "y": 457.0,
+            "width": 170.0,
+            "height": 170.0,
+            "confidence": 0.8431971669197083,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "4c4f4c4f-ab33-4be5-a8f1-648ca0974e0b"
+          }
+        ]
+      },
+      {
+        "inference_id": "2b6d2489-e259-4fc5-b3a8-c12390a375b4",
+        "time": 0.4696352498140186,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 895.5,
+            "y": 458.5,
+            "width": 187.0,
+            "height": 173.0,
+            "confidence": 0.8686679005622864,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "13eb1e0e-6259-4aa5-af08-d41f86d1ace7"
+          },
+          {
+            "x": 1427.0,
+            "y": 483.0,
+            "width": 204.0,
+            "height": 164.0,
+            "confidence": 0.803824245929718,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "e65a0df0-b8b8-4c8a-b452-131bb1899e25"
+          }
+        ]
+      },
+      {
+        "inference_id": "2b6d2489-e259-4fc5-b3a8-c12390a375b4",
+        "time": 0.4696428619790822,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 917.0,
+            "y": 462.0,
+            "width": 204.0,
+            "height": 176.0,
+            "confidence": 0.8946186304092407,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "13f7c2ec-e10e-431a-a390-a079ffba0f2d"
+          },
+          {
+            "x": 1439.0,
+            "y": 489.5,
+            "width": 208.0,
+            "height": 171.0,
+            "confidence": 0.4195259213447571,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "1183c869-7f27-45cd-a019-0422f3227631"
+          }
+        ]
+      },
+      {
+        "inference_id": "05f031fd-5977-4e71-bd47-03a984ba7686",
+        "time": 0.45930724404752254,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 925.0,
+            "y": 461.5,
+            "width": 244.0,
+            "height": 179.0,
+            "confidence": 0.88482666015625,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "2bd1f5a9-eed5-447d-a098-3749a637c5ca"
+          },
+          {
+            "x": 1452.0,
+            "y": 486.5,
+            "width": 216.0,
+            "height": 165.0,
+            "confidence": 0.6588299870491028,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "6578c98e-7bc3-4f17-859b-438e8fc76c99"
+          }
+        ]
+      },
+      {
+        "inference_id": "05f031fd-5977-4e71-bd47-03a984ba7686",
+        "time": 0.4593608030118048,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1482.0,
+            "y": 495.0,
+            "width": 212.0,
+            "height": 156.0,
+            "confidence": 0.8705246448516846,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f9ff4be5-f0b8-41d3-9822-b47390ecbadb"
+          },
+          {
+            "x": 956.5,
+            "y": 461.0,
+            "width": 219.0,
+            "height": 172.0,
+            "confidence": 0.8467217087745667,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "8c56b787-ac85-480f-9894-d5e0bd5b0d7e"
+          },
+          {
+            "x": 495.5,
+            "y": 1014.0,
+            "width": 487.0,
+            "height": 130.0,
+            "confidence": 0.47205716371536255,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "7d603175-b6f3-4158-a18f-18388faf3634"
+          }
+        ]
+      },
+      {
+        "inference_id": "05f031fd-5977-4e71-bd47-03a984ba7686",
+        "time": 0.45937043614685535,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1501.5,
+            "y": 497.5,
+            "width": 205.0,
+            "height": 147.0,
+            "confidence": 0.8809237480163574,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "86826f30-0df2-4c39-b386-94e8b496d398"
+          },
+          {
+            "x": 974.5,
+            "y": 460.0,
+            "width": 253.0,
+            "height": 178.0,
+            "confidence": 0.8065475821495056,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "5993506a-0455-45e2-9ff6-265155b1465d"
+          },
+          {
+            "x": 493.5,
+            "y": 1013.5,
+            "width": 487.0,
+            "height": 131.0,
+            "confidence": 0.6409820914268494,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "16289333-3bc8-4b16-82aa-1051622f2fd6"
+          }
+        ]
+      },
+      {
+        "inference_id": "05f031fd-5977-4e71-bd47-03a984ba7686",
+        "time": 0.4593777391128242,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1541.5,
+            "y": 501.0,
+            "width": 223.0,
+            "height": 144.0,
+            "confidence": 0.8340886235237122,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "3ebe7dcb-780a-405d-82d8-62cc4356b7e3"
+          },
+          {
+            "x": 1020.0,
+            "y": 458.5,
+            "width": 188.0,
+            "height": 181.0,
+            "confidence": 0.8180563449859619,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "63ac33c6-b615-4c0f-858a-ffed9c73b5ec"
+          },
+          {
+            "x": 495.0,
+            "y": 1015.0,
+            "width": 498.0,
+            "height": 128.0,
+            "confidence": 0.4824122190475464,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "611bd21c-0659-44d1-8aa3-0788ea868843"
+          }
+        ]
+      },
+      {
+        "inference_id": "05fc4965-7405-4a1f-bc27-323503080763",
+        "time": 0.45522884093225,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1569.0,
+            "y": 498.0,
+            "width": 216.0,
+            "height": 136.0,
+            "confidence": 0.8683305382728577,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "7523a8db-6351-4c6a-8610-31cc86a78728"
+          },
+          {
+            "x": 1043.5,
+            "y": 456.0,
+            "width": 203.0,
+            "height": 182.0,
+            "confidence": 0.8590807914733887,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "fafd59fd-ee6a-4c3d-87ad-6c21acdd7577"
+          },
+          {
+            "x": 500.0,
+            "y": 1014.0,
+            "width": 486.0,
+            "height": 130.0,
+            "confidence": 0.6546012759208679,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ecdc40a1-7f81-4859-893b-d53810851bff"
+          }
+        ]
+      },
+      {
+        "inference_id": "05fc4965-7405-4a1f-bc27-323503080763",
+        "time": 0.4552831300534308,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1611.5,
+            "y": 502.0,
+            "width": 255.0,
+            "height": 148.0,
+            "confidence": 0.8596803545951843,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "a5b36e67-2039-4009-a04d-429661c080a6"
+          },
+          {
+            "x": 1027.0,
+            "y": 456.0,
+            "width": 276.0,
+            "height": 184.0,
+            "confidence": 0.8519688248634338,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "dc95a06a-2087-47da-8998-4dd1310c635d"
+          },
+          {
+            "x": 500.0,
+            "y": 1013.0,
+            "width": 476.0,
+            "height": 134.0,
+            "confidence": 0.6959428787231445,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "89d0dcfb-e51d-49fc-95ba-bbd5374830a3"
+          }
+        ]
+      },
+      {
+        "inference_id": "05fc4965-7405-4a1f-bc27-323503080763",
+        "time": 0.4552939620334655,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1631.5,
+            "y": 500.0,
+            "width": 199.0,
+            "height": 138.0,
+            "confidence": 0.8748564124107361,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "44c09444-48f5-42be-87a5-850135a96ed1"
+          },
+          {
+            "x": 1045.5,
+            "y": 457.0,
+            "width": 245.0,
+            "height": 184.0,
+            "confidence": 0.8743433952331543,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "013dadfb-19c8-45eb-9dcd-fb0ac277869e"
+          },
+          {
+            "x": 499.5,
+            "y": 1012.5,
+            "width": 481.0,
+            "height": 133.0,
+            "confidence": 0.6647908687591553,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "133406fc-af4b-40a1-a662-bf593d4d0834"
+          }
+        ]
+      },
+      {
+        "inference_id": "05fc4965-7405-4a1f-bc27-323503080763",
+        "time": 0.4553020750172436,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1066.5,
+            "y": 452.0,
+            "width": 223.0,
+            "height": 178.0,
+            "confidence": 0.7890325784683228,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "e9723e39-d0ab-42d5-99b2-860f6a06217d"
+          },
+          {
+            "x": 1680.5,
+            "y": 504.5,
+            "width": 239.0,
+            "height": 135.0,
+            "confidence": 0.7860389947891235,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "86987a7b-c785-4467-b43f-1d98069deb7d"
+          },
+          {
+            "x": 492.5,
+            "y": 1013.5,
+            "width": 495.0,
+            "height": 131.0,
+            "confidence": 0.40722793340682983,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "9f70e09c-3563-4ffa-88ae-9dca45d5dbf5"
+          }
+        ]
+      },
+      {
+        "inference_id": "21db009b-b34e-430d-859a-50f795fdc224",
+        "time": 0.4629449490457773,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1701.5,
+            "y": 503.0,
+            "width": 215.0,
+            "height": 138.0,
+            "confidence": 0.8436340689659119,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ff28dfc1-2456-48b1-a67c-57a3050e5b96"
+          },
+          {
+            "x": 1108.0,
+            "y": 446.0,
+            "width": 144.0,
+            "height": 168.0,
+            "confidence": 0.7037590146064758,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c42f66a5-432c-4a51-8c6a-8e647a2d00a7"
+          }
+        ]
+      },
+      {
+        "inference_id": "21db009b-b34e-430d-859a-50f795fdc224",
+        "time": 0.46299853501841426,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1753.0,
+            "y": 508.5,
+            "width": 234.0,
+            "height": 131.0,
+            "confidence": 0.8052624464035034,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f41a62bb-d347-4017-846a-175d848ecdee"
+          },
+          {
+            "x": 1101.5,
+            "y": 441.5,
+            "width": 157.0,
+            "height": 175.0,
+            "confidence": 0.6651096343994141,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "30793b53-1a52-478b-88c2-a0e53fc29093"
+          }
+        ]
+      },
+      {
+        "inference_id": "21db009b-b34e-430d-859a-50f795fdc224",
+        "time": 0.4630097730550915,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1786.5,
+            "y": 513.5,
+            "width": 249.0,
+            "height": 149.0,
+            "confidence": 0.8687077760696411,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "7bd57d13-4b6e-47bd-b6d2-6ec83bd35879"
+          },
+          {
+            "x": 1111.0,
+            "y": 439.0,
+            "width": 140.0,
+            "height": 174.0,
+            "confidence": 0.4778292179107666,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "0c6ac7ad-ba9d-4d9e-a1f7-2c93073dbb52"
+          }
+        ]
+      },
+      {
+        "inference_id": "21db009b-b34e-430d-859a-50f795fdc224",
+        "time": 0.463018479058519,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1818.0,
+            "y": 512.0,
+            "width": 202.0,
+            "height": 140.0,
+            "confidence": 0.8904485106468201,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ce3b9acb-9fc3-4a94-836b-ce1f0d3086a7"
+          },
+          {
+            "x": 1110.5,
+            "y": 439.5,
+            "width": 141.0,
+            "height": 173.0,
+            "confidence": 0.6748132109642029,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "0688a644-1486-4b1a-b7f5-9c32f0c03362"
+          }
+        ]
+      },
+      {
+        "inference_id": "d68b6b25-087e-41f4-bad8-7b7c3653e204",
+        "time": 0.462454967899248,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1832.5,
+            "y": 510.5,
+            "width": 173.0,
+            "height": 137.0,
+            "confidence": 0.7611103057861328,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "00bdff9f-afd2-4280-9a62-ae57570f70a7"
+          },
+          {
+            "x": 496.0,
+            "y": 1012.5,
+            "width": 492.0,
+            "height": 133.0,
+            "confidence": 0.6506415605545044,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "01736998-cda0-492f-81e6-41274a77edba"
+          },
+          {
+            "x": 1087.5,
+            "y": 446.0,
+            "width": 183.0,
+            "height": 176.0,
+            "confidence": 0.6451686024665833,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "12a88fd6-0a4e-4e39-a076-417b05a4270e"
+          }
+        ]
+      },
+      {
+        "inference_id": "d68b6b25-087e-41f4-bad8-7b7c3653e204",
+        "time": 0.4625080449040979,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1106.0,
+            "y": 442.5,
+            "width": 138.0,
+            "height": 161.0,
+            "confidence": 0.8296886086463928,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "d23cff93-6ed8-418c-8ea8-3571e4f2a804"
+          },
+          {
+            "x": 1859.0,
+            "y": 527.5,
+            "width": 122.0,
+            "height": 139.0,
+            "confidence": 0.6534023284912109,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "18432b76-da7f-48c2-b4f4-5183f0420c9c"
+          }
+        ]
+      },
+      {
+        "inference_id": "d68b6b25-087e-41f4-bad8-7b7c3653e204",
+        "time": 0.4625198650173843,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": []
+      },
+      {
+        "inference_id": "d68b6b25-087e-41f4-bad8-7b7c3653e204",
+        "time": 0.46252825087867677,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1052.5,
+            "y": 453.0,
+            "width": 213.0,
+            "height": 184.0,
+            "confidence": 0.7651097178459167,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "57f426db-e564-42ac-9ba7-8498e3490cef"
+          }
+        ]
+      },
+      {
+        "inference_id": "721bd2ed-68d4-4780-aff6-27aac8526fe7",
+        "time": 0.4586150359828025,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1036.0,
+            "y": 457.5,
+            "width": 220.0,
+            "height": 189.0,
+            "confidence": 0.6331865787506104,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "344b227a-56cb-43b0-a551-01e50f7ea5c4"
+          },
+          {
+            "x": 490.0,
+            "y": 1013.5,
+            "width": 504.0,
+            "height": 131.0,
+            "confidence": 0.4256889224052429,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "56802c67-1dd7-4b72-a024-ebbfccce2b37"
+          }
+        ]
+      },
+      {
+        "inference_id": "721bd2ed-68d4-4780-aff6-27aac8526fe7",
+        "time": 0.45866449479945004,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1010.0,
+            "y": 458.0,
+            "width": 214.0,
+            "height": 182.0,
+            "confidence": 0.8450554609298706,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "0c432605-9c7e-48d9-9944-969616f29d67"
+          },
+          {
+            "x": 492.0,
+            "y": 1013.0,
+            "width": 486.0,
+            "height": 132.0,
+            "confidence": 0.6309090256690979,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "855849f5-2772-441d-a251-a13c081c624b"
+          }
+        ]
+      },
+      {
+        "inference_id": "721bd2ed-68d4-4780-aff6-27aac8526fe7",
+        "time": 0.4586751058232039,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1005.5,
+            "y": 459.5,
+            "width": 193.0,
+            "height": 181.0,
+            "confidence": 0.7000958919525146,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "0231d349-3e75-49c8-a6c1-bc4f996699f6"
+          },
+          {
+            "x": 504.5,
+            "y": 1013.0,
+            "width": 479.0,
+            "height": 132.0,
+            "confidence": 0.4041990637779236,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "52f612a8-e8ef-484e-8dd2-9ab6d5501752"
+          }
+        ]
+      },
+      {
+        "inference_id": "721bd2ed-68d4-4780-aff6-27aac8526fe7",
+        "time": 0.45868316083215177,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 965.5,
+            "y": 473.5,
+            "width": 203.0,
+            "height": 195.0,
+            "confidence": 0.8219078779220581,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "5edb984c-54a6-422a-a34f-27ff12755b1e"
+          },
+          {
+            "x": 504.5,
+            "y": 1011.5,
+            "width": 461.0,
+            "height": 135.0,
+            "confidence": 0.48924684524536133,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "6c81bd8e-c7b0-4ed3-b72b-58862cb6a903"
+          }
+        ]
+      },
+      {
+        "inference_id": "3ca15837-6512-40ba-81dd-e198b4e6a142",
+        "time": 0.4561299178749323,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 949.5,
+            "y": 479.5,
+            "width": 211.0,
+            "height": 195.0,
+            "confidence": 0.8864468336105347,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "a3b19d03-c00d-4195-8dd8-c317fa2ee226"
+          },
+          {
+            "x": 522.0,
+            "y": 1009.0,
+            "width": 448.0,
+            "height": 140.0,
+            "confidence": 0.549683690071106,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "df1cf33b-4805-440c-b949-fe8e2eef88e4"
+          }
+        ]
+      },
+      {
+        "inference_id": "3ca15837-6512-40ba-81dd-e198b4e6a142",
+        "time": 0.4561821138486266,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 926.5,
+            "y": 488.0,
+            "width": 203.0,
+            "height": 204.0,
+            "confidence": 0.9075003266334534,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c601707f-d4f2-4d37-9ac8-2e5e9233e194"
+          }
+        ]
+      },
+      {
+        "inference_id": "3ca15837-6512-40ba-81dd-e198b4e6a142",
+        "time": 0.45619307388551533,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 906.5,
+            "y": 496.5,
+            "width": 187.0,
+            "height": 209.0,
+            "confidence": 0.9110102653503418,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "94c02826-ffe4-4e51-9aea-da3dd4e5be95"
+          },
+          {
+            "x": 514.0,
+            "y": 1012.5,
+            "width": 448.0,
+            "height": 133.0,
+            "confidence": 0.6493425965309143,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c7c3a1f5-e1f0-4104-8651-efd3d3a1a03e"
+          }
+        ]
+      },
+      {
+        "inference_id": "3ca15837-6512-40ba-81dd-e198b4e6a142",
+        "time": 0.4562016469426453,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 900.5,
+            "y": 499.0,
+            "width": 173.0,
+            "height": 198.0,
+            "confidence": 0.8827741146087646,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "fdeb5ce9-f5e9-4507-b4bc-dfa23a1677f7"
+          },
+          {
+            "x": 510.5,
+            "y": 1012.5,
+            "width": 455.0,
+            "height": 133.0,
+            "confidence": 0.6184363961219788,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "1e358dc2-ce2f-434a-b0ea-ad2b1156626c"
+          }
+        ]
+      },
+      {
+        "inference_id": "ddb534de-9d6a-4d0a-80ab-51da94c9e425",
+        "time": 0.4588002769742161,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 862.0,
+            "y": 514.0,
+            "width": 204.0,
+            "height": 204.0,
+            "confidence": 0.8586122989654541,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "5578548c-fe7a-4ecd-919c-ca690e2f2ab3"
+          },
+          {
+            "x": 522.5,
+            "y": 1010.0,
+            "width": 459.0,
+            "height": 138.0,
+            "confidence": 0.449310302734375,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "98fbd182-e080-4e10-a8d5-cb2a7d464b75"
+          }
+        ]
+      },
+      {
+        "inference_id": "ddb534de-9d6a-4d0a-80ab-51da94c9e425",
+        "time": 0.45885079680010676,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 850.0,
+            "y": 523.5,
+            "width": 176.0,
+            "height": 203.0,
+            "confidence": 0.8710291981697083,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "16816ad5-dbbb-4e78-9764-b5d803b9fc6d"
+          },
+          {
+            "x": 521.0,
+            "y": 1008.5,
+            "width": 454.0,
+            "height": 141.0,
+            "confidence": 0.6327040195465088,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "b4def2e8-684d-4ee4-adef-942881aead12"
+          }
+        ]
+      },
+      {
+        "inference_id": "ddb534de-9d6a-4d0a-80ab-51da94c9e425",
+        "time": 0.4588615039829165,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 824.0,
+            "y": 528.5,
+            "width": 190.0,
+            "height": 203.0,
+            "confidence": 0.8332995176315308,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "296f38d6-d943-4597-9617-0dba55194018"
+          },
+          {
+            "x": 522.0,
+            "y": 1008.5,
+            "width": 454.0,
+            "height": 141.0,
+            "confidence": 0.6997772455215454,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "49a3df5a-7574-449c-8ed2-74313fc8b412"
+          }
+        ]
+      },
+      {
+        "inference_id": "ddb534de-9d6a-4d0a-80ab-51da94c9e425",
+        "time": 0.45886947494000196,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 793.0,
+            "y": 544.5,
+            "width": 192.0,
+            "height": 215.0,
+            "confidence": 0.8622663021087646,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "adf5805f-bcff-4e11-b0ad-3e58426c9e26"
+          },
+          {
+            "x": 526.5,
+            "y": 1009.0,
+            "width": 455.0,
+            "height": 140.0,
+            "confidence": 0.7408998012542725,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ea2d82ce-2540-4ecf-8307-0d9766ccc687"
+          }
+        ]
+      },
+      {
+        "inference_id": "624b61f7-5a5b-497d-b0ad-c5c59c752bd3",
+        "time": 0.44972268398851156,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 788.0,
+            "y": 549.5,
+            "width": 162.0,
+            "height": 209.0,
+            "confidence": 0.8687586188316345,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "8366a88c-19d0-4a35-8c7e-7bcf9b48da64"
+          },
+          {
+            "x": 530.5,
+            "y": 1009.0,
+            "width": 457.0,
+            "height": 140.0,
+            "confidence": 0.42112261056900024,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "3ab8b1cd-5fe6-466d-8860-6619ff5ed3ed"
+          }
+        ]
+      },
+      {
+        "inference_id": "624b61f7-5a5b-497d-b0ad-c5c59c752bd3",
+        "time": 0.4497744138352573,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 763.0,
+            "y": 555.5,
+            "width": 182.0,
+            "height": 209.0,
+            "confidence": 0.7564473748207092,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "80b62d91-d545-4c24-b880-b89be7fcd24d"
+          },
+          {
+            "x": 504.0,
+            "y": 1009.0,
+            "width": 466.0,
+            "height": 140.0,
+            "confidence": 0.4971213936805725,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ff383b77-7883-42ae-8e91-75ff50c0cd94"
+          }
+        ]
+      },
+      {
+        "inference_id": "624b61f7-5a5b-497d-b0ad-c5c59c752bd3",
+        "time": 0.4497857659589499,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 741.0,
+            "y": 559.5,
+            "width": 174.0,
+            "height": 191.0,
+            "confidence": 0.8353112936019897,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "604f0696-f018-4a30-8164-4eb0b497ba46"
+          },
+          {
+            "x": 507.0,
+            "y": 1008.5,
+            "width": 458.0,
+            "height": 143.0,
+            "confidence": 0.7572273015975952,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "b63a2bc4-6ec0-4838-acad-2e8f80a3b255"
+          }
+        ]
+      },
+      {
+        "inference_id": "624b61f7-5a5b-497d-b0ad-c5c59c752bd3",
+        "time": 0.4497939208522439,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 730.5,
+            "y": 573.5,
+            "width": 169.0,
+            "height": 213.0,
+            "confidence": 0.8803607225418091,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "cdb1889f-aaed-4621-a3b0-d1025b0394e9"
+          },
+          {
+            "x": 489.5,
+            "y": 1006.5,
+            "width": 485.0,
+            "height": 145.0,
+            "confidence": 0.634196937084198,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "7fc28498-2c6e-4b25-8e55-5f0e9d423087"
+          }
+        ]
+      },
+      {
+        "inference_id": "ea4e3605-d7cb-4fef-9d0d-2363f48056cc",
+        "time": 0.4510911318939179,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 713.5,
+            "y": 576.5,
+            "width": 173.0,
+            "height": 217.0,
+            "confidence": 0.8713367581367493,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "2a1147f0-3547-42c9-85d3-d3fbe1308952"
+          },
+          {
+            "x": 488.5,
+            "y": 1006.5,
+            "width": 499.0,
+            "height": 147.0,
+            "confidence": 0.5642714500427246,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "9e3f63a6-2ee1-4d9e-8869-c71e031218bb"
+          }
+        ]
+      },
+      {
+        "inference_id": "ea4e3605-d7cb-4fef-9d0d-2363f48056cc",
+        "time": 0.4511441318318248,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 696.0,
+            "y": 586.5,
+            "width": 172.0,
+            "height": 199.0,
+            "confidence": 0.751884400844574,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c203efae-bddb-4e1e-afb3-5254e16d7747"
+          },
+          {
+            "x": 483.0,
+            "y": 1007.0,
+            "width": 504.0,
+            "height": 146.0,
+            "confidence": 0.6326643228530884,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f5f18553-a82e-467a-8ddd-deef1412f50f"
+          }
+        ]
+      },
+      {
+        "inference_id": "ea4e3605-d7cb-4fef-9d0d-2363f48056cc",
+        "time": 0.45115461898967624,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 486.5,
+            "y": 1006.5,
+            "width": 499.0,
+            "height": 147.0,
+            "confidence": 0.7502331733703613,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "a08b3bb6-16ea-4ea5-98f7-41bcf7f9548c"
+          },
+          {
+            "x": 679.5,
+            "y": 602.0,
+            "width": 173.0,
+            "height": 208.0,
+            "confidence": 0.47033411264419556,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "9dead41a-8b38-4fba-876b-cf9792094338"
+          }
+        ]
+      },
+      {
+        "inference_id": "ea4e3605-d7cb-4fef-9d0d-2363f48056cc",
+        "time": 0.4511628788895905,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 671.5,
+            "y": 609.0,
+            "width": 163.0,
+            "height": 210.0,
+            "confidence": 0.787034809589386,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "347ef0f1-ae06-4d95-9eac-2a5ceaf15f5b"
+          },
+          {
+            "x": 488.0,
+            "y": 1005.5,
+            "width": 498.0,
+            "height": 147.0,
+            "confidence": 0.6199590563774109,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c5ea4911-290c-4481-a430-09ed5f831327"
+          }
+        ]
+      },
+      {
+        "inference_id": "8da097d3-d8c8-4fca-bc83-4e5c5881ffcd",
+        "time": 0.4515436019282788,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 660.5,
+            "y": 625.0,
+            "width": 167.0,
+            "height": 218.0,
+            "confidence": 0.7750399708747864,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "36f96cab-1199-44fe-b22c-0d7af864b89f"
+          }
+        ]
+      },
+      {
+        "inference_id": "8da097d3-d8c8-4fca-bc83-4e5c5881ffcd",
+        "time": 0.45160729507915676,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 487.0,
+            "y": 1004.5,
+            "width": 502.0,
+            "height": 149.0,
+            "confidence": 0.6596891283988953,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "3946e111-4df5-40d5-84ea-206dcdb9a9f3"
+          },
+          {
+            "x": 649.5,
+            "y": 634.0,
+            "width": 165.0,
+            "height": 218.0,
+            "confidence": 0.4787936806678772,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "055df2fd-8ece-4a40-8ac0-44a5bff23930"
+          }
+        ]
+      },
+      {
+        "inference_id": "8da097d3-d8c8-4fca-bc83-4e5c5881ffcd",
+        "time": 0.4516183119267225,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 489.0,
+            "y": 1005.5,
+            "width": 498.0,
+            "height": 149.0,
+            "confidence": 0.6575700044631958,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "56910a3f-0c97-42d9-8e3e-39c87be8b8a3"
+          },
+          {
+            "x": 648.5,
+            "y": 649.5,
+            "width": 175.0,
+            "height": 221.0,
+            "confidence": 0.4547837972640991,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c19824fa-7932-4130-9ee6-c8ebe8eea910"
+          }
+        ]
+      },
+      {
+        "inference_id": "8da097d3-d8c8-4fca-bc83-4e5c5881ffcd",
+        "time": 0.4516264209523797,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 634.5,
+            "y": 644.0,
+            "width": 145.0,
+            "height": 200.0,
+            "confidence": 0.48083317279815674,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "6a88d7d3-83ab-4608-8534-39ba13bae7a0"
+          }
+        ]
+      },
+      {
+        "inference_id": "b855640c-3a24-40cf-b8c4-27d1d4dc0707",
+        "time": 0.458303693914786,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 486.0,
+            "y": 1006.0,
+            "width": 504.0,
+            "height": 148.0,
+            "confidence": 0.7546626329421997,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "4acd798b-0708-4b3d-9243-987c8ce203b3"
+          }
+        ]
+      },
+      {
+        "inference_id": "b855640c-3a24-40cf-b8c4-27d1d4dc0707",
+        "time": 0.45839685294777155,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 487.0,
+            "y": 1006.5,
+            "width": 498.0,
+            "height": 147.0,
+            "confidence": 0.7760128378868103,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "d3c35da1-14c2-4aa0-8346-6989cd2145ac"
+          },
+          {
+            "x": 620.0,
+            "y": 673.5,
+            "width": 150.0,
+            "height": 213.0,
+            "confidence": 0.7193487882614136,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "29dfa67d-8870-4b2a-82c9-73c5874aaeb4"
+          }
+        ]
+      },
+      {
+        "inference_id": "b855640c-3a24-40cf-b8c4-27d1d4dc0707",
+        "time": 0.45840965607203543,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 488.0,
+            "y": 1005.5,
+            "width": 498.0,
+            "height": 149.0,
+            "confidence": 0.7972691059112549,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ed36eed6-3309-4a64-8eb9-45d5dac92a77"
+          },
+          {
+            "x": 614.5,
+            "y": 669.5,
+            "width": 151.0,
+            "height": 191.0,
+            "confidence": 0.6872830390930176,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "de6d724f-85da-4b1d-813b-35584cc968d2"
+          }
+        ]
+      },
+      {
+        "inference_id": "b855640c-3a24-40cf-b8c4-27d1d4dc0707",
+        "time": 0.4584178489167243,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 488.5,
+            "y": 1005.5,
+            "width": 495.0,
+            "height": 149.0,
+            "confidence": 0.8213645219802856,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f4fd7d56-4eb7-4dc1-ad9f-a6d423c7dea8"
+          },
+          {
+            "x": 607.5,
+            "y": 691.0,
+            "width": 153.0,
+            "height": 204.0,
+            "confidence": 0.7766593098640442,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "17453c48-1e21-43ed-8d71-55e0a6035532"
+          }
+        ]
+      },
+      {
+        "inference_id": "7d48a3c5-aa6f-4792-a58e-393455c2cc8a",
+        "time": 0.46331899892538786,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 481.5,
+            "y": 1007.5,
+            "width": 511.0,
+            "height": 143.0,
+            "confidence": 0.647491991519928,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "8042b88e-6eeb-4e1c-9d72-adaaffae19e2"
+          }
+        ]
+      },
+      {
+        "inference_id": "7d48a3c5-aa6f-4792-a58e-393455c2cc8a",
+        "time": 0.4633752789814025,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 486.5,
+            "y": 1006.0,
+            "width": 497.0,
+            "height": 148.0,
+            "confidence": 0.7688975930213928,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "b68c8d01-57c1-4fc5-b27c-446e98a3a174"
+          }
+        ]
+      },
+      {
+        "inference_id": "7d48a3c5-aa6f-4792-a58e-393455c2cc8a",
+        "time": 0.4633858317974955,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 487.5,
+            "y": 1005.5,
+            "width": 489.0,
+            "height": 149.0,
+            "confidence": 0.7448450922966003,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "0ac2c8c7-c022-41c2-b933-c2fc77f1bcf7"
+          }
+        ]
+      },
+      {
+        "inference_id": "7d48a3c5-aa6f-4792-a58e-393455c2cc8a",
+        "time": 0.4633934358134866,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": []
+      },
+      {
+        "inference_id": "c5bdfba5-f794-4136-bf36-5616ad776f27",
+        "time": 0.4560205698944628,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 481.0,
+            "y": 1005.0,
+            "width": 490.0,
+            "height": 150.0,
+            "confidence": 0.7176049947738647,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "466cf85e-723f-4486-a4ba-47d8d857b546"
+          }
+        ]
+      },
+      {
+        "inference_id": "c5bdfba5-f794-4136-bf36-5616ad776f27",
+        "time": 0.4560717549175024,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 478.0,
+            "y": 1006.0,
+            "width": 494.0,
+            "height": 146.0,
+            "confidence": 0.648640513420105,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c5728d2f-559e-451a-88e6-5665e9bb0a38"
+          }
+        ]
+      },
+      {
+        "inference_id": "c5bdfba5-f794-4136-bf36-5616ad776f27",
+        "time": 0.45608233008533716,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 489.5,
+            "y": 1006.0,
+            "width": 501.0,
+            "height": 148.0,
+            "confidence": 0.6211455464363098,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "80c5db8e-c68c-42c3-a1a1-aa9f66f8db66"
+          }
+        ]
+      },
+      {
+        "inference_id": "c5bdfba5-f794-4136-bf36-5616ad776f27",
+        "time": 0.45609017298556864,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 654.0,
+            "y": 792.5,
+            "width": 224.0,
+            "height": 263.0,
+            "confidence": 0.4897664785385132,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "d55f5129-4d84-4b7e-930c-52377c9c79c8"
+          },
+          {
+            "x": 490.0,
+            "y": 1006.0,
+            "width": 530.0,
+            "height": 148.0,
+            "confidence": 0.40931856632232666,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c24b7ffe-989a-4532-8a19-e3ae5adf411f"
+          }
+        ]
+      },
+      {
+        "inference_id": "d8ab6ce8-e805-4932-a38a-f580eeca8389",
+        "time": 0.5051053101196885,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 504.0,
+            "y": 1006.0,
+            "width": 540.0,
+            "height": 148.0,
+            "confidence": 0.5540762543678284,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "0d060ec8-c4f2-4393-b4ca-11d3ff7a3e75"
+          }
+        ]
+      },
+      {
+        "inference_id": "d8ab6ce8-e805-4932-a38a-f580eeca8389",
+        "time": 0.5051600001752377,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 524.5,
+            "y": 1005.5,
+            "width": 555.0,
+            "height": 149.0,
+            "confidence": 0.7161243557929993,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f21ba896-7883-4462-a72b-9cb87dd9ca50"
+          }
+        ]
+      },
+      {
+        "inference_id": "d8ab6ce8-e805-4932-a38a-f580eeca8389",
+        "time": 0.5051714170258492,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 530.5,
+            "y": 1003.5,
+            "width": 557.0,
+            "height": 153.0,
+            "confidence": 0.6874889135360718,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "675fcbf6-b6a0-4eb6-adf9-d3464b948a59"
+          }
+        ]
+      },
+      {
+        "inference_id": "d8ab6ce8-e805-4932-a38a-f580eeca8389",
+        "time": 0.5051795621402562,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 512.0,
+            "y": 1002.0,
+            "width": 480.0,
+            "height": 154.0,
+            "confidence": 0.7594908475875854,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f10e0f7e-e1ce-4c64-8f11-4cf385f41417"
+          }
+        ]
+      },
+      {
+        "inference_id": "896453fe-2456-4f3f-b1bc-e55f95d5d196",
+        "time": 0.4623591019771993,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 509.5,
+            "y": 1002.0,
+            "width": 487.0,
+            "height": 154.0,
+            "confidence": 0.7445282936096191,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "8d5f5936-cbe0-4410-b77b-e6d5223cf6ea"
+          }
+        ]
+      },
+      {
+        "inference_id": "896453fe-2456-4f3f-b1bc-e55f95d5d196",
+        "time": 0.46242707199417055,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 501.0,
+            "y": 1005.5,
+            "width": 470.0,
+            "height": 149.0,
+            "confidence": 0.7902554273605347,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "9357d566-46f1-40b8-a891-3b456811f4d3"
+          },
+          {
+            "x": 748.5,
+            "y": 847.5,
+            "width": 225.0,
+            "height": 255.0,
+            "confidence": 0.4467451572418213,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "a5fffc31-1b38-4c7f-a889-f444a3e4566f"
+          }
+        ]
+      },
+      {
+        "inference_id": "896453fe-2456-4f3f-b1bc-e55f95d5d196",
+        "time": 0.462442961987108,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 501.0,
+            "y": 1005.5,
+            "width": 458.0,
+            "height": 149.0,
+            "confidence": 0.7584375739097595,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "4614a790-b272-4a65-b965-f45112c1a6f1"
+          },
+          {
+            "x": 787.5,
+            "y": 882.0,
+            "width": 201.0,
+            "height": 306.0,
+            "confidence": 0.5966736674308777,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "e00b75de-5db4-4461-8426-d00380bc2e6e"
+          }
+        ]
+      },
+      {
+        "inference_id": "896453fe-2456-4f3f-b1bc-e55f95d5d196",
+        "time": 0.4624520749785006,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 488.5,
+            "y": 1005.0,
+            "width": 507.0,
+            "height": 150.0,
+            "confidence": 0.6972318887710571,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "d609e5b5-b983-42f8-a80e-97349fc12977"
+          },
+          {
+            "x": 816.5,
+            "y": 887.0,
+            "width": 217.0,
+            "height": 248.0,
+            "confidence": 0.6647199392318726,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "a1622457-8fbf-4bec-ba2f-bdbeb88af1b0"
+          }
+        ]
+      },
+      {
+        "inference_id": "ed4c8bf0-edc2-45bd-9a2e-789150839f78",
+        "time": 0.45464099291712046,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 488.0,
+            "y": 1004.5,
+            "width": 500.0,
+            "height": 151.0,
+            "confidence": 0.718567430973053,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "10bb1cde-bfad-4ddd-8c5b-6198328c1f5e"
+          }
+        ]
+      },
+      {
+        "inference_id": "ed4c8bf0-edc2-45bd-9a2e-789150839f78",
+        "time": 0.4546936668921262,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 491.0,
+            "y": 1005.5,
+            "width": 500.0,
+            "height": 149.0,
+            "confidence": 0.8040505051612854,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "68055318-9240-493f-a8fe-0a0f8c6ea4f7"
+          }
+        ]
+      },
+      {
+        "inference_id": "ed4c8bf0-edc2-45bd-9a2e-789150839f78",
+        "time": 0.45470432192087173,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 484.5,
+            "y": 1005.5,
+            "width": 507.0,
+            "height": 149.0,
+            "confidence": 0.7310017943382263,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "71f314d2-62f2-4528-b59a-28a0a27d3fc9"
+          }
+        ]
+      },
+      {
+        "inference_id": "ed4c8bf0-edc2-45bd-9a2e-789150839f78",
+        "time": 0.4547124470118433,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 483.5,
+            "y": 1006.0,
+            "width": 503.0,
+            "height": 148.0,
+            "confidence": 0.6308799386024475,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "4ea90dc8-fd21-426b-976b-250a48ef689d"
+          }
+        ]
+      },
+      {
+        "inference_id": "608bddbc-34f6-44d6-a8a6-ebf384b52f7f",
+        "time": 0.46492443699389696,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 497.5,
+            "y": 1004.5,
+            "width": 517.0,
+            "height": 149.0,
+            "confidence": 0.5175618529319763,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "fac6f82b-1d6b-45e5-ae47-7f2fdd441385"
+          }
+        ]
+      },
+      {
+        "inference_id": "608bddbc-34f6-44d6-a8a6-ebf384b52f7f",
+        "time": 0.4650058220140636,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 483.0,
+            "y": 1006.0,
+            "width": 504.0,
+            "height": 148.0,
+            "confidence": 0.7813157439231873,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "a7c7489d-2ab0-41f4-8540-76973c003826"
+          },
+          {
+            "x": 1083.5,
+            "y": 941.5,
+            "width": 309.0,
+            "height": 265.0,
+            "confidence": 0.4798493981361389,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "7c11289f-8132-4570-909c-fe5189f3df4d"
+          }
+        ]
+      },
+      {
+        "inference_id": "608bddbc-34f6-44d6-a8a6-ebf384b52f7f",
+        "time": 0.4650168060325086,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1174.0,
+            "y": 938.0,
+            "width": 202.0,
+            "height": 244.0,
+            "confidence": 0.7679873704910278,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "8c9fe4fb-3358-41a2-89b7-18ee47cfbdbf"
+          },
+          {
+            "x": 495.5,
+            "y": 1005.0,
+            "width": 487.0,
+            "height": 150.0,
+            "confidence": 0.514516294002533,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "72cf907d-9b62-4cb1-8afc-89ccc05aba4c"
+          }
+        ]
+      },
+      {
+        "inference_id": "608bddbc-34f6-44d6-a8a6-ebf384b52f7f",
+        "time": 0.4650251071434468,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 482.5,
+            "y": 1006.0,
+            "width": 499.0,
+            "height": 148.0,
+            "confidence": 0.7075437307357788,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "1f3f22f6-301b-4921-8652-c44ca2e54b64"
+          }
+        ]
+      },
+      {
+        "inference_id": "77cae7ae-632c-4d3d-bba8-3e934c9388f3",
+        "time": 0.46235744911246,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1279.5,
+            "y": 947.0,
+            "width": 307.0,
+            "height": 264.0,
+            "confidence": 0.8682336807250977,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "850ef017-00ed-4a8a-9bbf-2619f308482e"
+          },
+          {
+            "x": 493.5,
+            "y": 1002.0,
+            "width": 519.0,
+            "height": 154.0,
+            "confidence": 0.5860854387283325,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "850a55c9-2826-4347-bc6c-7d767d8c0e60"
+          }
+        ]
+      },
+      {
+        "inference_id": "77cae7ae-632c-4d3d-bba8-3e934c9388f3",
+        "time": 0.46240417705848813,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1334.0,
+            "y": 944.0,
+            "width": 328.0,
+            "height": 272.0,
+            "confidence": 0.7899148464202881,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "64256370-d2f7-44d4-9aa1-9c314a0b5653"
+          },
+          {
+            "x": 478.5,
+            "y": 1005.5,
+            "width": 517.0,
+            "height": 149.0,
+            "confidence": 0.7088476419448853,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "49fdc3dc-956f-4442-91a1-9ce2e3ffaa83"
+          }
+        ]
+      },
+      {
+        "inference_id": "77cae7ae-632c-4d3d-bba8-3e934c9388f3",
+        "time": 0.46241551893763244,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1386.5,
+            "y": 956.5,
+            "width": 327.0,
+            "height": 247.0,
+            "confidence": 0.8778064250946045,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "118b6267-ad39-4ebb-8158-36c382f68ca8"
+          },
+          {
+            "x": 481.0,
+            "y": 1005.5,
+            "width": 516.0,
+            "height": 149.0,
+            "confidence": 0.7294855117797852,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "69637a1b-15f6-4fc2-aeb0-9412e981f925"
+          }
+        ]
+      },
+      {
+        "inference_id": "77cae7ae-632c-4d3d-bba8-3e934c9388f3",
+        "time": 0.4624233520589769,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1423.0,
+            "y": 953.0,
+            "width": 276.0,
+            "height": 252.0,
+            "confidence": 0.8246544599533081,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "60630305-c8ca-4f92-9142-233d9612a735"
+          },
+          {
+            "x": 489.0,
+            "y": 1006.0,
+            "width": 494.0,
+            "height": 148.0,
+            "confidence": 0.77613765001297,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "9bcbf620-c0c5-4ea2-8188-7043a9e4561e"
+          }
+        ]
+      },
+      {
+        "inference_id": "5c30d626-cca2-4d42-a064-e597e231a4a0",
+        "time": 0.4592431359924376,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 494.5,
+            "y": 1006.5,
+            "width": 501.0,
+            "height": 147.0,
+            "confidence": 0.7630820870399475,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "b0de9049-95bb-49a0-91b0-054242715359"
+          },
+          {
+            "x": 1478.5,
+            "y": 951.0,
+            "width": 303.0,
+            "height": 256.0,
+            "confidence": 0.6880289316177368,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "8b86065e-787f-4017-b562-e71fbf41a369"
+          }
+        ]
+      },
+      {
+        "inference_id": "5c30d626-cca2-4d42-a064-e597e231a4a0",
+        "time": 0.45929371705278754,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1552.0,
+            "y": 950.0,
+            "width": 264.0,
+            "height": 258.0,
+            "confidence": 0.7930024266242981,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "73476e1e-521e-44fe-a26f-6c7c3096a54f"
+          },
+          {
+            "x": 490.5,
+            "y": 1007.0,
+            "width": 503.0,
+            "height": 146.0,
+            "confidence": 0.709564208984375,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "5849e6c4-9f81-4e61-b108-d77463f9651c"
+          }
+        ]
+      },
+      {
+        "inference_id": "5c30d626-cca2-4d42-a064-e597e231a4a0",
+        "time": 0.4593045951332897,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1599.5,
+            "y": 955.0,
+            "width": 279.0,
+            "height": 250.0,
+            "confidence": 0.8500411510467529,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "fd59cd06-beea-4598-b896-c36205d8814e"
+          },
+          {
+            "x": 490.0,
+            "y": 1005.5,
+            "width": 498.0,
+            "height": 149.0,
+            "confidence": 0.8058658838272095,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "771d9242-9887-4b33-b647-f5984e4dc8b4"
+          }
+        ]
+      },
+      {
+        "inference_id": "5c30d626-cca2-4d42-a064-e597e231a4a0",
+        "time": 0.45931252115406096,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1713.0,
+            "y": 954.0,
+            "width": 408.0,
+            "height": 252.0,
+            "confidence": 0.8892613053321838,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f2d9f601-a049-4cf0-8f55-2ceb0ac1897d"
+          },
+          {
+            "x": 496.0,
+            "y": 1005.5,
+            "width": 492.0,
+            "height": 149.0,
+            "confidence": 0.7444976568222046,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "22fdb26c-d078-4b4f-b8cf-521a9cff9cce"
+          }
+        ]
+      },
+      {
+        "inference_id": "0d40d79f-94fd-42d2-8cfb-d3e67cb95f78",
+        "time": 0.4495403307955712,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1696.5,
+            "y": 961.5,
+            "width": 271.0,
+            "height": 237.0,
+            "confidence": 0.858665943145752,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "66bbabf4-b499-41f3-bcb7-ea037f11f43f"
+          },
+          {
+            "x": 485.5,
+            "y": 1005.0,
+            "width": 513.0,
+            "height": 150.0,
+            "confidence": 0.8071701526641846,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "3f833720-873a-4583-a2e1-f53f07866f7f"
+          }
+        ]
+      },
+      {
+        "inference_id": "0d40d79f-94fd-42d2-8cfb-d3e67cb95f78",
+        "time": 0.44959101686254144,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1750.0,
+            "y": 953.0,
+            "width": 300.0,
+            "height": 252.0,
+            "confidence": 0.8540166020393372,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "92db7def-24fc-4dcb-b532-aa601ee66f72"
+          },
+          {
+            "x": 495.5,
+            "y": 1005.5,
+            "width": 487.0,
+            "height": 149.0,
+            "confidence": 0.7795843482017517,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "a34e7dd6-7bf0-4d48-b24d-6652712adc83"
+          }
+        ]
+      },
+      {
+        "inference_id": "0d40d79f-94fd-42d2-8cfb-d3e67cb95f78",
+        "time": 0.44960257899947464,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1785.5,
+            "y": 956.5,
+            "width": 263.0,
+            "height": 247.0,
+            "confidence": 0.8950490355491638,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "a6d92fd1-5d1f-43a4-92d6-f5095de6e8a9"
+          },
+          {
+            "x": 493.0,
+            "y": 1005.5,
+            "width": 488.0,
+            "height": 149.0,
+            "confidence": 0.7687128186225891,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ae771f25-89c4-4132-bf91-1396cdefd0aa"
+          }
+        ]
+      },
+      {
+        "inference_id": "0d40d79f-94fd-42d2-8cfb-d3e67cb95f78",
+        "time": 0.4496107979211956,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1808.5,
+            "y": 956.0,
+            "width": 221.0,
+            "height": 246.0,
+            "confidence": 0.8786606192588806,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "e2b2b886-1fe5-4916-93bb-43431d770ec4"
+          },
+          {
+            "x": 489.5,
+            "y": 1005.5,
+            "width": 495.0,
+            "height": 149.0,
+            "confidence": 0.7772055268287659,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "a751a7b1-af4f-459e-92a0-5620d0484f0a"
+          }
+        ]
+      },
+      {
+        "inference_id": "15dc3a7c-7ff2-41db-bf6a-b19da3d7c280",
+        "time": 0.4468114429619163,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1832.5,
+            "y": 947.5,
+            "width": 173.0,
+            "height": 263.0,
+            "confidence": 0.8869587779045105,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c4e2747c-0a26-425d-bbb1-8ce5f1a271d5"
+          },
+          {
+            "x": 499.5,
+            "y": 1004.0,
+            "width": 505.0,
+            "height": 150.0,
+            "confidence": 0.7209675312042236,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "6507ad4f-4e34-4911-89da-ed0a46cfde74"
+          }
+        ]
+      },
+      {
+        "inference_id": "15dc3a7c-7ff2-41db-bf6a-b19da3d7c280",
+        "time": 0.44686905201524496,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 1857.0,
+            "y": 971.0,
+            "width": 126.0,
+            "height": 218.0,
+            "confidence": 0.793321430683136,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "9b050574-bbab-425c-8ded-a8a88bca2c67"
+          },
+          {
+            "x": 498.5,
+            "y": 1002.0,
+            "width": 509.0,
+            "height": 154.0,
+            "confidence": 0.7246695756912231,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "f55ba4f9-cc3a-4edc-a4de-d2bd43e85bcb"
+          }
+        ]
+      },
+      {
+        "inference_id": "15dc3a7c-7ff2-41db-bf6a-b19da3d7c280",
+        "time": 0.4468802909832448,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 489.0,
+            "y": 1006.5,
+            "width": 498.0,
+            "height": 147.0,
+            "confidence": 0.7447647452354431,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "333bf2f7-d6ff-4eae-8f4f-55b4dfaa6730"
+          },
+          {
+            "x": 1886.5,
+            "y": 971.5,
+            "width": 67.0,
+            "height": 217.0,
+            "confidence": 0.5144627094268799,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "5602cfc8-05cc-4703-84f1-83acb2920be0"
+          }
+        ]
+      },
+      {
+        "inference_id": "15dc3a7c-7ff2-41db-bf6a-b19da3d7c280",
+        "time": 0.4468883699737489,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 495.5,
+            "y": 1006.5,
+            "width": 483.0,
+            "height": 147.0,
+            "confidence": 0.8201175928115845,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "ac5f2b8a-395b-4980-9f9c-cdd7c5aee3a9"
+          }
+        ]
+      },
+      {
+        "inference_id": "412b9625-daa2-4630-b006-159b03e02c4c",
+        "time": 0.450345859862864,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 493.5,
+            "y": 1006.5,
+            "width": 489.0,
+            "height": 147.0,
+            "confidence": 0.8046996593475342,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "b9f4e9e1-8ae1-4e16-b722-c923795039c6"
+          }
+        ]
+      },
+      {
+        "inference_id": "412b9625-daa2-4630-b006-159b03e02c4c",
+        "time": 0.45040000486187637,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 493.0,
+            "y": 1005.5,
+            "width": 492.0,
+            "height": 149.0,
+            "confidence": 0.8041953444480896,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "b210c71d-2873-4798-8e61-def128d390e3"
+          }
+        ]
+      },
+      {
+        "inference_id": "412b9625-daa2-4630-b006-159b03e02c4c",
+        "time": 0.4504112380091101,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 487.0,
+            "y": 1005.0,
+            "width": 504.0,
+            "height": 150.0,
+            "confidence": 0.7961208820343018,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "2ce551b5-699c-42d0-a99a-7b6e92644868"
+          }
+        ]
+      },
+      {
+        "inference_id": "412b9625-daa2-4630-b006-159b03e02c4c",
+        "time": 0.45041934796608984,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 485.0,
+            "y": 1007.5,
+            "width": 516.0,
+            "height": 143.0,
+            "confidence": 0.6637040972709656,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "4199bf61-5753-48ff-b178-fcc4806e48a9"
+          }
+        ]
+      },
+      {
+        "inference_id": "d4dc7fd2-99af-4c2c-bca0-983bdc9c9fe8",
+        "time": 0.3486125359777361,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 489.5,
+            "y": 1006.5,
+            "width": 493.0,
+            "height": 147.0,
+            "confidence": 0.8035780787467957,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "c18b03f5-95cf-4028-bf0d-dcd3532988f0"
+          }
+        ]
+      },
+      {
+        "inference_id": "d4dc7fd2-99af-4c2c-bca0-983bdc9c9fe8",
+        "time": 0.34866151702590287,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 493.0,
+            "y": 1006.5,
+            "width": 484.0,
+            "height": 147.0,
+            "confidence": 0.8072664737701416,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "0c0fe290-0f4a-465f-8cf4-a81556255e03"
+          }
+        ]
+      },
+      {
+        "inference_id": "d4dc7fd2-99af-4c2c-bca0-983bdc9c9fe8",
+        "time": 0.34867320815101266,
+        "image": {
+          "width": 1920,
+          "height": 1080
+        },
+        "predictions": [
+          {
+            "x": 494.0,
+            "y": 1006.5,
+            "width": 482.0,
+            "height": 147.0,
+            "confidence": 0.805574357509613,
+            "class": "Forklift - v1 2023-05-24 1-43pm",
+            "class_id": 0,
+            "detection_id": "0fec1bc3-d977-4156-b28d-4c2e8660be59"
+          }
+        ]
+      }
+    ]
+  },
+  "forklift_count": 585,
+  "pallet_detections": {},
+  "pallet_count": 0
+}

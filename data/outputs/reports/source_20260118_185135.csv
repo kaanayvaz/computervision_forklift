@@ -1,0 +1,3 @@
+track_id,state,start_frame,end_frame,duration_seconds,is_value_added,description,zone
+2,moving_loaded,0,29,10.0,True,,
+67,idle,0,29,10.0,False,,
