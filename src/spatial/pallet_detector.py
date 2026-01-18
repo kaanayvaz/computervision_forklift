@@ -45,16 +45,17 @@ class SpatialAnalyzer:
         # Handle nested config structure
         spatial_config = config.get("spatial", config)
         
-        # STRICT thresholds - pallet must actually overlap forklift, not just be nearby
-        self.iou_threshold = spatial_config.get("pallet_iou_threshold", 0.15)
-        self.containment_threshold = spatial_config.get("pallet_containment_threshold", 0.5)
-        self.vertical_offset_max = spatial_config.get("vertical_offset_max", 30)  # Tighter
-        self.fork_zone_ratio = spatial_config.get("fork_zone_ratio", 0.5)  # Forks in lower 50%
+        # MORE LENIENT thresholds for better pallet carrying detection
+        # In real-world scenarios, pallet bboxes often don't perfectly overlap forklift bboxes
+        self.iou_threshold = spatial_config.get("pallet_iou_threshold", 0.05)  # Lowered from 0.15
+        self.containment_threshold = spatial_config.get("pallet_containment_threshold", 0.20)  # Lowered from 0.5
+        self.vertical_offset_max = spatial_config.get("vertical_offset_max", 100)  # Increased from 30
+        self.fork_zone_ratio = spatial_config.get("fork_zone_ratio", 0.7)  # Increased from 0.5
         
-        # CRITICAL: Minimum requirements for "carrying" detection
-        # These MUST be met regardless of score
-        self.min_iou_required = 0.08  # Must have at least 8% overlap
-        self.min_containment_required = 0.30  # Pallet 30%+ inside forklift bbox
+        # RELAXED: Minimum requirements for "carrying" detection
+        # Lower these to catch more true positives
+        self.min_iou_required = 0.02  # Lowered from 0.08 - any overlap counts
+        self.min_containment_required = 0.10  # Lowered from 0.30 - 10%+ inside forklift bbox
         
         logger.info(
             f"SpatialAnalyzer initialized: "
@@ -119,9 +120,9 @@ class SpatialAnalyzer:
                 best_iou = iou
                 best_containment = containment
         
-        # STRICT: Determine if carrying - need high score AND real overlap
+        # RELAXED: Determine if carrying - lower threshold for better detection
         is_carrying = (
-            best_score > 0.6 and  # Higher threshold
+            best_score > 0.3 and  # Lowered from 0.6 for better sensitivity
             best_iou >= self.min_iou_required and
             best_containment >= self.min_containment_required
         )

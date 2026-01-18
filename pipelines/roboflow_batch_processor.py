@@ -153,8 +153,12 @@ class RoboflowBatchProcessor:
             enable_cmc=False                  # Disabled: doesn't work with sparse frames
         )
         
-        # Spatial analysis
-        self.spatial_analyzer = SpatialAnalyzer(self.rules_config)
+        # Spatial analysis - use more lenient settings for pallet detection
+        # Override config with more relaxed thresholds for better carrying detection
+        spatial_config = self.rules_config.get("spatial", {}).copy()
+        spatial_config["pallet_iou_threshold"] = spatial_config.get("pallet_iou_threshold", 0.05)  # Lower IoU
+        spatial_config["pallet_containment_threshold"] = spatial_config.get("pallet_containment_threshold", 0.20)  # Lower containment
+        self.spatial_analyzer = SpatialAnalyzer({"spatial": spatial_config})
         
         # Motion estimation
         motion_config = self.rules_config.get("motion", {})
@@ -162,17 +166,20 @@ class RoboflowBatchProcessor:
             smoothing_window=motion_config.get("smoothing_window", 5)
         )
         
-        # State classification
+        # State classification - lower idle threshold for sparse frames
+        # For sparse frames (3-5 FPS), we need immediate state confirmation
         state_config = self.rules_config.get("state", {})
         self.state_classifier = StateClassifier(
-            idle_threshold=motion_config.get("velocity_idle_threshold", 2.0),
-            confirmation_frames=state_config.get("state_confirmation_frames", 5)
+            idle_threshold=motion_config.get("velocity_idle_threshold", 5.0),  # Higher threshold for sparse frames
+            confirmation_frames=1  # Immediate confirmation - tracks have few detections
         )
         
-        # Activity segmentation
+        # Activity segmentation - capture all activities regardless of duration
         activity_config = self.rules_config.get("activity", {})
         self.activity_segmenter = ActivitySegmenter(
-            min_duration=activity_config.get("min_duration", 5.0)
+            min_duration=0.0,  # Capture all activities regardless of duration
+            merge_threshold=0.0,  # Don't merge segments
+            fps=self.fps  # Use processing FPS for duration calculations
         )
         
         # Visualization
@@ -619,36 +626,138 @@ class RoboflowBatchProcessor:
         
         logger.info(f"Hybrid filtering complete: {len(all_tracks)} -> {len(filtered_tracks)} tracks")
         
+        # CRITICAL: Re-classify states AFTER merging and filtering
+        # The state_history is lost during merging, so we need to rebuild it
+        logger.info("Re-classifying states for merged/filtered tracks...")
+        self._classify_track_states(filtered_tracks, frame_detections)
+        
         return filtered_tracks, processed_frames
+    
+    def _classify_track_states(
+        self,
+        tracks: dict[int, TrackedObject],
+        frame_detections: dict[int, list[Detection]]
+    ) -> None:
+        """
+        Re-classify states for all tracks after merging/filtering.
+        
+        This is CRITICAL because state_history is lost when tracks are merged.
+        We rebuild the state history by processing each track's detections in order.
+        
+        For each detection in the track:
+        1. Find pallet detections in the same frame
+        2. Determine if forklift is carrying a pallet (spatial analysis)
+        3. Compute velocity from detection history
+        4. Classify state and add to state_history
+        """
+        # Reset classifiers for fresh state
+        self.motion_estimator.reset()
+        self.state_classifier.reset()
+        
+        for tid, track in tracks.items():
+            # Clear any existing state history
+            track.state_history = []
+            track.current_state = ForkliftState.UNKNOWN
+            
+            # Sort detections by frame
+            detections = sorted(track.detections, key=lambda d: d.frame_id)
+            
+            if not detections:
+                continue
+            
+            # Process each detection to build state history
+            for i, det in enumerate(detections):
+                frame_id = det.frame_id
+                
+                # Get pallet detections for this frame
+                all_frame_dets = frame_detections.get(frame_id, [])
+                pallet_dets = [d for d in all_frame_dets if d.class_name == "pallet"]
+                
+                # Check if carrying pallet using spatial analysis
+                is_carrying, confidence, _ = self.spatial_analyzer.is_carrying_pallet(
+                    det, pallet_dets
+                )
+                track.is_carrying_pallet = is_carrying
+                
+                # Compute velocity (needs at least 2 detections)
+                if i >= 1:
+                    prev_det = detections[i - 1]
+                    prev_center = prev_det.bbox.center
+                    curr_center = det.bbox.center
+                    
+                    frame_diff = det.frame_id - prev_det.frame_id
+                    if frame_diff <= 0:
+                        frame_diff = 1
+                    
+                    displacement = (
+                        (curr_center[0] - prev_center[0]) ** 2 +
+                        (curr_center[1] - prev_center[1]) ** 2
+                    ) ** 0.5
+                    velocity = displacement / frame_diff
+                else:
+                    velocity = 0.0
+                
+                track.velocity = velocity
+                
+                # Classify state
+                state = self.state_classifier.classify(track, velocity, is_carrying)
+                track.update_state(state)
+            
+            # Log state distribution for this track
+            state_counts = {}
+            for s in track.state_history:
+                state_counts[s.value] = state_counts.get(s.value, 0) + 1
+            logger.debug(f"Track #{tid}: {len(track.state_history)} states - {state_counts}")
+        
+        # Log summary
+        total_states = sum(len(t.state_history) for t in tracks.values())
+        loaded_count = sum(
+            1 for t in tracks.values() 
+            for s in t.state_history 
+            if s == ForkliftState.MOVING_LOADED
+        )
+        idle_count = sum(
+            1 for t in tracks.values()
+            for s in t.state_history
+            if s == ForkliftState.IDLE
+        )
+        moving_empty_count = sum(
+            1 for t in tracks.values()
+            for s in t.state_history
+            if s == ForkliftState.MOVING_EMPTY
+        )
+        logger.info(f"State classification complete: {total_states} total states")
+        logger.info(f"  - MOVING_LOADED: {loaded_count}, MOVING_EMPTY: {moving_empty_count}, IDLE: {idle_count}")
     
     def _merge_fragmented_tracks(self, tracks: dict[int, TrackedObject]) -> dict[int, TrackedObject]:
         """
-        Merge fragmented tracks that likely belong to the same forklift.
+        Aggressively merge fragmented tracks that likely belong to the same forklift.
         
-        Camera motion causes track ID switches, resulting in multiple short tracks
-        for the same physical forklift. This method merges tracks that:
-        1. Have non-overlapping or minimally overlapping time ranges
-        2. Have similar spatial positions (endpoints close to each other)
-        3. Have similar bounding box sizes
+        At 3 FPS, forklifts can move 300+ pixels between frames, causing ByteTrack to
+        lose track IDs. This method uses multiple strategies to consolidate tracks:
         
-        The goal is to consolidate e.g., 30 fragmented tracks into 3 actual forklifts.
+        1. TEMPORAL MERGING: Sequential tracks with non-overlapping time ranges
+        2. VELOCITY PREDICTION: Predict position based on estimated velocity
+        3. SPATIAL CLUSTERING: Group tracks by their average position in the scene
+        4. MULTI-PASS: Iteratively merge until no more merges possible
+        
+        The goal is to reduce e.g., 30 fragmented tracks to the actual number of forklifts.
         """
         from core.entities import TrackedObject, Detection
         
         if len(tracks) <= 1:
             return tracks
         
-        # Configuration - more aggressive merging for camera motion
-        # When camera pans, forklifts can move 200+ pixels between sparse frames
-        MAX_POSITION_DISTANCE = 300  # Max distance in pixels to consider same forklift
-        MAX_FRAME_GAP = 50           # Max frames between tracks to merge (~6 seconds at 3fps)
-        MAX_SIZE_RATIO = 2.0         # Max size ratio between tracks to merge
+        # Very aggressive configuration for sparse frame tracking
+        BASE_POSITION_DISTANCE = 400   # Base distance threshold (pixels)
+        MAX_FRAME_GAP = 100            # Allow large gaps (~33 seconds at 3fps)
+        MAX_SIZE_RATIO = 2.5           # Allow some size variation
+        VELOCITY_SCALE = 1.5           # Scale predicted distance by velocity
+        MIN_OVERLAP_IOU = 0.3          # IoU threshold for overlapping tracks
+        MAX_MERGE_PASSES = 5           # Maximum merge iterations
         
-        # Convert to list for manipulation
-        track_list = list(tracks.values())
-        
-        # Get track metadata: start/end frames, positions, sizes
         def get_track_info(track):
+            """Extract comprehensive track metadata."""
             if not track.detections:
                 return None
             detections = sorted(track.detections, key=lambda d: d.frame_id)
@@ -658,113 +767,253 @@ class RoboflowBatchProcessor:
             first_center = ((first.bbox.x1 + first.bbox.x2) / 2, (first.bbox.y1 + first.bbox.y2) / 2)
             last_center = ((last.bbox.x1 + last.bbox.x2) / 2, (last.bbox.y1 + last.bbox.y2) / 2)
             
+            # Calculate average position (centroid of all detections)
+            all_centers = [((d.bbox.x1 + d.bbox.x2) / 2, (d.bbox.y1 + d.bbox.y2) / 2) for d in detections]
+            avg_center = (sum(c[0] for c in all_centers) / len(all_centers),
+                         sum(c[1] for c in all_centers) / len(all_centers))
+            
             avg_width = sum(d.bbox.width for d in detections) / len(detections)
             avg_height = sum(d.bbox.height for d in detections) / len(detections)
+            
+            # Calculate velocity (pixels per frame)
+            duration = last.frame_id - first.frame_id
+            if duration > 0:
+                velocity = (
+                    (last_center[0] - first_center[0]) / duration,
+                    (last_center[1] - first_center[1]) / duration
+                )
+            else:
+                velocity = (0, 0)
             
             return {
                 'start_frame': first.frame_id,
                 'end_frame': last.frame_id,
                 'first_center': first_center,
                 'last_center': last_center,
+                'avg_center': avg_center,
                 'avg_size': (avg_width, avg_height),
-                'detections': detections
+                'velocity': velocity,
+                'detections': detections,
+                'num_detections': len(detections)
             }
         
-        # Build track info
-        track_infos = {}
-        for track in track_list:
-            info = get_track_info(track)
-            if info:
-                track_infos[track.track_id] = info
-        
-        # Find mergeable pairs
-        merged = set()  # Track IDs that have been merged
-        merge_groups = []  # List of lists of track IDs to merge
-        
-        track_ids = list(track_infos.keys())
-        
-        for i, tid1 in enumerate(track_ids):
-            if tid1 in merged:
-                continue
+        def compute_iou(bbox1, bbox2):
+            """Compute IoU between two bboxes."""
+            x1 = max(bbox1.x1, bbox2.x1)
+            y1 = max(bbox1.y1, bbox2.y1)
+            x2 = min(bbox1.x2, bbox2.x2)
+            y2 = min(bbox1.y2, bbox2.y2)
             
-            group = [tid1]
-            info1 = track_infos[tid1]
+            inter_area = max(0, x2 - x1) * max(0, y2 - y1)
+            if inter_area == 0:
+                return 0.0
             
-            for tid2 in track_ids[i+1:]:
-                if tid2 in merged:
+            area1 = bbox1.width * bbox1.height
+            area2 = bbox2.width * bbox2.height
+            union_area = area1 + area2 - inter_area
+            
+            return inter_area / union_area if union_area > 0 else 0.0
+        
+        def can_merge_tracks(info1, info2):
+            """
+            Determine if two tracks can be merged using multiple criteria.
+            Returns (can_merge, merge_score) where higher score = better match.
+            """
+            # Check size similarity first
+            size1 = info1['avg_size']
+            size2 = info2['avg_size']
+            w_ratio = max(size1[0], size2[0]) / max(min(size1[0], size2[0]), 1)
+            h_ratio = max(size1[1], size2[1]) / max(min(size1[1], size2[1]), 1)
+            
+            if w_ratio > MAX_SIZE_RATIO or h_ratio > MAX_SIZE_RATIO:
+                return False, 0
+            
+            # STRATEGY 1: Non-overlapping temporal tracks
+            if info1['end_frame'] < info2['start_frame']:
+                gap = info2['start_frame'] - info1['end_frame']
+                if gap <= MAX_FRAME_GAP:
+                    # Use velocity prediction for position matching
+                    vel = info1['velocity']
+                    predicted_pos = (
+                        info1['last_center'][0] + vel[0] * gap,
+                        info1['last_center'][1] + vel[1] * gap
+                    )
+                    actual_pos = info2['first_center']
+                    
+                    distance = ((predicted_pos[0] - actual_pos[0])**2 + 
+                               (predicted_pos[1] - actual_pos[1])**2) ** 0.5
+                    
+                    # Allow larger distance for longer gaps and faster movement
+                    speed = (vel[0]**2 + vel[1]**2) ** 0.5
+                    max_dist = BASE_POSITION_DISTANCE + speed * gap * VELOCITY_SCALE
+                    
+                    if distance < max_dist:
+                        # Score based on how close the prediction was
+                        score = (max_dist - distance) / max_dist * 100
+                        return True, score
+                        
+            elif info2['end_frame'] < info1['start_frame']:
+                # Same logic, reversed
+                gap = info1['start_frame'] - info2['end_frame']
+                if gap <= MAX_FRAME_GAP:
+                    vel = info2['velocity']
+                    predicted_pos = (
+                        info2['last_center'][0] + vel[0] * gap,
+                        info2['last_center'][1] + vel[1] * gap
+                    )
+                    actual_pos = info1['first_center']
+                    
+                    distance = ((predicted_pos[0] - actual_pos[0])**2 + 
+                               (predicted_pos[1] - actual_pos[1])**2) ** 0.5
+                    
+                    speed = (vel[0]**2 + vel[1]**2) ** 0.5
+                    max_dist = BASE_POSITION_DISTANCE + speed * gap * VELOCITY_SCALE
+                    
+                    if distance < max_dist:
+                        score = (max_dist - distance) / max_dist * 100
+                        return True, score
+            
+            # STRATEGY 2: Overlapping tracks with similar positions (same forklift, ID switch)
+            # This catches cases where ByteTrack switches IDs mid-tracking
+            overlap_start = max(info1['start_frame'], info2['start_frame'])
+            overlap_end = min(info1['end_frame'], info2['end_frame'])
+            
+            if overlap_start <= overlap_end:
+                # Check if the average positions are very close (same forklift)
+                avg_dist = ((info1['avg_center'][0] - info2['avg_center'][0])**2 +
+                           (info1['avg_center'][1] - info2['avg_center'][1])**2) ** 0.5
+                
+                if avg_dist < BASE_POSITION_DISTANCE * 0.5:  # Stricter for overlapping
+                    # Check IoU of detections in overlapping frames
+                    dets1 = {d.frame_id: d for d in info1['detections']}
+                    dets2 = {d.frame_id: d for d in info2['detections']}
+                    
+                    overlap_ious = []
+                    for frame_id in range(overlap_start, overlap_end + 1):
+                        if frame_id in dets1 and frame_id in dets2:
+                            iou = compute_iou(dets1[frame_id].bbox, dets2[frame_id].bbox)
+                            overlap_ious.append(iou)
+                    
+                    if overlap_ious and sum(overlap_ious) / len(overlap_ious) > MIN_OVERLAP_IOU:
+                        score = sum(overlap_ious) / len(overlap_ious) * 100
+                        return True, score
+            
+            # STRATEGY 3: Spatial clustering - tracks in same region are likely same forklift
+            avg_dist = ((info1['avg_center'][0] - info2['avg_center'][0])**2 +
+                       (info1['avg_center'][1] - info2['avg_center'][1])**2) ** 0.5
+            
+            # Only merge by spatial proximity if tracks don't overlap much in time
+            time_overlap = max(0, min(info1['end_frame'], info2['end_frame']) - 
+                             max(info1['start_frame'], info2['start_frame']))
+            total_time = max(info1['end_frame'], info2['end_frame']) - \
+                        min(info1['start_frame'], info2['start_frame'])
+            
+            overlap_ratio = time_overlap / max(total_time, 1)
+            
+            if overlap_ratio < 0.2 and avg_dist < BASE_POSITION_DISTANCE * 0.3:
+                score = (BASE_POSITION_DISTANCE * 0.3 - avg_dist) / (BASE_POSITION_DISTANCE * 0.3) * 50
+                return True, score
+            
+            return False, 0
+        
+        # MULTI-PASS MERGING
+        current_tracks = tracks.copy()
+        
+        for pass_num in range(MAX_MERGE_PASSES):
+            # Build track info for current tracks
+            track_infos = {}
+            for tid, track in current_tracks.items():
+                info = get_track_info(track)
+                if info:
+                    track_infos[tid] = info
+            
+            if len(track_infos) <= 1:
+                break
+            
+            # Find all mergeable pairs with scores
+            merge_candidates = []
+            track_ids = list(track_infos.keys())
+            
+            for i, tid1 in enumerate(track_ids):
+                for tid2 in track_ids[i+1:]:
+                    can_merge, score = can_merge_tracks(track_infos[tid1], track_infos[tid2])
+                    if can_merge:
+                        merge_candidates.append((tid1, tid2, score))
+            
+            if not merge_candidates:
+                break  # No more merges possible
+            
+            # Sort by score (highest first) and perform merges
+            merge_candidates.sort(key=lambda x: -x[2])
+            
+            merged = set()
+            merge_groups = {}  # tid -> group_id
+            next_group = 0
+            
+            for tid1, tid2, score in merge_candidates:
+                if tid1 in merged or tid2 in merged:
                     continue
                 
-                info2 = track_infos[tid2]
+                # Create or extend merge group
+                if tid1 in merge_groups:
+                    merge_groups[tid2] = merge_groups[tid1]
+                elif tid2 in merge_groups:
+                    merge_groups[tid1] = merge_groups[tid2]
+                else:
+                    merge_groups[tid1] = next_group
+                    merge_groups[tid2] = next_group
+                    next_group += 1
                 
-                # Check time relationship
-                # Track 1 should end before or shortly after track 2 starts (or vice versa)
-                gap = None
-                if info1['end_frame'] < info2['start_frame']:
-                    gap = info2['start_frame'] - info1['end_frame']
-                    pos1 = info1['last_center']
-                    pos2 = info2['first_center']
-                elif info2['end_frame'] < info1['start_frame']:
-                    gap = info1['start_frame'] - info2['end_frame']
-                    pos1 = info2['last_center']
-                    pos2 = info1['first_center']
-                
-                if gap is None or gap > MAX_FRAME_GAP:
-                    continue
-                
-                # Check spatial distance
-                distance = ((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2) ** 0.5
-                if distance > MAX_POSITION_DISTANCE:
-                    continue
-                
-                # Check size similarity
-                size1 = info1['avg_size']
-                size2 = info2['avg_size']
-                w_ratio = max(size1[0], size2[0]) / max(min(size1[0], size2[0]), 1)
-                h_ratio = max(size1[1], size2[1]) / max(min(size1[1], size2[1]), 1)
-                
-                if w_ratio > MAX_SIZE_RATIO or h_ratio > MAX_SIZE_RATIO:
-                    continue
-                
-                # Merge!
-                group.append(tid2)
+                merged.add(tid1)
                 merged.add(tid2)
-                logger.debug(f"Merging track #{tid2} into #{tid1} (gap={gap}, dist={distance:.1f})")
             
-            merge_groups.append(group)
-            merged.add(tid1)
-        
-        # Create merged tracks
-        merged_tracks = {}
-        next_track_id = 1
-        
-        for group in merge_groups:
-            if len(group) == 1:
-                # No merge needed, keep original track (but renumber)
-                old_track = tracks[group[0]]
-                new_track = TrackedObject(track_id=next_track_id, class_name=old_track.class_name)
-                for det in old_track.detections:
-                    new_track.add_detection(det)
-                merged_tracks[next_track_id] = new_track
-            else:
-                # Merge all tracks in group
+            # Build final groups
+            groups_by_id = {}
+            for tid, group_id in merge_groups.items():
+                if group_id not in groups_by_id:
+                    groups_by_id[group_id] = []
+                groups_by_id[group_id].append(tid)
+            
+            # Add unmerged tracks as single-item groups
+            for tid in track_ids:
+                if tid not in merged:
+                    groups_by_id[next_group] = [tid]
+                    next_group += 1
+            
+            # Create merged tracks
+            new_tracks = {}
+            next_track_id = 1
+            
+            merges_this_pass = 0
+            for group in groups_by_id.values():
                 all_detections = []
                 class_name = "forklift"
+                
                 for tid in group:
                     all_detections.extend(track_infos[tid]['detections'])
-                    class_name = tracks[tid].class_name
+                    class_name = current_tracks[tid].class_name
                 
-                # Sort by frame and create new merged track
+                # Sort by frame and create new track
                 all_detections.sort(key=lambda d: d.frame_id)
                 new_track = TrackedObject(track_id=next_track_id, class_name=class_name)
                 for det in all_detections:
                     new_track.add_detection(det)
-                merged_tracks[next_track_id] = new_track
+                new_tracks[next_track_id] = new_track
                 
-                logger.info(f"Merged tracks {group} -> #{next_track_id} ({len(all_detections)} detections)")
+                if len(group) > 1:
+                    merges_this_pass += len(group) - 1
+                    logger.debug(f"Pass {pass_num+1}: Merged tracks {group} -> #{next_track_id}")
+                
+                next_track_id += 1
             
-            next_track_id += 1
+            logger.info(f"Merge pass {pass_num+1}: {len(current_tracks)} -> {len(new_tracks)} tracks ({merges_this_pass} merges)")
+            
+            if len(new_tracks) == len(current_tracks):
+                break  # No change, stop iterating
+            
+            current_tracks = new_tracks
         
-        return merged_tracks
+        return current_tracks
     
     def _filter_static_tracks(self, tracks: dict[int, TrackedObject]) -> dict[int, TrackedObject]:
         """
@@ -775,13 +1024,17 @@ class RoboflowBatchProcessor:
         """
         filtered = {}
         
+        if not tracks:
+            logger.warning("No tracks to filter!")
+            return filtered
+        
         for tid, track in tracks.items():
             # Check if track showed any significant movement
             if len(track.detections) < 2:
-                # Single detection - can't determine movement, skip if very short
-                if len(track.detections) == 1:
-                    logger.debug(f"Skipping single-detection track #{tid}")
-                    continue
+                # Single detection - keep it, might be important
+                logger.debug(f"Keeping single-detection track #{tid}")
+                filtered[tid] = track
+                continue
             
             # Calculate total displacement across all detections
             detections = track.detections
@@ -808,23 +1061,19 @@ class RoboflowBatchProcessor:
                              (curr_center[1] - first_center[1])**2) ** 0.5
                 max_displacement = max(max_displacement, from_start)
             
-            # RELAXED thresholds after track merging
-            # Since tracks are now merged, we check for overall movement
-            MIN_TOTAL_MOVEMENT = 30.0   # Total movement > 30 pixels (relaxed)
-            MIN_MAX_DISPLACEMENT = 20.0  # OR max displacement from start > 20 pixels (relaxed)
+            # Very relaxed thresholds - we don't want to filter real forklifts
+            # Forklifts that appear to be stationary might just be idle
+            MIN_TOTAL_MOVEMENT = 5.0   # Very minimal movement threshold
             
-            # Minimum detections - relaxed since merging might not have combined all fragments
-            MIN_DETECTIONS = 2
-            
-            if len(detections) < MIN_DETECTIONS:
-                logger.info(f"Filtering short-lived track #{tid}: only {len(detections)} detections")
-                continue
-            
-            if total_displacement > MIN_TOTAL_MOVEMENT or max_displacement > MIN_MAX_DISPLACEMENT:
+            # Always keep tracks with multiple detections - they're likely real
+            if len(detections) >= 2:
                 filtered[tid] = track
-                logger.debug(f"Track #{tid} accepted: total_disp={total_displacement:.1f}, max_disp={max_displacement:.1f}, detections={len(detections)}")
+                logger.debug(f"Track #{tid} accepted: {len(detections)} detections, total_disp={total_displacement:.1f}")
+            elif total_displacement > MIN_TOTAL_MOVEMENT:
+                filtered[tid] = track
+                logger.debug(f"Track #{tid} accepted: total_disp={total_displacement:.1f}")
             else:
-                logger.info(f"Filtering static track #{tid}: total_disp={total_displacement:.1f}, max_disp={max_displacement:.1f} (likely false positive)")
+                logger.debug(f"Filtering static track #{tid}: total_disp={total_displacement:.1f}")
         
         return filtered
     
@@ -1029,36 +1278,42 @@ class RoboflowBatchProcessor:
         """
         HYBRID FILTER 4: Filter tracks with fragmented/sparse detections.
         
-        Real forklifts should be detected in multiple frames, but detection density
-        can be lower due to model inconsistency. We check for extremely fragmented
-        tracks that are likely false positives (e.g., detected in only 2 out of 100 frames).
+        Real forklifts should be detected in multiple frames, but at 3 FPS with
+        cloud detection, we may only get 3-15 detections per forklift in a 39-second video.
+        
+        This filter now only removes tracks that are OBVIOUSLY noise:
+        - Single detection tracks with huge span
+        - Extremely scattered detections (1-2 detections across 100+ frames)
         """
         filtered = {}
-        MIN_DENSITY = 0.08  # Require at least 8% detection density (relaxed for model inconsistency)
-        MIN_DETECTIONS_FOR_GAP_CHECK = 4
+        
+        # Very relaxed: at 3 FPS for 39 seconds, we have ~117 frames
+        # A forklift visible for 50% of the video at 3 FPS would have ~58 frames
+        # But detection might miss many, so accept as low as 3%
+        MIN_DENSITY = 0.02  # Only 2% density required
+        MIN_DETECTIONS = 2  # Need at least 2 detections to not be noise
+        MIN_SPAN_FOR_FILTER = 50  # Only apply density filter for long spans
         
         for tid, track in tracks.items():
-            if len(track.detections) < MIN_DETECTIONS_FOR_GAP_CHECK:
-                filtered[tid] = track
-                continue
+            num_detections = len(track.detections)
             
-            # Get frame IDs from detections
-            frame_ids = sorted([det.frame_id for det in track.detections])
-            
-            # Calculate span and density
-            span = frame_ids[-1] - frame_ids[0] + 1  # Total frames between first and last detection
-            actual_detections = len(frame_ids)
-            
-            if span > 0:
-                density = actual_detections / span
+            # Keep all tracks with multiple detections
+            if num_detections >= MIN_DETECTIONS:
+                # Get frame IDs
+                frame_ids = sorted([det.frame_id for det in track.detections])
+                span = frame_ids[-1] - frame_ids[0] + 1
                 
-                # Only filter EXTREMELY fragmented tracks
-                # This catches tracks that appear randomly (e.g., 3 detections across 100 frames)
-                if density < MIN_DENSITY and span > 30:  # Only check if span is significant
-                    logger.info(f"Filtering fragmented track #{tid}: density={density:.2f}, span={span}")
-                    continue
-            
-            filtered[tid] = track
+                # Only check density for tracks with very long spans
+                if span > MIN_SPAN_FOR_FILTER:
+                    density = num_detections / span
+                    if density < MIN_DENSITY:
+                        logger.info(f"Filtering sparse track #{tid}: {num_detections} detections over {span} frames (density={density:.3f})")
+                        continue
+                
+                filtered[tid] = track
+                logger.debug(f"Keeping track #{tid}: {num_detections} detections over span={span if num_detections > 1 else 0}")
+            else:
+                logger.debug(f"Filtering single-detection track #{tid}")
         
         return filtered
     
