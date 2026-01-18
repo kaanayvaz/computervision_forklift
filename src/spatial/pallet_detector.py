@@ -45,10 +45,16 @@ class SpatialAnalyzer:
         # Handle nested config structure
         spatial_config = config.get("spatial", config)
         
-        self.iou_threshold = spatial_config.get("pallet_iou_threshold", 0.3)
+        # STRICT thresholds - pallet must actually overlap forklift, not just be nearby
+        self.iou_threshold = spatial_config.get("pallet_iou_threshold", 0.15)
         self.containment_threshold = spatial_config.get("pallet_containment_threshold", 0.5)
-        self.vertical_offset_max = spatial_config.get("vertical_offset_max", 50)
-        self.fork_zone_ratio = spatial_config.get("fork_zone_ratio", 0.4)
+        self.vertical_offset_max = spatial_config.get("vertical_offset_max", 30)  # Tighter
+        self.fork_zone_ratio = spatial_config.get("fork_zone_ratio", 0.5)  # Forks in lower 50%
+        
+        # CRITICAL: Minimum requirements for "carrying" detection
+        # These MUST be met regardless of score
+        self.min_iou_required = 0.08  # Must have at least 8% overlap
+        self.min_containment_required = 0.30  # Pallet 30%+ inside forklift bbox
         
         logger.info(
             f"SpatialAnalyzer initialized: "
@@ -83,24 +89,46 @@ class SpatialAnalyzer:
         if not pallets:
             return False, 0.0, None
         
-        # Find best matching pallet
+        # Find best matching pallet with STRICT criteria
         best_pallet: Optional[Detection] = None
         best_score = 0.0
+        best_iou = 0.0
+        best_containment = 0.0
         
         for pallet in pallets:
+            # Compute raw IoU and containment first
+            forklift_tuple = forklift_bbox.as_tuple()
+            pallet_tuple = pallet.bbox.as_tuple()
+            
+            iou = compute_iou(forklift_tuple, pallet_tuple)
+            containment = compute_containment(pallet_tuple, forklift_tuple)
+            
+            # STRICT: Skip pallets that don't actually overlap with forklift
+            # This prevents nearby stacked pallets from being associated
+            if iou < self.min_iou_required:
+                continue  # No real overlap - skip this pallet
+            
+            if containment < self.min_containment_required:
+                continue  # Pallet not inside forklift bbox - skip
+            
             score = self._compute_association_score(forklift_bbox, pallet.bbox)
             
             if score > best_score:
                 best_score = score
                 best_pallet = pallet
+                best_iou = iou
+                best_containment = containment
         
-        # Determine if carrying based on score threshold
-        # Score > 0.5 indicates likely association
-        is_carrying = best_score > 0.5
+        # STRICT: Determine if carrying - need high score AND real overlap
+        is_carrying = (
+            best_score > 0.6 and  # Higher threshold
+            best_iou >= self.min_iou_required and
+            best_containment >= self.min_containment_required
+        )
         
         if is_carrying:
             logger.debug(
-                f"Forklift carrying pallet: score={best_score:.2f}"
+                f"Forklift carrying pallet: score={best_score:.2f}, iou={best_iou:.2f}, containment={best_containment:.2f}"
             )
         
         return is_carrying, best_score, best_pallet if is_carrying else None
