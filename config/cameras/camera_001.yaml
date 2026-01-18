@@ -1,0 +1,54 @@
+# Camera-specific calibration - Camera 001
+# Copy this template for each camera and adjust values
+
+camera:
+  id: "camera_001"
+  name: "Warehouse Zone A - Entrance"
+  
+  # Camera position and view characteristics
+  location:
+    zone: "Zone A"
+    description: "Main entrance and staging area"
+
+# Ground plane calibration
+calibration:
+  # Y-coordinate of ground line in frame (pixels from top)
+  ground_line_y: 650
+  
+  # Pixels-per-meter ratio at ground level (for distance calculations)
+  # Measure known distance in warehouse and calibrate
+  pixels_per_meter: 50.0
+  
+  # Region of interest polygon (x, y coordinates)
+  # Only detections within this polygon are processed
+  roi_polygon:
+    - [50, 100]
+    - [1230, 100]
+    - [1230, 700]
+    - [50, 700]
+
+# Zone definitions for activity tracking
+zones:
+  loading_dock:
+    type: "loading_zone"
+    polygon:
+      - [800, 400]
+      - [1200, 400]
+      - [1200, 700]
+      - [800, 700]
+    
+  staging_area:
+    type: "staging_zone"  
+    polygon:
+      - [100, 400]
+      - [500, 400]
+      - [500, 700]
+      - [100, 700]
+
+# Camera-specific detection adjustments
+detection_overrides:
+  # Override global confidence for this camera if needed
+  confidence_threshold: null  # null = use global setting
+  
+  # Scale factor for this camera's resolution relative to training
+  scale_factor: 1.0

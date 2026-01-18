@@ -1,0 +1,46 @@
+# Forklift Analytics - Inference Configuration
+# Model and detection settings for production inference
+
+model:
+  # Path to YOLO model weights (relative to project root)
+  weights_path: "models/yolov8s.pt"
+  
+  # Device for inference: "cuda", "cpu", or specific GPU like "cuda:0"
+  device: "cuda"
+  
+  # Use half precision (FP16) for faster inference on GPU
+  half_precision: true
+
+detection:
+  # Minimum confidence threshold for detections
+  confidence_threshold: 0.5
+  
+  # IoU threshold for non-maximum suppression
+  iou_threshold: 0.45
+  
+  # Class ID mappings (adjust based on your trained model)
+  # If using custom model, update these IDs
+  classes:
+    forklift: 0
+    pallet: 1
+    person: 2
+
+processing:
+  # Number of frames to process in each batch
+  batch_size: 1
+  
+  # Process every Nth frame (1 = all frames, 2 = every other frame)
+  frame_skip: 2
+  
+  # Maximum resolution [width, height] - frames will be resized if larger
+  max_resolution: [1280, 720]
+  
+  # Video output codec (use 'mp4v' for mp4, 'XVID' for avi)
+  output_codec: "mp4v"
+
+logging:
+  # Logging level: DEBUG, INFO, WARNING, ERROR
+  level: "INFO"
+  
+  # Log file path (null for console only)
+  file_path: "data/outputs/logs/inference.log"

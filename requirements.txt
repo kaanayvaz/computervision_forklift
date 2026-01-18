@@ -1,0 +1,21 @@
+# Core ML/CV
+ultralytics>=8.0.0
+opencv-python>=4.8.0
+torch>=2.0.0
+numpy>=1.24.0
+
+# Tracking
+supervision>=0.16.0
+
+# Configuration
+pyyaml>=6.0
+
+# Utilities
+tqdm>=4.65.0
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Type checking (optional)
+mypy>=1.5.0

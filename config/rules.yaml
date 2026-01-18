@@ -1,0 +1,84 @@
+# Forklift Analytics - Rule-Based Classification Rules
+# All thresholds and logic rules for state classification
+
+# Spatial rules for pallet-on-forklift detection
+spatial:
+  # Minimum IoU between pallet and forklift bbox to consider association
+  pallet_iou_threshold: 0.3
+  
+  # Minimum containment ratio (pallet area inside forklift bbox / pallet area)
+  pallet_containment_threshold: 0.5
+  
+  # Maximum vertical offset (pixels) for pallet to be considered "on forks"
+  # Pallet centroid must be within this distance from forklift bottom
+  vertical_offset_max: 50
+  
+  # Pallet must be in lower N% of forklift bbox to be considered "on forks"
+  fork_zone_ratio: 0.4
+
+# Motion estimation parameters
+motion:
+  # Velocity below this threshold (pixels/frame) = stationary
+  velocity_idle_threshold: 2.0
+  
+  # Number of frames for velocity smoothing (moving average)
+  smoothing_window: 5
+  
+  # Minimum track history length to estimate velocity
+  min_history_length: 3
+
+# State classification rules
+state:
+  # Minimum duration (seconds) of IDLE state to be flagged as significant idle
+  idle_duration_threshold: 30
+  
+  # Timeout (seconds) without person detection to flag as "operator absent"
+  operator_absent_timeout: 60
+  
+  # Maximum distance (pixels) between person and forklift for association
+  operator_proximity_threshold: 100
+  
+  # Number of consecutive frames to confirm state change (prevents flickering)
+  state_confirmation_frames: 5
+  
+  # Hysteresis for state transitions (prevents rapid switching)
+  hysteresis:
+    idle_to_moving: 3.0      # velocity must exceed idle_threshold by this factor
+    moving_to_idle: 0.5      # velocity must drop below idle_threshold * this factor
+
+# Activity classification  
+activity:
+  # Minimum activity duration (seconds) to include in reports
+  min_duration: 5.0
+  
+  # Merge activities shorter than this duration (seconds) with neighbors
+  merge_threshold: 3.0
+  
+  # Non-value-added activity definitions
+  non_value_added:
+    # Idle waiting: forklift stationary without load operation
+    idle_waiting:
+      min_duration: 30
+      description: "Forklift stationary without productive activity"
+    
+    # Blocked: forklift stationary with another forklift nearby
+    blocked:
+      proximity_threshold: 200  # pixels
+      min_duration: 15
+      description: "Forklift blocked by another vehicle"
+    
+    # Operator absent: no person detected near stationary forklift
+    operator_absent:
+      min_duration: 60
+      description: "No operator detected near stationary forklift"
+
+# Analytics and cost calculations
+analytics:
+  # Cost per hour of forklift idle time (USD)
+  cost_per_idle_hour: 75.0
+  
+  # Standard shift duration for utilization calculations
+  shift_duration_hours: 8
+  
+  # Working hours per day for daily reports
+  working_hours_per_day: 8
