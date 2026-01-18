@@ -205,3 +205,19 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+# Video files (large files, not for version control)
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.wmv
+*.flv
+*.webm
+*.m4v
+data/outputs/videos/
+data/sample_videos/*.mp4
+data/sample_videos/*.avi
+
+# Large model files (optional - uncomment if needed)
+# *.pt
+# models/*.pt
