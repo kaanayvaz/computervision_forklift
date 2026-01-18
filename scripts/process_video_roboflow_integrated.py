@@ -110,6 +110,12 @@ Environment Variables (in .env file):
         help="Custom name for output files (default: video filename)"
     )
     
+    parser.add_argument(
+        "--skip-pallet",
+        action="store_true",
+        help="Skip pallet detection (use if pallet model causes issues)"
+    )
+    
     return parser.parse_args()
 
 
@@ -139,7 +145,8 @@ def main():
         output_dir=args.output_dir,
         visualize=not args.no_visualize,
         fps=args.fps,
-        confidence=args.confidence
+        confidence=args.confidence,
+        skip_pallet_detection=args.skip_pallet  # NEW: skip pallet if causing issues
     )
     
     # Process video

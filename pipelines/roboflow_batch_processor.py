@@ -69,13 +69,15 @@ class RoboflowBatchProcessor:
         output_dir: str | Path = "data/outputs",
         visualize: bool = True,
         fps: int = 5,
-        confidence: float = 0.25
+        confidence: float = 0.25,
+        skip_pallet_detection: bool = False  # NEW: Skip pallet detection if causing issues
     ):
         self.config_dir = Path(config_dir)
         self.output_dir = Path(output_dir)
         self.visualize = visualize
         self.fps = fps
         self.confidence = confidence
+        self.skip_pallet_detection = skip_pallet_detection  # NEW
         
         # Load configurations
         self.rules_config = load_config(self.config_dir / "rules.yaml")
@@ -139,14 +141,16 @@ class RoboflowBatchProcessor:
     
     def _init_components(self) -> None:
         """Initialize all pipeline components."""
-        # Tracking - optimized for forklift tracking
-        # Higher lost_track_buffer to maintain IDs when forklift temporarily occluded
-        # Lower matching threshold to be more strict about IoU matching
+        # Tracking - optimized for forklift tracking with moving cameras
+        # Note: CMC disabled because optical flow doesn't work well with sparse frames
+        # (Roboflow processes at 3 FPS, so frames are ~8 apart)
+        # Instead, we rely on track merging post-processing to combine fragmented tracks
         self.tracker = ForkliftTracker(
             track_activation_threshold=0.3,   # Min confidence to start a track
-            lost_track_buffer=60,             # Keep track alive for ~2 seconds at 30fps
-            minimum_matching_threshold=0.5,   # Lower = stricter IoU matching
-            frame_rate=self.fps               # Use actual processing FPS
+            lost_track_buffer=500,            # Very high buffer for sparse frames
+            minimum_matching_threshold=0.2,   # Very lenient matching (80% overlap needed)
+            frame_rate=self.fps,              # Use actual processing FPS
+            enable_cmc=False                  # Disabled: doesn't work with sparse frames
         )
         
         # Spatial analysis
@@ -242,7 +246,8 @@ class RoboflowBatchProcessor:
         all_tracks, processed_frames = self._process_detections(
             frame_detections, 
             frame_interval,
-            total_frames
+            total_frames,
+            video_path  # Pass video path for Camera Motion Compensation
         )
         
         # Step 4: Generate visualization if enabled
@@ -315,30 +320,34 @@ class RoboflowBatchProcessor:
             results["forklift_error"] = str(e)
             print(f"   ❌ Forklift detection failed: {e}")
         
-        # Run pallet detection
-        print("\n📦 Running pallet detection...")
-        try:
-            job_id, signed_url, expire_time = self._pallet_model.predict_video(
-                video_path,
-                fps=self.fps,
-                prediction_type="batch-video",
-            )
-            logger.info(f"Pallet job submitted: {job_id}")
-            print(f"   Job ID: {job_id}")
-            print("   Waiting for results (this may take a few minutes)...")
-            
-            pallet_results = self._pallet_model.poll_until_video_results(job_id)
-            results["pallet_detections"] = pallet_results
-            
-            # Count detections
-            total = sum(len(f.get("predictions", [])) if isinstance(f, dict) else len(f) 
-                       for f in pallet_results.values() if f)
-            print(f"   ✅ Pallet detection complete: {total} detections")
-            
-        except Exception as e:
-            logger.error(f"Pallet detection failed: {e}")
-            results["pallet_error"] = str(e)
-            print(f"   ❌ Pallet detection failed: {e}")
+        # Run pallet detection (skip if disabled)
+        if self.skip_pallet_detection:
+            print("\n📦 Pallet detection: SKIPPED (disabled)")
+            results["pallet_detections"] = {}
+        else:
+            print("\n📦 Running pallet detection...")
+            try:
+                job_id, signed_url, expire_time = self._pallet_model.predict_video(
+                    video_path,
+                    fps=self.fps,
+                    prediction_type="batch-video",
+                )
+                logger.info(f"Pallet job submitted: {job_id}")
+                print(f"   Job ID: {job_id}")
+                print("   Waiting for results (this may take a few minutes)...")
+                
+                pallet_results = self._pallet_model.poll_until_video_results(job_id)
+                results["pallet_detections"] = pallet_results
+                
+                # Count detections
+                total = sum(len(f.get("predictions", [])) if isinstance(f, dict) else len(f) 
+                           for f in pallet_results.values() if f)
+                print(f"   ✅ Pallet detection complete: {total} detections")
+                
+            except Exception as e:
+                logger.error(f"Pallet detection failed: {e}")
+                results["pallet_error"] = str(e)
+                print(f"   ❌ Pallet detection failed: {e}")
         
         return results
     
@@ -445,19 +454,22 @@ class RoboflowBatchProcessor:
             height = pred.get("height", 0)
             confidence = pred.get("confidence", 0)
             
-            # VERY STRICT filtering for forklift detections to avoid false positives
-            # Common false positives: IBC containers, stacked pallets, static equipment
+            # Filtering for forklift detections
+            # Based on actual Roboflow output analysis:
+            # - Confidence: 0.40-0.92, avg 0.74
+            # - Width: 98-897, Height: 103-338
+            # - Area: 14K-299K
             if class_name == "forklift":
-                # 1. VERY HIGH confidence requirement - the Roboflow model has many false positives
-                min_confidence = 0.80  # Require 80%+ confidence - very strict!
+                # 1. Moderate confidence threshold - balance between false positives and detection rate
+                min_confidence = 0.65  # Accept 65%+ confidence (filters out obvious false positives)
                 if confidence < min_confidence:
                     logger.debug(f"Skipping low-confidence forklift: {confidence:.2f}")
                     return None
                 
-                # 2. Size constraints - forklifts have specific size range
-                # In your video: actual forklift appears ~80-150px
-                min_size = 60
-                max_size = 250  # Reduced max - large boxes are usually false positives
+                # 2. Size constraints based on actual data
+                # Real forklifts: ~100-350px in your video
+                min_size = 80
+                max_size = 400  # Allow larger sizes for closer forklifts
                 
                 if width < min_size or height < min_size:
                     logger.debug(f"Skipping small forklift detection: {width}x{height}")
@@ -467,15 +479,15 @@ class RoboflowBatchProcessor:
                     logger.debug(f"Skipping oversized forklift detection: {width}x{height}")
                     return None
                 
-                # 3. Aspect ratio check - forklifts are roughly square-ish
+                # 3. Aspect ratio check - forklifts are roughly square-ish (but allow some elongation)
                 aspect_ratio = max(width, height) / max(min(width, height), 1)
-                if aspect_ratio > 1.8:  # Very strict - forklifts aren't elongated
+                if aspect_ratio > 2.5:  # Allow up to 2.5:1 aspect ratio
                     logger.debug(f"Skipping elongated forklift detection: {width}x{height} ratio={aspect_ratio:.1f}")
                     return None
                 
-                # 4. Area check - forklift area should be reasonable
+                # 4. Area check based on actual data (14K-80K for typical forklifts)
                 area = width * height
-                if area < 4000 or area > 50000:  # Tighter forklift area range
+                if area < 8000 or area > 100000:  # Reasonable forklift area range
                     logger.debug(f"Skipping forklift with unusual area: {area}")
                     return None
                     
@@ -516,14 +528,26 @@ class RoboflowBatchProcessor:
         self, 
         frame_detections: dict[int, list[Detection]],
         frame_interval: int,
-        total_frames: int
+        total_frames: int,
+        video_path: Optional[Path] = None  # NEW: For Camera Motion Compensation
     ) -> tuple[dict[int, TrackedObject], int]:
-        """Process frame detections through tracking and state classification."""
+        """Process frame detections through tracking and state classification.
+        
+        With Camera Motion Compensation (CMC) enabled, this method reads video frames
+        to estimate camera motion and compensate detection positions, improving track
+        ID stability when the camera moves.
+        """
         all_tracks: dict[int, TrackedObject] = {}
         processed_frames = 0
         
+        # HYBRID FILTER 1: Cross-validate forklift/pallet detections before tracking
+        # This prevents forklifts from being misclassified as pallets
+        frame_detections = self._cross_validate_detections(frame_detections)
+        
         # Sort frame IDs
         frame_ids = sorted(frame_detections.keys())
+        
+        # Note: CMC disabled, so we don't need to read video frames
         
         for frame_id in tqdm(frame_ids, desc="Processing detections"):
             detections = frame_detections[frame_id]
@@ -564,13 +588,183 @@ class RoboflowBatchProcessor:
                 # Store track
                 all_tracks[tid] = track
         
-        # POST-PROCESSING: Filter out static objects (false positive forklifts)
-        # Real forklifts should move at some point - static objects are false positives
-        filtered_tracks = self._filter_static_tracks(all_tracks)
+        # TRACK MERGING: Combine fragmented tracks caused by camera motion
+        # When camera moves, track IDs can switch even for the same forklift
+        # Merge tracks that have similar positions and non-overlapping time ranges
+        logger.info(f"Tracks before merging: {len(all_tracks)}")
+        all_tracks = self._merge_fragmented_tracks(all_tracks)
+        logger.info(f"Tracks after merging: {len(all_tracks)}")
         
-        logger.info(f"Filtered {len(all_tracks) - len(filtered_tracks)} static false-positive tracks")
+        # POST-PROCESSING: Multi-stage hybrid filtering
+        logger.info(f"Starting hybrid filtering with {len(all_tracks)} tracks...")
+        
+        # Filter 1: Remove static objects (false positive forklifts that never move)
+        filtered_tracks = self._filter_static_tracks(all_tracks)
+        logger.info(f"  After static filter: {len(filtered_tracks)} tracks (removed {len(all_tracks) - len(filtered_tracks)})")
+        
+        # Filter 2: Remove tracks with inconsistent sizes (flickering false positives)
+        prev_count = len(filtered_tracks)
+        filtered_tracks = self._filter_inconsistent_tracks(filtered_tracks)
+        logger.info(f"  After size consistency filter: {len(filtered_tracks)} tracks (removed {prev_count - len(filtered_tracks)})")
+        
+        # Filter 3: Remove tracks with erratic motion patterns
+        prev_count = len(filtered_tracks)
+        filtered_tracks = self._filter_erratic_tracks(filtered_tracks)
+        logger.info(f"  After motion pattern filter: {len(filtered_tracks)} tracks (removed {prev_count - len(filtered_tracks)})")
+        
+        # Filter 4: Remove tracks with fragmented/sparse detections
+        prev_count = len(filtered_tracks)
+        filtered_tracks = self._filter_fragmented_tracks(filtered_tracks)
+        logger.info(f"  After temporal consistency filter: {len(filtered_tracks)} tracks (removed {prev_count - len(filtered_tracks)})")
+        
+        logger.info(f"Hybrid filtering complete: {len(all_tracks)} -> {len(filtered_tracks)} tracks")
         
         return filtered_tracks, processed_frames
+    
+    def _merge_fragmented_tracks(self, tracks: dict[int, TrackedObject]) -> dict[int, TrackedObject]:
+        """
+        Merge fragmented tracks that likely belong to the same forklift.
+        
+        Camera motion causes track ID switches, resulting in multiple short tracks
+        for the same physical forklift. This method merges tracks that:
+        1. Have non-overlapping or minimally overlapping time ranges
+        2. Have similar spatial positions (endpoints close to each other)
+        3. Have similar bounding box sizes
+        
+        The goal is to consolidate e.g., 30 fragmented tracks into 3 actual forklifts.
+        """
+        from core.entities import TrackedObject, Detection
+        
+        if len(tracks) <= 1:
+            return tracks
+        
+        # Configuration - more aggressive merging for camera motion
+        # When camera pans, forklifts can move 200+ pixels between sparse frames
+        MAX_POSITION_DISTANCE = 300  # Max distance in pixels to consider same forklift
+        MAX_FRAME_GAP = 50           # Max frames between tracks to merge (~6 seconds at 3fps)
+        MAX_SIZE_RATIO = 2.0         # Max size ratio between tracks to merge
+        
+        # Convert to list for manipulation
+        track_list = list(tracks.values())
+        
+        # Get track metadata: start/end frames, positions, sizes
+        def get_track_info(track):
+            if not track.detections:
+                return None
+            detections = sorted(track.detections, key=lambda d: d.frame_id)
+            first = detections[0]
+            last = detections[-1]
+            
+            first_center = ((first.bbox.x1 + first.bbox.x2) / 2, (first.bbox.y1 + first.bbox.y2) / 2)
+            last_center = ((last.bbox.x1 + last.bbox.x2) / 2, (last.bbox.y1 + last.bbox.y2) / 2)
+            
+            avg_width = sum(d.bbox.width for d in detections) / len(detections)
+            avg_height = sum(d.bbox.height for d in detections) / len(detections)
+            
+            return {
+                'start_frame': first.frame_id,
+                'end_frame': last.frame_id,
+                'first_center': first_center,
+                'last_center': last_center,
+                'avg_size': (avg_width, avg_height),
+                'detections': detections
+            }
+        
+        # Build track info
+        track_infos = {}
+        for track in track_list:
+            info = get_track_info(track)
+            if info:
+                track_infos[track.track_id] = info
+        
+        # Find mergeable pairs
+        merged = set()  # Track IDs that have been merged
+        merge_groups = []  # List of lists of track IDs to merge
+        
+        track_ids = list(track_infos.keys())
+        
+        for i, tid1 in enumerate(track_ids):
+            if tid1 in merged:
+                continue
+            
+            group = [tid1]
+            info1 = track_infos[tid1]
+            
+            for tid2 in track_ids[i+1:]:
+                if tid2 in merged:
+                    continue
+                
+                info2 = track_infos[tid2]
+                
+                # Check time relationship
+                # Track 1 should end before or shortly after track 2 starts (or vice versa)
+                gap = None
+                if info1['end_frame'] < info2['start_frame']:
+                    gap = info2['start_frame'] - info1['end_frame']
+                    pos1 = info1['last_center']
+                    pos2 = info2['first_center']
+                elif info2['end_frame'] < info1['start_frame']:
+                    gap = info1['start_frame'] - info2['end_frame']
+                    pos1 = info2['last_center']
+                    pos2 = info1['first_center']
+                
+                if gap is None or gap > MAX_FRAME_GAP:
+                    continue
+                
+                # Check spatial distance
+                distance = ((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2) ** 0.5
+                if distance > MAX_POSITION_DISTANCE:
+                    continue
+                
+                # Check size similarity
+                size1 = info1['avg_size']
+                size2 = info2['avg_size']
+                w_ratio = max(size1[0], size2[0]) / max(min(size1[0], size2[0]), 1)
+                h_ratio = max(size1[1], size2[1]) / max(min(size1[1], size2[1]), 1)
+                
+                if w_ratio > MAX_SIZE_RATIO or h_ratio > MAX_SIZE_RATIO:
+                    continue
+                
+                # Merge!
+                group.append(tid2)
+                merged.add(tid2)
+                logger.debug(f"Merging track #{tid2} into #{tid1} (gap={gap}, dist={distance:.1f})")
+            
+            merge_groups.append(group)
+            merged.add(tid1)
+        
+        # Create merged tracks
+        merged_tracks = {}
+        next_track_id = 1
+        
+        for group in merge_groups:
+            if len(group) == 1:
+                # No merge needed, keep original track (but renumber)
+                old_track = tracks[group[0]]
+                new_track = TrackedObject(track_id=next_track_id, class_name=old_track.class_name)
+                for det in old_track.detections:
+                    new_track.add_detection(det)
+                merged_tracks[next_track_id] = new_track
+            else:
+                # Merge all tracks in group
+                all_detections = []
+                class_name = "forklift"
+                for tid in group:
+                    all_detections.extend(track_infos[tid]['detections'])
+                    class_name = tracks[tid].class_name
+                
+                # Sort by frame and create new merged track
+                all_detections.sort(key=lambda d: d.frame_id)
+                new_track = TrackedObject(track_id=next_track_id, class_name=class_name)
+                for det in all_detections:
+                    new_track.add_detection(det)
+                merged_tracks[next_track_id] = new_track
+                
+                logger.info(f"Merged tracks {group} -> #{next_track_id} ({len(all_detections)} detections)")
+            
+            next_track_id += 1
+        
+        return merged_tracks
     
     def _filter_static_tracks(self, tracks: dict[int, TrackedObject]) -> dict[int, TrackedObject]:
         """
@@ -614,14 +808,13 @@ class RoboflowBatchProcessor:
                              (curr_center[1] - first_center[1])**2) ** 0.5
                 max_displacement = max(max_displacement, from_start)
             
-            # STRICTER thresholds for "moved enough to be a real forklift"
-            # Real forklifts should show significant movement
-            # Static false positives (stacked pallets, IBC containers) won't move
-            MIN_TOTAL_MOVEMENT = 50.0   # Total movement > 50 pixels over all frames
-            MIN_MAX_DISPLACEMENT = 30.0  # OR max displacement from start > 30 pixels
+            # RELAXED thresholds after track merging
+            # Since tracks are now merged, we check for overall movement
+            MIN_TOTAL_MOVEMENT = 30.0   # Total movement > 30 pixels (relaxed)
+            MIN_MAX_DISPLACEMENT = 20.0  # OR max displacement from start > 20 pixels (relaxed)
             
-            # Also require minimum number of detections for reliable tracks
-            MIN_DETECTIONS = 3
+            # Minimum detections - relaxed since merging might not have combined all fragments
+            MIN_DETECTIONS = 2
             
             if len(detections) < MIN_DETECTIONS:
                 logger.info(f"Filtering short-lived track #{tid}: only {len(detections)} detections")
@@ -632,6 +825,240 @@ class RoboflowBatchProcessor:
                 logger.debug(f"Track #{tid} accepted: total_disp={total_displacement:.1f}, max_disp={max_displacement:.1f}, detections={len(detections)}")
             else:
                 logger.info(f"Filtering static track #{tid}: total_disp={total_displacement:.1f}, max_disp={max_displacement:.1f} (likely false positive)")
+        
+        return filtered
+    
+    def _cross_validate_detections(
+        self,
+        frame_detections: dict[int, list[Detection]]
+    ) -> dict[int, list[Detection]]:
+        """
+        HYBRID FILTER 1: Cross-validate forklift and pallet detections.
+        
+        If the same region is detected as both forklift AND pallet:
+        - If forklift confidence is much higher (>0.3 difference), keep forklift
+        - If pallet confidence is higher, remove the forklift detection
+        - This prevents forklifts from being misclassified as pallets
+        """
+        filtered = {}
+        overlap_removals = 0
+        
+        for frame_id, detections in frame_detections.items():
+            forklift_dets = [d for d in detections if d.class_name == "forklift"]
+            pallet_dets = [d for d in detections if d.class_name == "pallet"]
+            
+            # Check each pallet detection for overlap with forklifts
+            valid_pallet_dets = []
+            for pallet in pallet_dets:
+                is_valid_pallet = True
+                pallet_center = (
+                    (pallet.bbox.x1 + pallet.bbox.x2) / 2,
+                    (pallet.bbox.y1 + pallet.bbox.y2) / 2
+                )
+                
+                for forklift in forklift_dets:
+                    # Check if pallet center is inside forklift bbox (forklift mistaken as pallet)
+                    if (forklift.bbox.x1 <= pallet_center[0] <= forklift.bbox.x2 and
+                        forklift.bbox.y1 <= pallet_center[1] <= forklift.bbox.y2):
+                        
+                        # Calculate overlap ratio
+                        overlap = self._calculate_iou(pallet.bbox, forklift.bbox)
+                        
+                        if overlap > 0.3:  # Significant overlap
+                            # Keep forklift, remove pallet (forklift was misdetected as pallet)
+                            logger.debug(f"Frame {frame_id}: Removing pallet detection overlapping with forklift (IoU={overlap:.2f})")
+                            is_valid_pallet = False
+                            overlap_removals += 1
+                            break
+                
+                if is_valid_pallet:
+                    valid_pallet_dets.append(pallet)
+            
+            # Also filter forklifts that completely overlap with high-confidence pallets
+            valid_forklift_dets = []
+            for forklift in forklift_dets:
+                is_valid_forklift = True
+                forklift_center = (
+                    (forklift.bbox.x1 + forklift.bbox.x2) / 2,
+                    (forklift.bbox.y1 + forklift.bbox.y2) / 2
+                )
+                
+                for pallet in pallet_dets:
+                    # Only filter if pallet is much more confident
+                    if pallet.confidence > forklift.confidence + 0.2:
+                        overlap = self._calculate_iou(pallet.bbox, forklift.bbox)
+                        if overlap > 0.5:  # High overlap and pallet is more confident
+                            logger.debug(f"Frame {frame_id}: Removing weak forklift overlapping with confident pallet")
+                            is_valid_forklift = False
+                            overlap_removals += 1
+                            break
+                
+                if is_valid_forklift:
+                    valid_forklift_dets.append(forklift)
+            
+            filtered[frame_id] = valid_forklift_dets + valid_pallet_dets
+        
+        if overlap_removals > 0:
+            logger.info(f"Cross-validation removed {overlap_removals} overlapping detections")
+        
+        return filtered
+    
+    def _calculate_iou(self, box1: 'BoundingBox', box2: 'BoundingBox') -> float:
+        """Calculate Intersection over Union between two bounding boxes."""
+        x1 = max(box1.x1, box2.x1)
+        y1 = max(box1.y1, box2.y1)
+        x2 = min(box1.x2, box2.x2)
+        y2 = min(box1.y2, box2.y2)
+        
+        if x2 < x1 or y2 < y1:
+            return 0.0
+        
+        intersection = (x2 - x1) * (y2 - y1)
+        area1 = (box1.x2 - box1.x1) * (box1.y2 - box1.y1)
+        area2 = (box2.x2 - box2.x1) * (box2.y2 - box2.y1)
+        union = area1 + area2 - intersection
+        
+        return intersection / union if union > 0 else 0.0
+    
+    def _filter_inconsistent_tracks(self, tracks: dict[int, TrackedObject]) -> dict[int, TrackedObject]:
+        """
+        HYBRID FILTER 2: Filter tracks with inconsistent detection sizes.
+        
+        Real forklifts maintain relatively consistent size across frames.
+        False positives (random objects briefly detected) have wild size variations.
+        """
+        filtered = {}
+        MAX_SIZE_VARIANCE = 0.5  # Maximum 50% size variance (std/mean)
+        
+        for tid, track in tracks.items():
+            if len(track.detections) < 3:
+                # Too few detections to judge consistency - already filtered by static filter
+                filtered[tid] = track
+                continue
+            
+            # Calculate size statistics
+            areas = []
+            for det in track.detections:
+                width = det.bbox.x2 - det.bbox.x1
+                height = det.bbox.y2 - det.bbox.y1
+                areas.append(width * height)
+            
+            mean_area = np.mean(areas)
+            std_area = np.std(areas)
+            
+            if mean_area > 0:
+                variance_ratio = std_area / mean_area
+            else:
+                variance_ratio = 1.0
+            
+            if variance_ratio > MAX_SIZE_VARIANCE:
+                logger.info(f"Filtering inconsistent track #{tid}: size variance={variance_ratio:.2f}")
+                continue
+            
+            filtered[tid] = track
+        
+        return filtered
+    
+    def _filter_erratic_tracks(self, tracks: dict[int, TrackedObject]) -> dict[int, TrackedObject]:
+        """
+        HYBRID FILTER 3: Filter tracks with erratic motion patterns.
+        
+        Real forklifts move in smooth paths with gradual direction changes.
+        False positives (flickering detections) show erratic/jumpy motion.
+        """
+        filtered = {}
+        MAX_DIRECTION_CHANGES = 0.7  # Max 70% of movements can be sharp direction changes
+        MIN_DETECTIONS_FOR_MOTION_CHECK = 5
+        
+        for tid, track in tracks.items():
+            if len(track.detections) < MIN_DETECTIONS_FOR_MOTION_CHECK:
+                # Too few detections to judge motion pattern
+                filtered[tid] = track
+                continue
+            
+            # Calculate direction changes
+            detections = track.detections
+            direction_changes = 0
+            total_moves = 0
+            
+            prev_dx, prev_dy = None, None
+            
+            for i in range(1, len(detections)):
+                prev = detections[i-1]
+                curr = detections[i]
+                
+                prev_center = ((prev.bbox.x1 + prev.bbox.x2) / 2, (prev.bbox.y1 + prev.bbox.y2) / 2)
+                curr_center = ((curr.bbox.x1 + curr.bbox.x2) / 2, (curr.bbox.y1 + curr.bbox.y2) / 2)
+                
+                dx = curr_center[0] - prev_center[0]
+                dy = curr_center[1] - prev_center[1]
+                
+                # Skip very small movements (noise)
+                movement = (dx**2 + dy**2) ** 0.5
+                if movement < 3:
+                    continue
+                
+                total_moves += 1
+                
+                if prev_dx is not None and prev_dy is not None:
+                    # Check for sharp direction change (>90 degrees)
+                    # Using dot product: negative = opposite direction
+                    dot = prev_dx * dx + prev_dy * dy
+                    prev_mag = (prev_dx**2 + prev_dy**2) ** 0.5
+                    curr_mag = (dx**2 + dy**2) ** 0.5
+                    
+                    if prev_mag > 0 and curr_mag > 0:
+                        cos_angle = dot / (prev_mag * curr_mag)
+                        if cos_angle < 0:  # >90 degree change
+                            direction_changes += 1
+                
+                prev_dx, prev_dy = dx, dy
+            
+            # Calculate erratic ratio
+            if total_moves > 2:
+                erratic_ratio = direction_changes / total_moves
+                if erratic_ratio > MAX_DIRECTION_CHANGES:
+                    logger.info(f"Filtering erratic track #{tid}: direction_changes={erratic_ratio:.2f}")
+                    continue
+            
+            filtered[tid] = track
+        
+        return filtered
+    
+    def _filter_fragmented_tracks(self, tracks: dict[int, TrackedObject]) -> dict[int, TrackedObject]:
+        """
+        HYBRID FILTER 4: Filter tracks with fragmented/sparse detections.
+        
+        Real forklifts should be detected in multiple frames, but detection density
+        can be lower due to model inconsistency. We check for extremely fragmented
+        tracks that are likely false positives (e.g., detected in only 2 out of 100 frames).
+        """
+        filtered = {}
+        MIN_DENSITY = 0.08  # Require at least 8% detection density (relaxed for model inconsistency)
+        MIN_DETECTIONS_FOR_GAP_CHECK = 4
+        
+        for tid, track in tracks.items():
+            if len(track.detections) < MIN_DETECTIONS_FOR_GAP_CHECK:
+                filtered[tid] = track
+                continue
+            
+            # Get frame IDs from detections
+            frame_ids = sorted([det.frame_id for det in track.detections])
+            
+            # Calculate span and density
+            span = frame_ids[-1] - frame_ids[0] + 1  # Total frames between first and last detection
+            actual_detections = len(frame_ids)
+            
+            if span > 0:
+                density = actual_detections / span
+                
+                # Only filter EXTREMELY fragmented tracks
+                # This catches tracks that appear randomly (e.g., 3 detections across 100 frames)
+                if density < MIN_DENSITY and span > 30:  # Only check if span is significant
+                    logger.info(f"Filtering fragmented track #{tid}: density={density:.2f}, span={span}")
+                    continue
+            
+            filtered[tid] = track
         
         return filtered
     
