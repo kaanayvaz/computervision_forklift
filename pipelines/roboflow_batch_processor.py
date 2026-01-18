@@ -443,36 +443,55 @@ class RoboflowBatchProcessor:
             y = pred.get("y", 0)
             width = pred.get("width", 0)
             height = pred.get("height", 0)
+            confidence = pred.get("confidence", 0)
             
-            # Filter out invalid or unreasonably sized detections
-            # Forklift: typically 80-500px in warehouse CCTV footage
-            # Pallet: typically 40-400px
+            # VERY STRICT filtering for forklift detections to avoid false positives
+            # Common false positives: IBC containers, stacked pallets, static equipment
             if class_name == "forklift":
-                max_size = 600
-                min_size = 60  # Forklifts should be reasonably sized
-                min_confidence = 0.50  # Higher confidence for forklifts
-                # Also check aspect ratio - forklifts shouldn't be too elongated
-                aspect_ratio = max(width, height) / max(min(width, height), 1)
-                if aspect_ratio > 4.0:  # Skip very elongated boxes (likely false positives)
-                    logger.debug(f"Skipping elongated forklift detection: {width}x{height}")
+                # 1. VERY HIGH confidence requirement - the Roboflow model has many false positives
+                min_confidence = 0.80  # Require 80%+ confidence - very strict!
+                if confidence < min_confidence:
+                    logger.debug(f"Skipping low-confidence forklift: {confidence:.2f}")
                     return None
+                
+                # 2. Size constraints - forklifts have specific size range
+                # In your video: actual forklift appears ~80-150px
+                min_size = 60
+                max_size = 250  # Reduced max - large boxes are usually false positives
+                
+                if width < min_size or height < min_size:
+                    logger.debug(f"Skipping small forklift detection: {width}x{height}")
+                    return None
+                
+                if width > max_size or height > max_size:
+                    logger.debug(f"Skipping oversized forklift detection: {width}x{height}")
+                    return None
+                
+                # 3. Aspect ratio check - forklifts are roughly square-ish
+                aspect_ratio = max(width, height) / max(min(width, height), 1)
+                if aspect_ratio > 1.8:  # Very strict - forklifts aren't elongated
+                    logger.debug(f"Skipping elongated forklift detection: {width}x{height} ratio={aspect_ratio:.1f}")
+                    return None
+                
+                # 4. Area check - forklift area should be reasonable
+                area = width * height
+                if area < 4000 or area > 50000:  # Tighter forklift area range
+                    logger.debug(f"Skipping forklift with unusual area: {area}")
+                    return None
+                    
             else:  # pallet
                 max_size = 400
                 min_size = 30
-                min_confidence = 0.35
-            
-            if width > max_size or height > max_size:
-                logger.debug(f"Skipping oversized detection: {class_name} {width}x{height}")
-                return None
-            
-            if width < min_size or height < min_size:
-                logger.debug(f"Skipping undersized detection: {class_name} {width}x{height}")
-                return None
-            
-            # Filter low confidence
-            confidence = pred.get("confidence", 0)
-            if confidence < min_confidence:
-                return None
+                min_confidence = 0.40
+                
+                if confidence < min_confidence:
+                    return None
+                
+                if width > max_size or height > max_size:
+                    return None
+                
+                if width < min_size or height < min_size:
+                    return None
             
             # Convert to corner coordinates
             x1 = x - width / 2
@@ -545,7 +564,76 @@ class RoboflowBatchProcessor:
                 # Store track
                 all_tracks[tid] = track
         
-        return all_tracks, processed_frames
+        # POST-PROCESSING: Filter out static objects (false positive forklifts)
+        # Real forklifts should move at some point - static objects are false positives
+        filtered_tracks = self._filter_static_tracks(all_tracks)
+        
+        logger.info(f"Filtered {len(all_tracks) - len(filtered_tracks)} static false-positive tracks")
+        
+        return filtered_tracks, processed_frames
+    
+    def _filter_static_tracks(self, tracks: dict[int, TrackedObject]) -> dict[int, TrackedObject]:
+        """
+        Filter out tracks that never moved (likely false positives like IBC containers).
+        
+        A real forklift should show some movement during its tracked lifetime.
+        Static objects detected as forklifts are removed.
+        """
+        filtered = {}
+        
+        for tid, track in tracks.items():
+            # Check if track showed any significant movement
+            if len(track.detections) < 2:
+                # Single detection - can't determine movement, skip if very short
+                if len(track.detections) == 1:
+                    logger.debug(f"Skipping single-detection track #{tid}")
+                    continue
+            
+            # Calculate total displacement across all detections
+            detections = track.detections
+            total_displacement = 0.0
+            max_displacement = 0.0
+            
+            first_det = detections[0]
+            first_center = ((first_det.bbox.x1 + first_det.bbox.x2) / 2,
+                           (first_det.bbox.y1 + first_det.bbox.y2) / 2)
+            
+            for i in range(1, len(detections)):
+                prev = detections[i-1]
+                curr = detections[i]
+                
+                prev_center = ((prev.bbox.x1 + prev.bbox.x2) / 2, (prev.bbox.y1 + prev.bbox.y2) / 2)
+                curr_center = ((curr.bbox.x1 + curr.bbox.x2) / 2, (curr.bbox.y1 + curr.bbox.y2) / 2)
+                
+                displacement = ((curr_center[0] - prev_center[0])**2 + 
+                               (curr_center[1] - prev_center[1])**2) ** 0.5
+                total_displacement += displacement
+                
+                # Also track displacement from start
+                from_start = ((curr_center[0] - first_center[0])**2 + 
+                             (curr_center[1] - first_center[1])**2) ** 0.5
+                max_displacement = max(max_displacement, from_start)
+            
+            # STRICTER thresholds for "moved enough to be a real forklift"
+            # Real forklifts should show significant movement
+            # Static false positives (stacked pallets, IBC containers) won't move
+            MIN_TOTAL_MOVEMENT = 50.0   # Total movement > 50 pixels over all frames
+            MIN_MAX_DISPLACEMENT = 30.0  # OR max displacement from start > 30 pixels
+            
+            # Also require minimum number of detections for reliable tracks
+            MIN_DETECTIONS = 3
+            
+            if len(detections) < MIN_DETECTIONS:
+                logger.info(f"Filtering short-lived track #{tid}: only {len(detections)} detections")
+                continue
+            
+            if total_displacement > MIN_TOTAL_MOVEMENT or max_displacement > MIN_MAX_DISPLACEMENT:
+                filtered[tid] = track
+                logger.debug(f"Track #{tid} accepted: total_disp={total_displacement:.1f}, max_disp={max_displacement:.1f}, detections={len(detections)}")
+            else:
+                logger.info(f"Filtering static track #{tid}: total_disp={total_displacement:.1f}, max_disp={max_displacement:.1f} (likely false positive)")
+        
+        return filtered
     
     def _generate_visualization(
         self,
