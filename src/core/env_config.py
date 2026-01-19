@@ -66,7 +66,7 @@ def get_roboflow_config() -> dict:
     return {
         "api_key": api_key,
         "workspace": workspace,
-        "forklift_project": os.getenv("ROBOFLOW_FORKLIFT_PROJECT", "forklift-0jmzj-uvcoy"),
+        "forklift_project": os.getenv("ROBOFLOW_FORKLIFT_PROJECT", "forklift-i3vog-vwafw"),
         "forklift_version": int(os.getenv("ROBOFLOW_FORKLIFT_VERSION", "1")),
         "pallet_project": os.getenv("ROBOFLOW_PALLET_PROJECT", "pallet-unicd-k2rg0"),
         "pallet_version": int(os.getenv("ROBOFLOW_PALLET_VERSION", "1")),

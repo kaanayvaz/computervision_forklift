@@ -23,7 +23,7 @@ Open `.env` and add your Roboflow API key:
 ```env
 ROBOFLOW_API_KEY=your_actual_api_key_here
 ROBOFLOW_WORKSPACE=ss-rz6v8
-ROBOFLOW_FORKLIFT_PROJECT=forklift-0jmzj-uvcoy
+ROBOFLOW_FORKLIFT_PROJECT=forklift-i3vog-vwafw
 ROBOFLOW_FORKLIFT_VERSION=1
 ROBOFLOW_PALLET_PROJECT=pallet-6awi8-zcqu2
 ROBOFLOW_PALLET_VERSION=1
@@ -76,7 +76,7 @@ python scripts/process_video_roboflow.py --input video.mp4 --output outputs/
 |----------|-------------|----------|---------|
 | `ROBOFLOW_API_KEY` | Your Roboflow API key | Yes | - |
 | `ROBOFLOW_WORKSPACE` | Roboflow workspace name | No | ss-rz6v8 |
-| `ROBOFLOW_FORKLIFT_PROJECT` | Forklift detection project | No | forklift-0jmzj-uvcoy |
+| `ROBOFLOW_FORKLIFT_PROJECT` | Forklift detection project | No | forklift-i3vog-vwafw |
 | `ROBOFLOW_FORKLIFT_VERSION` | Forklift model version | No | 1 |
 | `ROBOFLOW_PALLET_PROJECT` | Pallet detection project | No | pallet-6awi8-zcqu2 |
 | `ROBOFLOW_PALLET_VERSION` | Pallet model version | No | 1 |

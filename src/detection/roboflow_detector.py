@@ -22,7 +22,7 @@ logger = get_logger(__name__)
 class RoboflowConfig:
     """Configuration for Roboflow API."""
     api_key: str
-    forklift_project: str = "forklift-0jmzj-uvcoy"
+    forklift_project: str = "forklift-i3vog-vwafw"
     forklift_version: int = 1
     pallet_project: str = "pallet-6awi8-zcqu2"
     pallet_version: int = 1

@@ -307,7 +307,7 @@ The codebase is well-structured and **fully functional**. All core components ve
 
 | Feature | Status | Implementation |
 |---------|--------|----------------|
-| Roboflow Forklift Detection | ✅ Complete | Cloud model `forklift-0jmzj-uvcoy` |
+| Roboflow Forklift Detection | ✅ Complete | Cloud model `forklift-i3vog-vwafw` |
 | Roboflow Pallet Detection | ✅ Complete | Cloud model `pallet-unicd-k2rg0` or `pallet-6awi8-zcqu2` |
 | Environment Configuration | ✅ Complete | `env_config.py` with `.env` file support |
 | Integrated Pipeline | ✅ Complete | `RoboflowBatchProcessor` |
@@ -560,7 +560,7 @@ analytics:
 # Roboflow API Configuration
 ROBOFLOW_API_KEY=your_api_key_here
 ROBOFLOW_WORKSPACE=your_workspace
-ROBOFLOW_FORKLIFT_PROJECT=forklift-0jmzj-uvcoy
+ROBOFLOW_FORKLIFT_PROJECT=forklift-i3vog-vwafw
 ROBOFLOW_FORKLIFT_VERSION=1
 ROBOFLOW_PALLET_PROJECT=pallet-unicd-k2rg0
 ROBOFLOW_PALLET_VERSION=1
@@ -592,7 +592,7 @@ python scripts/process_video_roboflow_integrated.py video.mp4 --output-dir custo
 ```
 
 **Features:**
-- ✅ Forklift detection (forklift-0jmzj-uvcoy model)
+- ✅ Forklift detection (forklift-i3vog-vwafw model)
 - ✅ Pallet detection (pallet-unicd-k2rg0 model)
 - ✅ Cross-validation filtering for detection quality
 - ✅ Pallet carrying detection via spatial analysis
@@ -784,6 +784,11 @@ For issues or questions:
 ---
 
 ## 📋 Changelog
+
+### v0.2.1 (January 19, 2026)
+- ✅ **Upgraded forklift detection model** - switched to `forklift-i3vog-vwafw` with more training examples for improved accuracy
+- ✅ Updated all configuration files (.env, .env.example, env_config.py, roboflow_detector.py)
+- ✅ Updated documentation (ENV_SETUP.md, QUICKSTART_ENV.md, PROJECT_PLAN.md)
 
 ### v0.2.0 (January 19, 2026)
 - ✅ **Fixed utilization calculation** - now calculates per-forklift utilization (76.2% vs 18.82%)

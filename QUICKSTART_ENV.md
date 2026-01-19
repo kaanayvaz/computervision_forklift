@@ -55,7 +55,7 @@ Location: `.env`
 ```env
 ROBOFLOW_API_KEY=iIkkdrFSIrhPmw8uiJy7
 ROBOFLOW_WORKSPACE=ss-rz6v8
-ROBOFLOW_FORKLIFT_PROJECT=forklift-0jmzj-uvcoy
+ROBOFLOW_FORKLIFT_PROJECT=forklift-i3vog-vwafw
 ROBOFLOW_PALLET_PROJECT=pallet-6awi8-zcqu2
 ```
 
