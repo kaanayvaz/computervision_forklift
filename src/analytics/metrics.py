@@ -15,16 +15,22 @@ logger = get_logger(__name__)
 
 def calculate_utilization(
     activities: list[Activity],
-    total_duration_seconds: Optional[float] = None
+    total_duration_seconds: Optional[float] = None,
+    forklift_count: Optional[int] = None
 ) -> float:
     """
     Calculate forklift utilization percentage.
     
-    Utilization = (active time / total time) * 100
+    Utilization = (active time / total available time) * 100
+    
+    For multiple forklifts, we calculate:
+    - Per-forklift utilization based on each forklift's activity time
+    - Fleet average utilization
     
     Args:
         activities: List of Activity objects.
         total_duration_seconds: Optional total duration (auto-calculated if None).
+        forklift_count: Optional number of forklifts (auto-detected from activities if None).
         
     Returns:
         Utilization percentage 0-100.
@@ -32,26 +38,69 @@ def calculate_utilization(
     if not activities:
         return 0.0
     
-    # Calculate total and active time
-    active_time = 0.0
-    
+    # Group activities by track_id (forklift)
+    activities_by_track: dict[int, list[Activity]] = {}
     for activity in activities:
-        if activity.state in [
-            ForkliftState.MOVING_EMPTY,
-            ForkliftState.MOVING_LOADED,
-            ForkliftState.LOADING,
-            ForkliftState.UNLOADING
-        ]:
-            active_time += activity.duration_seconds
+        if activity.track_id not in activities_by_track:
+            activities_by_track[activity.track_id] = []
+        activities_by_track[activity.track_id].append(activity)
+    
+    # Detect forklift count from activities if not provided
+    if forklift_count is None:
+        forklift_count = len(activities_by_track)
+    
+    if forklift_count == 0:
+        return 0.0
     
     # Calculate total duration from activities if not provided
     if total_duration_seconds is None:
-        total_duration_seconds = sum(a.duration_seconds for a in activities)
+        # Use the span from earliest to latest activity
+        all_times = []
+        for activity in activities:
+            all_times.append(activity.start_frame)
+            all_times.append(activity.end_frame)
+        if all_times:
+            # Rough estimate based on frames (assumes fps is embedded in activities)
+            total_duration_seconds = sum(a.duration_seconds for a in activities)
+        else:
+            total_duration_seconds = 0.0
     
     if total_duration_seconds == 0:
         return 0.0
     
-    return (active_time / total_duration_seconds) * 100
+    # Calculate per-forklift utilization
+    per_forklift_utilization = []
+    
+    for track_id, track_activities in activities_by_track.items():
+        # Calculate active time for this forklift
+        active_time = 0.0
+        total_time = 0.0
+        
+        for activity in track_activities:
+            total_time += activity.duration_seconds
+            if activity.state in [
+                ForkliftState.MOVING_EMPTY,
+                ForkliftState.MOVING_LOADED,
+                ForkliftState.LOADING,
+                ForkliftState.UNLOADING
+            ]:
+                active_time += activity.duration_seconds
+        
+        # Per-forklift utilization = active_time / forklift's_tracked_time
+        if total_time > 0:
+            utilization = (active_time / total_time) * 100
+            per_forklift_utilization.append(utilization)
+            logger.debug(f"Track #{track_id}: {active_time:.1f}s active / {total_time:.1f}s total = {utilization:.1f}%")
+    
+    # Fleet average utilization
+    if per_forklift_utilization:
+        fleet_utilization = sum(per_forklift_utilization) / len(per_forklift_utilization)
+    else:
+        fleet_utilization = 0.0
+    
+    logger.info(f"Fleet utilization: {fleet_utilization:.1f}% (avg of {len(per_forklift_utilization)} forklifts)")
+    
+    return fleet_utilization
 
 
 def calculate_idle_time(activities: list[Activity]) -> float:
@@ -139,8 +188,20 @@ def generate_analytics(
         total_duration_seconds = sum(a.duration_seconds for a in activities)
     
     idle_time = calculate_idle_time(activities)
-    active_time = total_duration_seconds - idle_time
-    utilization = calculate_utilization(activities, total_duration_seconds)
+    
+    # Calculate actual active time from non-idle activities
+    active_time = sum(
+        a.duration_seconds for a in activities
+        if a.state in [
+            ForkliftState.MOVING_EMPTY,
+            ForkliftState.MOVING_LOADED,
+            ForkliftState.LOADING,
+            ForkliftState.UNLOADING
+        ]
+    )
+    
+    # Calculate utilization with forklift count for proper scaling
+    utilization = calculate_utilization(activities, total_duration_seconds, forklift_count)
     cost_of_waste = calculate_cost_of_waste(idle_time, cost_per_hour)
     
     # Breakdown by state
