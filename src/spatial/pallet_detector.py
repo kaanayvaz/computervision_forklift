@@ -57,24 +57,38 @@ class SpatialAnalyzer:
         self.min_iou_required = 0.02  # Lowered from 0.08 - any overlap counts
         self.min_containment_required = 0.10  # Lowered from 0.30 - 10%+ inside forklift bbox
         
+        # SIZE-BASED FALLBACK DETECTION PARAMETERS
+        # When pallet model misses elevated pallets, detect carrying by bbox size increase
+        self.size_increase_threshold = spatial_config.get("size_increase_threshold", 0.15)  # 15% area increase
+        self.height_increase_threshold = spatial_config.get("height_increase_threshold", 0.10)  # 10% height increase
+        self.track_size_history: dict[int, list[float]] = {}  # track_id -> list of bbox areas
+        self.baseline_sizes: dict[int, float] = {}  # track_id -> baseline bbox area (when empty)
+        
         logger.info(
             f"SpatialAnalyzer initialized: "
             f"iou={self.iou_threshold}, "
             f"containment={self.containment_threshold}, "
-            f"fork_zone={self.fork_zone_ratio}"
+            f"fork_zone={self.fork_zone_ratio}, "
+            f"size_fallback={self.size_increase_threshold}"
         )
     
     def is_carrying_pallet(
         self,
         forklift: TrackedObject | Detection | BoundingBox,
-        pallets: list[Detection]
+        pallets: list[Detection],
+        track_id: Optional[int] = None
     ) -> tuple[bool, float, Optional[Detection]]:
         """
         Determine if forklift is carrying a pallet.
         
+        Uses two detection methods:
+        1. Primary: Pallet detection overlap with forklift bbox
+        2. Fallback: Size increase detection (when pallet model misses elevated pallets)
+        
         Args:
             forklift: Forklift as TrackedObject, Detection, or BoundingBox.
             pallets: List of pallet detections in current frame.
+            track_id: Optional track ID for size-based detection tracking.
             
         Returns:
             Tuple of (is_carrying, confidence, associated_pallet).
@@ -87,52 +101,138 @@ class SpatialAnalyzer:
         if forklift_bbox is None:
             return False, 0.0, None
         
-        if not pallets:
-            return False, 0.0, None
+        # Extract track_id from TrackedObject if not provided
+        if track_id is None and isinstance(forklift, TrackedObject):
+            track_id = forklift.track_id
         
-        # Find best matching pallet with STRICT criteria
+        # PRIMARY DETECTION: Pallet overlap with forklift
         best_pallet: Optional[Detection] = None
         best_score = 0.0
         best_iou = 0.0
         best_containment = 0.0
         
-        for pallet in pallets:
-            # Compute raw IoU and containment first
-            forklift_tuple = forklift_bbox.as_tuple()
-            pallet_tuple = pallet.bbox.as_tuple()
-            
-            iou = compute_iou(forklift_tuple, pallet_tuple)
-            containment = compute_containment(pallet_tuple, forklift_tuple)
-            
-            # STRICT: Skip pallets that don't actually overlap with forklift
-            # This prevents nearby stacked pallets from being associated
-            if iou < self.min_iou_required:
-                continue  # No real overlap - skip this pallet
-            
-            if containment < self.min_containment_required:
-                continue  # Pallet not inside forklift bbox - skip
-            
-            score = self._compute_association_score(forklift_bbox, pallet.bbox)
-            
-            if score > best_score:
-                best_score = score
-                best_pallet = pallet
-                best_iou = iou
-                best_containment = containment
+        if pallets:
+            for pallet in pallets:
+                # Compute raw IoU and containment first
+                forklift_tuple = forklift_bbox.as_tuple()
+                pallet_tuple = pallet.bbox.as_tuple()
+                
+                iou = compute_iou(forklift_tuple, pallet_tuple)
+                containment = compute_containment(pallet_tuple, forklift_tuple)
+                
+                # STRICT: Skip pallets that don't actually overlap with forklift
+                if iou < self.min_iou_required:
+                    continue
+                
+                if containment < self.min_containment_required:
+                    continue
+                
+                score = self._compute_association_score(forklift_bbox, pallet.bbox)
+                
+                if score > best_score:
+                    best_score = score
+                    best_pallet = pallet
+                    best_iou = iou
+                    best_containment = containment
         
-        # RELAXED: Determine if carrying - lower threshold for better detection
-        is_carrying = (
-            best_score > 0.3 and  # Lowered from 0.6 for better sensitivity
+        # Check if primary detection found a pallet
+        is_carrying_by_overlap = (
+            best_score > 0.3 and
             best_iou >= self.min_iou_required and
             best_containment >= self.min_containment_required
         )
         
-        if is_carrying:
+        if is_carrying_by_overlap:
             logger.debug(
-                f"Forklift carrying pallet: score={best_score:.2f}, iou={best_iou:.2f}, containment={best_containment:.2f}"
+                f"Forklift carrying pallet (overlap): score={best_score:.2f}, "
+                f"iou={best_iou:.2f}, containment={best_containment:.2f}"
             )
+            return True, best_score, best_pallet
         
-        return is_carrying, best_score, best_pallet if is_carrying else None
+        # FALLBACK DETECTION: Size-based detection when no pallet overlap found
+        is_carrying_by_size, size_confidence = self._detect_carrying_by_size(
+            forklift_bbox, track_id
+        )
+        
+        if is_carrying_by_size:
+            logger.debug(
+                f"Forklift carrying pallet (size-based fallback): confidence={size_confidence:.2f}"
+            )
+            return True, size_confidence, None
+        
+        return False, 0.0, None
+    
+    def _detect_carrying_by_size(
+        self,
+        forklift_bbox: BoundingBox,
+        track_id: Optional[int]
+    ) -> tuple[bool, float]:
+        """
+        Detect pallet carrying based on forklift bbox size increase.
+        
+        When a forklift picks up a pallet, its detection bbox typically grows
+        because the detector includes the pallet in the forklift bbox.
+        
+        Args:
+            forklift_bbox: Current forklift bounding box.
+            track_id: Track ID for tracking size history.
+            
+        Returns:
+            Tuple of (is_carrying, confidence).
+        """
+        if track_id is None:
+            return False, 0.0
+        
+        # Calculate current bbox metrics
+        current_area = forklift_bbox.width * forklift_bbox.height
+        current_height = forklift_bbox.height
+        
+        # Initialize history if needed
+        if track_id not in self.track_size_history:
+            self.track_size_history[track_id] = []
+        
+        # Add current measurement to history
+        self.track_size_history[track_id].append(current_area)
+        
+        # Need at least 3 measurements to establish baseline
+        history = self.track_size_history[track_id]
+        if len(history) < 3:
+            return False, 0.0
+        
+        # Calculate baseline from first few measurements (assumed to be "empty" state)
+        # Use minimum of first 3 measurements as baseline
+        if track_id not in self.baseline_sizes:
+            self.baseline_sizes[track_id] = min(history[:3])
+        
+        baseline_area = self.baseline_sizes[track_id]
+        
+        if baseline_area <= 0:
+            return False, 0.0
+        
+        # Calculate size increase ratio
+        size_increase = (current_area - baseline_area) / baseline_area
+        
+        # Detect carrying if size increased significantly
+        if size_increase >= self.size_increase_threshold:
+            # Confidence based on how much the size increased
+            confidence = min(0.9, 0.5 + (size_increase - self.size_increase_threshold) * 2)
+            logger.debug(
+                f"Track #{track_id}: Size increase detected {size_increase:.1%} "
+                f"(baseline={baseline_area:.0f}, current={current_area:.0f})"
+            )
+            return True, confidence
+        
+        return False, 0.0
+    
+    def reset_size_tracking(self, track_id: Optional[int] = None) -> None:
+        """Reset size tracking for a track or all tracks."""
+        if track_id is None:
+            self.track_size_history.clear()
+            self.baseline_sizes.clear()
+        else:
+            self.track_size_history.pop(track_id, None)
+            self.baseline_sizes.pop(track_id, None)
+
     
     def _get_bbox(
         self,

@@ -674,8 +674,9 @@ class RoboflowBatchProcessor:
                 pallet_dets = [d for d in all_frame_dets if d.class_name == "pallet"]
                 
                 # Check if carrying pallet using spatial analysis
+                # Pass track_id for size-based fallback detection
                 is_carrying, confidence, _ = self.spatial_analyzer.is_carrying_pallet(
-                    det, pallet_dets
+                    det, pallet_dets, track_id=tid
                 )
                 track.is_carrying_pallet = is_carrying
                 
