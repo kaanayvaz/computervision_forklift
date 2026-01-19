@@ -328,7 +328,7 @@ The codebase is well-structured and **fully functional**. All core components ve
 
 ---
 
-## 📊 Current Project Status Summary (January 18, 2026)
+## 📊 Current Project Status Summary (January 19, 2026)
 
 ### ✅ Fully Implemented Features
 
@@ -353,20 +353,20 @@ The codebase is well-structured and **fully functional**. All core components ve
 ### 📁 Generated Outputs
 
 The system has successfully processed videos with extensive output:
-- **Reports**: 30+ JSON/CSV/TXT reports in `data/outputs/reports/`
+- **Reports**: 136+ JSON/CSV/TXT reports in `data/outputs/reports/`
 - **Videos**: Annotated videos in `data/outputs/videos/`
 - **Pallet Tracking**: Results in `data/outputs/pallet_tracking/`
 
-### 📈 Latest Processing Results (January 18, 2026)
+### 📈 Latest Processing Results (January 19, 2026)
 
 | Metric | Value |
 |--------|-------|
 | Duration Analyzed | 0.6 minutes |
 | Forklifts Tracked | 4 |
 | Activities Detected | 17 |
-| Utilization Rate | 18.8% |
-| Active Time | 0.6 minutes |
-| Idle Time | 0.1 minutes |
+| Utilization Rate | 18.82% |
+| Active Time | 35.96 seconds |
+| Idle Time | 3.0 seconds |
 | Estimated Waste Cost | $0.06 |
 
 **Activities Breakdown:**
@@ -378,6 +378,56 @@ The system has successfully processed videos with extensive output:
 - ByteTrack raw tracks: 39 (fragmented)
 - After merging: 6 tracks
 - After filtering: 4 tracks (actual forklifts)
+
+---
+
+## 🚨 Remaining Problems & Issues (January 19, 2026)
+
+### 🔴 CRITICAL Issues (Must Address)
+
+| # | Problem | Location | Impact | Status |
+|---|---------|----------|--------|--------|
+| 1 | **Short video test only** | All testing | System only validated on ~39 second video clip | ⚠️ **NEEDS TESTING** |
+| 2 | **No ground truth validation** | N/A | Cannot verify if detected activities are actually correct | ⚠️ **NEEDS VALIDATION** |
+| 3 | **Utilization calculation may be skewed** | `src/analytics/metrics.py` | 18.82% utilization seems low - need to verify formula | ⚠️ **NEEDS REVIEW** |
+
+### 🟡 MEDIUM Issues (Should Fix)
+
+| # | Problem | Location | Impact | Suggested Fix |
+|---|---------|----------|--------|---------------|
+| 4 | **Activity durations very short** | Latest reports | Most activities are 0.33-1.0 seconds due to sparse 3 FPS processing | Increase FPS or adjust `min_duration` thresholds |
+| 5 | **No LOADING/UNLOADING detection** | State classifier | Only detecting IDLE, MOVING_EMPTY, MOVING_LOADED - no transition states | Tune state transition logic in `classifier.py` |
+| 6 | **Pallet association may be too lenient** | `src/spatial/pallet_detector.py` | Thresholds were lowered significantly (IoU: 0.02, containment: 0.10) | Validate with more test videos |
+| 7 | **Missing person detection in analytics** | Various | People are detected but not used for operator association | Implement operator proximity detection |
+| 8 | **Import path uses relative imports** | `src/analytics/reporter.py` | May fail depending on how module is loaded | Change to relative imports |
+
+### 🟢 LOW Priority Issues (Nice to Fix)
+
+| # | Problem | Location | Impact | Status |
+|---|---------|----------|--------|--------|
+| 9 | **No GPU memory management** | `src/detection/detector.py` | May OOM on long videos | 🔵 Deferred |
+| 10 | **Missing type hints in some functions** | Various | Reduces IDE support | 🔵 Deferred |
+| 11 | **No progress persistence** | `pipelines/batch_processor.py` | Long videos can't be resumed | 🔵 Deferred |
+| 12 | **VideoWriter context manager missing** | `pipelines/batch_processor.py` | Resource leak on error | ⚠️ Mitigated with try/finally |
+| 13 | **Test coverage incomplete** | `tests/` | Some edge cases not tested | 🔵 Deferred |
+
+### 🔧 Known Technical Debt
+
+1. **`roboflow_batch_processor.py`** is very large (1540 lines, 68KB) - should be refactored into smaller modules
+2. **Hardcoded thresholds** in track merging algorithm - should be moved to config
+3. **No caching of Roboflow API results** - re-processes video on each run
+4. **Camera motion compensation not fully integrated** - CMC code exists but may not be optimally used
+
+### 📋 Validation Checklist (Before Production)
+
+- [ ] Test with longer videos (5+ minutes)
+- [ ] Test with different camera angles/warehouse layouts
+- [ ] Create ground truth annotations for accuracy measurement
+- [ ] Validate state classification accuracy against manual labels
+- [ ] Test with crowded scenes (multiple forklifts overlapping)
+- [ ] Test with poor lighting conditions
+- [ ] Stress test with 1+ hour videos
+- [ ] Verify Roboflow API rate limits and costs
 
 ### 🧪 Test Coverage
 
@@ -735,6 +785,14 @@ For issues or questions:
 
 ## 📋 Changelog
 
+### v0.2.0 (January 19, 2026)
+- ✅ Comprehensive problem documentation and tracking
+- ✅ Added remaining issues section with severity levels
+- ✅ Added validation checklist for production readiness
+- ✅ Documented technical debt items
+- ✅ 136+ successful video processing runs
+- ⚠️ Identified critical issues: short video testing, no ground truth validation
+
 ### v0.1.0 (January 18, 2026)
 - ✅ Initial release with full pipeline implementation
 - ✅ Local YOLO and Roboflow cloud detection support
@@ -742,10 +800,10 @@ For issues or questions:
 - ✅ Rule-based state classification with temporal smoothing
 - ✅ Comprehensive analytics and reporting
 - ✅ Cross-validation filtering for detection quality
-- ✅ 30+ successful video processing runs
+- ✅ Multi-pass track merging algorithm (39→4 tracks)
 
 ---
 
-*Last Updated: January 18, 2026*
-*Version: 0.1.0*
-*Status: ✅ CORE FUNCTIONALITY COMPLETE - Ready for Production Testing*
+*Last Updated: January 19, 2026*
+*Version: 0.2.0*
+*Status: ⚠️ CORE COMPLETE - Validation & Testing Required*
