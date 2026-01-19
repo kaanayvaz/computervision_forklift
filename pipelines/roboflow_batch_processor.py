@@ -653,6 +653,8 @@ class RoboflowBatchProcessor:
         # Reset classifiers for fresh state
         self.motion_estimator.reset()
         self.state_classifier.reset()
+        # CRITICAL: Reset size tracking to prevent cross-contamination between merged tracks
+        self.spatial_analyzer.reset_size_tracking()
         
         for tid, track in tracks.items():
             # Clear any existing state history

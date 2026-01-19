@@ -58,11 +58,13 @@ class SpatialAnalyzer:
         self.min_containment_required = 0.10  # Lowered from 0.30 - 10%+ inside forklift bbox
         
         # SIZE-BASED FALLBACK DETECTION PARAMETERS
-        # When pallet model misses elevated pallets, detect carrying by bbox size increase
-        self.size_increase_threshold = spatial_config.get("size_increase_threshold", 0.15)  # 15% area increase
-        self.height_increase_threshold = spatial_config.get("height_increase_threshold", 0.10)  # 10% height increase
-        self.track_size_history: dict[int, list[float]] = {}  # track_id -> list of bbox areas
-        self.baseline_sizes: dict[int, float] = {}  # track_id -> baseline bbox area (when empty)
+        # When pallet model misses elevated pallets, detect carrying by bbox size/shape changes
+        # TUNED: Balanced thresholds - attempt to catch true positives while minimizing false positives
+        self.size_increase_threshold = spatial_config.get("size_increase_threshold", 0.10)  # 10% area increase
+        self.height_increase_threshold = spatial_config.get("height_increase_threshold", 0.06)  # 6% height increase
+        self.aspect_ratio_change_threshold = 0.18  # 18% aspect ratio change
+        self.track_size_history: dict[int, list[tuple[float, float, float]]] = {}  # track_id -> list of (area, width, height)
+        self.baseline_sizes: dict[int, tuple[float, float]] = {}  # track_id -> (baseline_area, baseline_aspect_ratio)
         
         logger.info(
             f"SpatialAnalyzer initialized: "
@@ -149,7 +151,30 @@ class SpatialAnalyzer:
             )
             return True, best_score, best_pallet
         
-        # FALLBACK DETECTION: Size-based detection when no pallet overlap found
+        # FALLBACK 1: Proximity-based detection - pallet near forklift even without overlap
+        # This catches cases where elevated pallet bbox doesn't overlap the forklift bbox
+        if pallets:
+            forklift_center = forklift_bbox.center
+            forklift_size = max(forklift_bbox.width, forklift_bbox.height)
+            proximity_threshold = forklift_size * 0.8  # Pallet within 80% of forklift size
+            
+            for pallet in pallets:
+                pallet_center = pallet.bbox.center
+                distance = ((forklift_center[0] - pallet_center[0])**2 + 
+                           (forklift_center[1] - pallet_center[1])**2) ** 0.5
+                
+                # Check if pallet is close AND in the correct vertical zone (below center)
+                if distance < proximity_threshold:
+                    # Pallet should be in lower half of forklift bbox or slightly below
+                    if pallet_center[1] >= forklift_bbox.y1 + forklift_bbox.height * 0.3:
+                        confidence = 0.6 * (1 - distance / proximity_threshold)
+                        logger.debug(
+                            f"Forklift carrying pallet (proximity): distance={distance:.0f}px, "
+                            f"threshold={proximity_threshold:.0f}px, confidence={confidence:.2f}"
+                        )
+                        return True, confidence, pallet
+        
+        # FALLBACK 2: Size-based detection when no pallet overlap found
         is_carrying_by_size, size_confidence = self._detect_carrying_by_size(
             forklift_bbox, track_id
         )
@@ -168,10 +193,11 @@ class SpatialAnalyzer:
         track_id: Optional[int]
     ) -> tuple[bool, float]:
         """
-        Detect pallet carrying based on forklift bbox size increase.
+        Detect pallet carrying based on forklift bbox size and shape changes.
         
-        When a forklift picks up a pallet, its detection bbox typically grows
-        because the detector includes the pallet in the forklift bbox.
+        When a forklift picks up a pallet, its detection bbox typically:
+        1. Grows in area (includes pallet)
+        2. Changes aspect ratio (wider with pallet on forks)
         
         Args:
             forklift_bbox: Current forklift bounding box.
@@ -185,40 +211,72 @@ class SpatialAnalyzer:
         
         # Calculate current bbox metrics
         current_area = forklift_bbox.width * forklift_bbox.height
+        current_width = forklift_bbox.width
         current_height = forklift_bbox.height
+        current_aspect = current_width / max(current_height, 1)  # width/height ratio
         
         # Initialize history if needed
         if track_id not in self.track_size_history:
             self.track_size_history[track_id] = []
         
-        # Add current measurement to history
-        self.track_size_history[track_id].append(current_area)
+        # Add current measurement to history (area, width, height)
+        self.track_size_history[track_id].append((current_area, current_width, current_height))
         
-        # Need at least 3 measurements to establish baseline
+        # Need at least 2 measurements to establish baseline
         history = self.track_size_history[track_id]
-        if len(history) < 3:
+        if len(history) < 2:
             return False, 0.0
         
         # Calculate baseline from first few measurements (assumed to be "empty" state)
-        # Use minimum of first 3 measurements as baseline
         if track_id not in self.baseline_sizes:
-            self.baseline_sizes[track_id] = min(history[:3])
+            if len(history) >= 3:
+                baseline_areas = [h[0] for h in history[:3]]
+                baseline_aspects = [h[1] / max(h[2], 1) for h in history[:3]]
+                baseline_area = sum(baseline_areas) / 3
+                baseline_aspect = sum(baseline_aspects) / 3
+            else:
+                baseline_area = history[0][0]
+                baseline_aspect = history[0][1] / max(history[0][2], 1)
+            self.baseline_sizes[track_id] = (baseline_area, baseline_aspect)
         
-        baseline_area = self.baseline_sizes[track_id]
+        baseline_area, baseline_aspect = self.baseline_sizes[track_id]
         
         if baseline_area <= 0:
             return False, 0.0
         
-        # Calculate size increase ratio
+        # Calculate changes from baseline
         size_increase = (current_area - baseline_area) / baseline_area
+        aspect_change = abs(current_aspect - baseline_aspect) / max(baseline_aspect, 0.1)
         
-        # Detect carrying if size increased significantly
-        if size_increase >= self.size_increase_threshold:
-            # Confidence based on how much the size increased
-            confidence = min(0.9, 0.5 + (size_increase - self.size_increase_threshold) * 2)
+        # Detect carrying based on COMBINED signals (more conservative to reduce false positives)
+        # Require EITHER: both metrics above threshold, OR one metric significantly above threshold
+        is_carrying = False
+        confidence = 0.0
+        reason = ""
+        
+        # Check for combined signal (both metrics triggered) - most reliable
+        if size_increase >= self.size_increase_threshold and aspect_change >= self.aspect_ratio_change_threshold:
+            is_carrying = True
+            confidence = min(0.90, 0.6 + size_increase + aspect_change * 0.5)
+            reason = f"combined: size={size_increase:.1%}, aspect={aspect_change:.1%}"
+        
+        # Check for strong size signal (>15% increase is likely carrying)
+        elif size_increase >= 0.15:
+            is_carrying = True
+            confidence = min(0.85, 0.5 + (size_increase - 0.15) * 3)
+            reason = f"strong_size_increase={size_increase:.1%}"
+        
+        # Check for strong aspect change (>30% is likely carrying)
+        elif aspect_change >= 0.30:
+            is_carrying = True
+            confidence = min(0.80, 0.5 + (aspect_change - 0.30) * 1.5)
+            reason = f"strong_aspect_change={aspect_change:.1%}"
+        
+        if is_carrying:
             logger.debug(
-                f"Track #{track_id}: Size increase detected {size_increase:.1%} "
-                f"(baseline={baseline_area:.0f}, current={current_area:.0f})"
+                f"Track #{track_id}: Carrying detected by {reason} "
+                f"(baseline_area={baseline_area:.0f}, current={current_area:.0f}, "
+                f"baseline_aspect={baseline_aspect:.2f}, current_aspect={current_aspect:.2f})"
             )
             return True, confidence
         
