@@ -1,0 +1,36 @@
+============================================================
+FORKLIFT ANALYTICS SUMMARY
+============================================================
+
+Duration Analyzed:    0.6 minutes
+Forklifts Tracked:    5
+Activities Detected:  18
+
+----------------------------------------
+UTILIZATION
+----------------------------------------
+Utilization Rate:     67.8%
+Active Time:          0.1 minutes
+Idle Time:            0.1 minutes
+
+----------------------------------------
+COST ANALYSIS
+----------------------------------------
+Cost per Idle Hour:   $75.00
+Estimated Waste Cost: $0.09
+
+----------------------------------------
+IDLE BREAKDOWN
+----------------------------------------
+  idle_waiting: 0.1 minutes
+  extended_idle: 0.0 minutes
+  significant_idle: 0.0 minutes
+
+----------------------------------------
+ACTIVITIES BY STATE
+----------------------------------------
+  idle: 6 activities
+  moving_empty: 6 activities
+  moving_loaded: 5 activities
+  loading: 1 activities
+============================================================
