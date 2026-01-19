@@ -1,0 +1,12 @@
+track_id,state,start_frame,end_frame,duration_seconds,is_value_added,description,zone
+1,unknown,0,2,0.6,False,,
+1,moving_empty,3,6,0.8,True,,
+1,idle,7,14,1.6,False,,
+1,loading,15,15,0.2,True,,
+1,idle_loaded,16,16,0.2,False,,
+2,idle_loaded,0,8,1.8,False,,
+2,unloading,9,9,0.2,True,,
+2,idle,10,20,2.2,False,,
+2,loading,21,21,0.2,True,,
+2,idle_loaded,22,29,1.6,False,,
+3,idle,0,29,6.0,False,,

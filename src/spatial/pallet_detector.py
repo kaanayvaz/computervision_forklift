@@ -45,33 +45,32 @@ class SpatialAnalyzer:
         # Handle nested config structure
         spatial_config = config.get("spatial", config)
         
-        # MORE LENIENT thresholds for better pallet carrying detection
-        # In real-world scenarios, pallet bboxes often don't perfectly overlap forklift bboxes
-        self.iou_threshold = spatial_config.get("pallet_iou_threshold", 0.05)  # Lowered from 0.15
-        self.containment_threshold = spatial_config.get("pallet_containment_threshold", 0.20)  # Lowered from 0.5
-        self.vertical_offset_max = spatial_config.get("vertical_offset_max", 100)  # Increased from 30
-        self.fork_zone_ratio = spatial_config.get("fork_zone_ratio", 0.7)  # Increased from 0.5
+        # STRICT thresholds - only detect carrying when pallet is ACTUALLY on forklift
+        # Background/ground pallets should NOT trigger false positives
+        self.iou_threshold = spatial_config.get("pallet_iou_threshold", 0.15)
+        self.containment_threshold = spatial_config.get("pallet_containment_threshold", 0.35)
+        self.vertical_offset_max = spatial_config.get("vertical_offset_max", 30)  # Strict vertical limit
+        self.fork_zone_ratio = spatial_config.get("fork_zone_ratio", 0.5)  # Lower 50% only
         
-        # RELAXED: Minimum requirements for "carrying" detection
-        # Lower these to catch more true positives
-        self.min_iou_required = 0.02  # Lowered from 0.08 - any overlap counts
-        self.min_containment_required = 0.10  # Lowered from 0.30 - 10%+ inside forklift bbox
+        # STRICT: High minimum requirements for "carrying" detection
+        # These prevent false positives from nearby ground pallets
+        self.min_iou_required = 0.10  # At least 10% overlap required
+        self.min_containment_required = 0.30  # At least 30% of pallet inside forklift bbox
         
-        # SIZE-BASED FALLBACK DETECTION PARAMETERS
-        # When pallet model misses elevated pallets, detect carrying by bbox size/shape changes
-        # TUNED: Balanced thresholds - attempt to catch true positives while minimizing false positives
-        self.size_increase_threshold = spatial_config.get("size_increase_threshold", 0.10)  # 10% area increase
-        self.height_increase_threshold = spatial_config.get("height_increase_threshold", 0.06)  # 6% height increase
-        self.aspect_ratio_change_threshold = 0.18  # 18% aspect ratio change
-        self.track_size_history: dict[int, list[tuple[float, float, float]]] = {}  # track_id -> list of (area, width, height)
-        self.baseline_sizes: dict[int, tuple[float, float]] = {}  # track_id -> (baseline_area, baseline_aspect_ratio)
+        # SIZE-BASED FALLBACK - DISABLED to prevent false positives
+        # Only enable if you're certain there are no background pallets
+        self.size_increase_threshold = spatial_config.get("size_increase_threshold", 0.20)
+        self.height_increase_threshold = spatial_config.get("height_increase_threshold", 0.10)
+        self.aspect_ratio_change_threshold = 0.25
+        self.enable_size_fallback = spatial_config.get("enable_size_fallback", False)  # OFF by default
+        self.track_size_history: dict[int, list[tuple[float, float, float]]] = {}
+        self.baseline_sizes: dict[int, tuple[float, float]] = {}
         
         logger.info(
-            f"SpatialAnalyzer initialized: "
-            f"iou={self.iou_threshold}, "
-            f"containment={self.containment_threshold}, "
-            f"fork_zone={self.fork_zone_ratio}, "
-            f"size_fallback={self.size_increase_threshold}"
+            f"SpatialAnalyzer initialized (STRICT): "
+            f"iou={self.iou_threshold}, min_iou={self.min_iou_required}, "
+            f"containment={self.containment_threshold}, min_containment={self.min_containment_required}, "
+            f"fork_zone={self.fork_zone_ratio}"
         )
     
     def is_carrying_pallet(
@@ -137,9 +136,10 @@ class SpatialAnalyzer:
                     best_iou = iou
                     best_containment = containment
         
-        # Check if primary detection found a pallet
+        # Check if primary detection found a pallet with STRICT criteria
+        # The pallet must have significant overlap with the forklift bbox
         is_carrying_by_overlap = (
-            best_score > 0.3 and
+            best_score > 0.4 and  # Higher score threshold
             best_iou >= self.min_iou_required and
             best_containment >= self.min_containment_required
         )
@@ -151,39 +151,20 @@ class SpatialAnalyzer:
             )
             return True, best_score, best_pallet
         
-        # FALLBACK 1: Proximity-based detection - pallet near forklift even without overlap
-        # This catches cases where elevated pallet bbox doesn't overlap the forklift bbox
-        if pallets:
-            forklift_center = forklift_bbox.center
-            forklift_size = max(forklift_bbox.width, forklift_bbox.height)
-            proximity_threshold = forklift_size * 0.8  # Pallet within 80% of forklift size
-            
-            for pallet in pallets:
-                pallet_center = pallet.bbox.center
-                distance = ((forklift_center[0] - pallet_center[0])**2 + 
-                           (forklift_center[1] - pallet_center[1])**2) ** 0.5
-                
-                # Check if pallet is close AND in the correct vertical zone (below center)
-                if distance < proximity_threshold:
-                    # Pallet should be in lower half of forklift bbox or slightly below
-                    if pallet_center[1] >= forklift_bbox.y1 + forklift_bbox.height * 0.3:
-                        confidence = 0.6 * (1 - distance / proximity_threshold)
-                        logger.debug(
-                            f"Forklift carrying pallet (proximity): distance={distance:.0f}px, "
-                            f"threshold={proximity_threshold:.0f}px, confidence={confidence:.2f}"
-                        )
-                        return True, confidence, pallet
+        # NO PROXIMITY FALLBACK - removed because it causes false positives
+        # Ground pallets near forklift were being detected as "carried"
         
-        # FALLBACK 2: Size-based detection when no pallet overlap found
-        is_carrying_by_size, size_confidence = self._detect_carrying_by_size(
-            forklift_bbox, track_id
-        )
-        
-        if is_carrying_by_size:
-            logger.debug(
-                f"Forklift carrying pallet (size-based fallback): confidence={size_confidence:.2f}"
+        # SIZE-BASED FALLBACK - only if enabled (disabled by default)
+        if self.enable_size_fallback:
+            is_carrying_by_size, size_confidence = self._detect_carrying_by_size(
+                forklift_bbox, track_id
             )
-            return True, size_confidence, None
+            
+            if is_carrying_by_size:
+                logger.debug(
+                    f"Forklift carrying pallet (size-based fallback): confidence={size_confidence:.2f}"
+                )
+                return True, size_confidence, None
         
         return False, 0.0, None
     
@@ -353,36 +334,40 @@ class SpatialAnalyzer:
         """
         Compute score based on pallet position relative to forklift.
         
-        Pallet should be in the lower portion of forklift bbox (fork zone)
-        to be considered "on forks".
+        For a pallet to be "on forks", it must be:
+        1. Horizontally centered on the forklift (not off to the side)
+        2. Vertically within the forklift bbox (not below = ground pallet)
         
         Returns:
             Score between 0 and 1.
         """
-        # Define fork zone (lower portion of forklift bbox)
-        fork_zone_top = forklift_bbox.y1 + (1 - self.fork_zone_ratio) * forklift_bbox.height
-        fork_zone_bottom = forklift_bbox.y2
-        
-        # Check if pallet centroid is in fork zone
+        pallet_center_x = pallet_bbox.centroid_x
         pallet_center_y = pallet_bbox.centroid_y
         
-        if pallet_center_y < fork_zone_top:
-            # Pallet is above fork zone - unlikely carrying
-            return 0.0
-        elif pallet_center_y > fork_zone_bottom + self.vertical_offset_max:
-            # Pallet is below forklift - ground pallet
-            return 0.0
+        # CHECK 1: Pallet must be horizontally within forklift bbox (with small margin)
+        margin_x = forklift_bbox.width * 0.2  # 20% margin
+        if not (forklift_bbox.x1 - margin_x <= pallet_center_x <= forklift_bbox.x2 + margin_x):
+            return 0.0  # Pallet is too far left or right
+        
+        # CHECK 2: Pallet center must be INSIDE the forklift bbox vertically
+        # This is the key check - ground pallets will have their center BELOW the forklift
+        if pallet_center_y > forklift_bbox.y2:
+            return 0.0  # Pallet center is below forklift = ground pallet, NOT carried
+        
+        if pallet_center_y < forklift_bbox.y1:
+            return 0.0  # Pallet is above forklift = unlikely to be carried
+        
+        # Pallet is inside forklift bbox - score based on vertical position
+        # Prefer pallets in the lower portion (fork zone)
+        fork_zone_top = forklift_bbox.y1 + (1 - self.fork_zone_ratio) * forklift_bbox.height
+        
+        if pallet_center_y >= fork_zone_top:
+            # Pallet is in fork zone - high score
+            return 1.0
         else:
-            # Pallet is in or near fork zone
-            # Score based on how centered it is in the zone
-            zone_center = (fork_zone_top + fork_zone_bottom) / 2
-            distance_from_center = abs(pallet_center_y - zone_center)
-            max_distance = (fork_zone_bottom - fork_zone_top) / 2 + self.vertical_offset_max
-            
-            if max_distance == 0:
-                return 1.0
-            
-            return max(0.0, 1.0 - distance_from_center / max_distance)
+            # Pallet is in upper portion - lower score but still valid
+            relative_pos = (pallet_center_y - forklift_bbox.y1) / forklift_bbox.height
+            return 0.5 + 0.5 * relative_pos  # Score 0.5-1.0 based on position
     
     def get_relative_position(
         self,
