@@ -1,0 +1,179 @@
+{
+  "metadata": {
+    "video_name": "source",
+    "generated_at": "2026-01-19T10:24:35.831091",
+    "version": "1.0.0"
+  },
+  "summary": {
+    "total_duration_seconds": 38.96,
+    "total_duration_minutes": 0.6493333333333333,
+    "forklift_count": 3,
+    "activity_count": 15,
+    "utilization_percentage": 78.57,
+    "total_active_time_seconds": 7.4,
+    "total_idle_time_seconds": 3.0,
+    "cost_of_waste_usd": 0.06
+  },
+  "idle_breakdown": {
+    "idle_waiting": 3.0000000000000004,
+    "extended_idle": 0.0,
+    "significant_idle": 0.0
+  },
+  "activities_by_state": {
+    "idle": 5,
+    "moving_empty": 6,
+    "moving_loaded": 4
+  },
+  "activities": [
+    {
+      "track_id": 1,
+      "state": "idle",
+      "start_frame": 0,
+      "end_frame": 6,
+      "duration_seconds": 1.4,
+      "is_value_added": false,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 1,
+      "state": "moving_empty",
+      "start_frame": 7,
+      "end_frame": 12,
+      "duration_seconds": 1.2,
+      "is_value_added": true,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 1,
+      "state": "idle",
+      "start_frame": 13,
+      "end_frame": 17,
+      "duration_seconds": 1.0,
+      "is_value_added": false,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 1,
+      "state": "moving_empty",
+      "start_frame": 18,
+      "end_frame": 20,
+      "duration_seconds": 0.6,
+      "is_value_added": true,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 1,
+      "state": "moving_loaded",
+      "start_frame": 21,
+      "end_frame": 21,
+      "duration_seconds": 0.2,
+      "is_value_added": true,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 1,
+      "state": "idle",
+      "start_frame": 22,
+      "end_frame": 22,
+      "duration_seconds": 0.2,
+      "is_value_added": false,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 1,
+      "state": "moving_empty",
+      "start_frame": 23,
+      "end_frame": 27,
+      "duration_seconds": 1.0,
+      "is_value_added": true,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 1,
+      "state": "moving_loaded",
+      "start_frame": 28,
+      "end_frame": 29,
+      "duration_seconds": 0.4,
+      "is_value_added": true,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 2,
+      "state": "idle",
+      "start_frame": 0,
+      "end_frame": 0,
+      "duration_seconds": 0.2,
+      "is_value_added": false,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 2,
+      "state": "moving_loaded",
+      "start_frame": 1,
+      "end_frame": 5,
+      "duration_seconds": 1.0,
+      "is_value_added": true,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 2,
+      "state": "moving_empty",
+      "start_frame": 6,
+      "end_frame": 7,
+      "duration_seconds": 0.4,
+      "is_value_added": true,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 2,
+      "state": "moving_loaded",
+      "start_frame": 8,
+      "end_frame": 9,
+      "duration_seconds": 0.4,
+      "is_value_added": true,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 2,
+      "state": "moving_empty",
+      "start_frame": 10,
+      "end_frame": 14,
+      "duration_seconds": 1.0,
+      "is_value_added": true,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 3,
+      "state": "idle",
+      "start_frame": 0,
+      "end_frame": 0,
+      "duration_seconds": 0.2,
+      "is_value_added": false,
+      "description": "",
+      "zone": ""
+    },
+    {
+      "track_id": 3,
+      "state": "moving_empty",
+      "start_frame": 1,
+      "end_frame": 6,
+      "duration_seconds": 1.2,
+      "is_value_added": true,
+      "description": "",
+      "zone": ""
+    }
+  ]
+}

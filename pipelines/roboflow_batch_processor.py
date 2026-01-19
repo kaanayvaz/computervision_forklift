@@ -468,14 +468,15 @@ class RoboflowBatchProcessor:
             # - Area: 14K-299K
             if class_name == "forklift":
                 # 1. Moderate confidence threshold - balance between false positives and detection rate
-                min_confidence = 0.50  # Accept 50%+ confidence (lowered to allow good detections)
+                min_confidence = 0.65  # Accept 65%+ confidence (filters out obvious false positives)
                 if confidence < min_confidence:
                     logger.debug(f"Skipping low-confidence forklift: {confidence:.2f}")
                     return None
                 
-                # 2. Size constraints - increased to allow larger/closer forklifts
-                min_size = 60
-                max_size = 800  # Increased from 400 to allow closer forklifts
+                # 2. Size constraints based on actual data
+                # Real forklifts: ~100-350px in your video
+                min_size = 80
+                max_size = 400  # Allow larger sizes for closer forklifts
                 
                 if width < min_size or height < min_size:
                     logger.debug(f"Skipping small forklift detection: {width}x{height}")
@@ -487,13 +488,13 @@ class RoboflowBatchProcessor:
                 
                 # 3. Aspect ratio check - forklifts are roughly square-ish (but allow some elongation)
                 aspect_ratio = max(width, height) / max(min(width, height), 1)
-                if aspect_ratio > 3.0:  # Allow up to 3:1 aspect ratio
+                if aspect_ratio > 2.5:  # Allow up to 2.5:1 aspect ratio
                     logger.debug(f"Skipping elongated forklift detection: {width}x{height} ratio={aspect_ratio:.1f}")
                     return None
                 
-                # 4. Area check - increased max to allow larger forklifts
+                # 4. Area check based on actual data (14K-80K for typical forklifts)
                 area = width * height
-                if area < 5000 or area > 400000:  # Increased max from 100K to 400K
+                if area < 8000 or area > 100000:  # Reasonable forklift area range
                     logger.debug(f"Skipping forklift with unusual area: {area}")
                     return None
                     
